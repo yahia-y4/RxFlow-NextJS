@@ -1,0 +1,16 @@
+nav{
+    background-color: #041018;
+    height: 5vh;
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    direction: rtl;
+    border-bottom: white 1px solid;
+    padding-right: 10px;
+   
+}
+nav .nav-link{
+    color: rgb(255, 255, 255);
+ 
+
+}
