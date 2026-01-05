@@ -17,15 +17,19 @@ height: 95vh;
 
 }
 .info-card{
-  width: 300px !important;
+  width: 400px ;
   height: 250px;
-  background-color: black;
+
 }
 .rightSide{
   width: 40%;
   height: 100%;
-  border-left: 1px solid white;
-
+  /* border-left: 1px solid white; */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
 } 
 
 

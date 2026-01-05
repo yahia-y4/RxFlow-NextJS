@@ -1,0 +1,27 @@
+.myInput{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10;
+  
+
+}
+.myInput label{
+    display: block;
+    font-size: 18px;
+       
+}
+.myInput input{
+    direction: rtl;
+    background-color: #041018;
+    border: #bcc9cf 1px solid;
+    border-color: #bcc9cf;
+    outline: none;
+    color: #ffffff;
+    width: 100%;
+    height: 25px;
+    border-radius: 5px;
+    
+    
+}
