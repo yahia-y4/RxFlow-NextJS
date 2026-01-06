@@ -1,0 +1,12 @@
+.mySelect{
+    height: 24px;
+   
+    direction: rtl;
+    background-color: #041018;
+    border: #bcc9cf 1px solid;
+    border-color: #bcc9cf;
+    outline: none;
+    color: #bcc9cf;
+   display: block;
+   border-radius: 5px;
+}
