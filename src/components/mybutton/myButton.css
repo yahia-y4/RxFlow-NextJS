@@ -11,3 +11,8 @@
     cursor: pointer;
     border-radius: 12px;
 }
+.myButton:hover{
+    background-color: #73a4ff;
+    color: #000000;
+    transition: 0.1s;
+}
