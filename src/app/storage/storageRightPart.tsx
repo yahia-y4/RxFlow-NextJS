@@ -2,6 +2,8 @@
 import MyButton from "@/components/mybutton/myButton";
 import MyInput from "@/components/myInput/myInput";
 import MySelect from "@/components/mySelect/mySelect";
+import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
+import AssignmentAddIcon from '@mui/icons-material/AssignmentAdd';
 import React, { useState } from "react";
 
 type FormItemData = {
@@ -37,6 +39,7 @@ export default function StorageRightPart() {
 
   
   });
+  
   function handleName(e:React.ChangeEvent<HTMLInputElement>) {
     const value = e.target.value;
     setFormItemData({ ...formItemData, name: value });
@@ -100,7 +103,10 @@ function addclick(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
     } 
   return (
     <div className="storageRightPart">
-      <div className="topButsRightStorage"></div>
+      <div className="topButsRightStorage">
+      <AddCircleOutlineIcon style={{fontSize:"30"}}/>
+      <AssignmentAddIcon style={{fontSize:"30"}}/>
+      </div>
       <form action="" className="formStorage">
         <MyInput
             onChange={handleName}

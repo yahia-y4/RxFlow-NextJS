@@ -32,3 +32,29 @@ padding-top: 10px;
 .item-form-buts{
     margin-top: 10px;
 }
+.topButsRightStorage{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 15px;
+    padding-right: 10px;
+   
+    
+}
+
+.itemsTableStorage{
+    width: 75%;
+   
+
+}
+
+.invoiceStorage{
+   width: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 24px;
+    border-right: 1px solid #ffffff;
+    
+}
