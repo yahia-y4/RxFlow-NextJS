@@ -23,6 +23,7 @@ export default function MyTable<T extends { id?: string | number }>({
   }
 
   return (
+    <div className="table-div">
     <table>
       <thead>
         <tr>
@@ -48,5 +49,6 @@ export default function MyTable<T extends { id?: string | number }>({
         ))}
       </tbody>
     </table>
+    </div>
   );
 }
