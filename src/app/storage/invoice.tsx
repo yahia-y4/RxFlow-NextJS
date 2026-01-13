@@ -4,6 +4,7 @@ import "./storage.css";
 import MySelect from "@/components/mySelect/mySelect";
 import MyTable, { TableColumn } from "@/components/myTable/myTable";
 import MyInput from "@/components/myInput/myInput";
+import MyButton from "@/components/mybutton/myButton";
 
 /* ================== Types ================== */
 type InvoiceItem = {
@@ -34,310 +35,7 @@ export default function Invoice() {
       price: 5,
       quantity: 2,
     },
-    {
-      id: 2,
-      name: "أموكسيسيلين",
-      company: "XYZ Pharma",
-      form: "كبسولات",
-      price: 5,
-      quantity: 2,
-    },
-    {
-      id: 2,
-      name: "أموكسيسيلين",
-      company: "XYZ Pharma",
-      form: "كبسولات",
-      price: 5,
-      quantity: 2,
-    },
-    {
-      id: 2,
-      name: "أموكسيسيلين",
-      company: "XYZ Pharma",
-      form: "كبسولات",
-      price: 5,
-      quantity: 2,
-    },
-    {
-      id: 2,
-      name: "أموكسيسيلين",
-      company: "XYZ Pharma",
-      form: "كبسولات",
-      price: 5,
-      quantity: 2,
-    },
-    {
-      id: 2,
-      name: "أموكسيسيلين",
-      company: "XYZ Pharma",
-      form: "كبسولات",
-      price: 5,
-      quantity: 2,
-    },
-    {
-      id: 2,
-      name: "أموكسيسيلين",
-      company: "XYZ Pharma",
-      form: "كبسولات",
-      price: 5,
-      quantity: 2,
-    },
-    {
-      id: 2,
-      name: "أموكسيسيلين",
-      company: "XYZ Pharma",
-      form: "كبسولات",
-      price: 5,
-      quantity: 2,
-    },
-    {
-      id: 2,
-      name: "أموكسيسيلين",
-      company: "XYZ Pharma",
-      form: "كبسولات",
-      price: 5,
-      quantity: 2,
-    },
-    {
-      id: 2,
-      name: "أموكسيسيلين",
-      company: "XYZ Pharma",
-      form: "كبسولات",
-      price: 5,
-      quantity: 2,
-    },
-    {
-      id: 2,
-      name: "أموكسيسيلين",
-      company: "XYZ Pharma",
-      form: "كبسولات",
-      price: 5,
-      quantity: 2,
-    },
-    {
-      id: 2,
-      name: "أموكسيسيلين",
-      company: "XYZ Pharma",
-      form: "كبسولات",
-      price: 5,
-      quantity: 2,
-    },
-    {
-      id: 2,
-      name: "أموكسيسيلين",
-      company: "XYZ Pharma",
-      form: "كبسولات",
-      price: 5,
-      quantity: 2,
-    },
-    {
-      id: 2,
-      name: "أموكسيسيلين",
-      company: "XYZ Pharma",
-      form: "كبسولات",
-      price: 5,
-      quantity: 2,
-    },
-    {
-      id: 2,
-      name: "أموكسيسيلين",
-      company: "XYZ Pharma",
-      form: "كبسولات",
-      price: 5,
-      quantity: 2,
-    },
-    {
-      id: 2,
-      name: "أموكسيسيلين",
-      company: "XYZ Pharma",
-      form: "كبسولات",
-      price: 5,
-      quantity: 2,
-    },
-    {
-      id: 2,
-      name: "أموكسيسيلين",
-      company: "XYZ Pharma",
-      form: "كبسولات",
-      price: 5,
-      quantity: 2,
-    },
-    {
-      id: 2,
-      name: "أموكسيسيلين",
-      company: "XYZ Pharma",
-      form: "كبسولات",
-      price: 5,
-      quantity: 2,
-    },
-    {
-      id: 2,
-      name: "أموكسيسيلين",
-      company: "XYZ Pharma",
-      form: "كبسولات",
-      price: 5,
-      quantity: 2,
-    },
-    {
-      id: 2,
-      name: "أموكسيسيلين",
-      company: "XYZ Pharma",
-      form: "كبسولات",
-      price: 5,
-      quantity: 2,
-    },
-    {
-      id: 2,
-      name: "أموكسيسيلين",
-      company: "XYZ Pharma",
-      form: "كبسولات",
-      price: 5,
-      quantity: 2,
-    },
-    {
-      id: 2,
-      name: "أموكسيسيلين",
-      company: "XYZ Pharma",
-      form: "كبسولات",
-      price: 5,
-      quantity: 2,
-    },
-    {
-      id: 2,
-      name: "أموكسيسيلين",
-      company: "XYZ Pharma",
-      form: "كبسولات",
-      price: 5,
-      quantity: 2,
-    },
-    {
-      id: 2,
-      name: "أموكسيسيلين",
-      company: "XYZ Pharma",
-      form: "كبسولات",
-      price: 5,
-      quantity: 2,
-    },
-    {
-      id: 2,
-      name: "أموكسيسيلين",
-      company: "XYZ Pharma",
-      form: "كبسولات",
-      price: 5,
-      quantity: 2,
-    },
-    {
-      id: 2,
-      name: "أموكسيسيلين",
-      company: "XYZ Pharma",
-      form: "كبسولات",
-      price: 5,
-      quantity: 2,
-    },
-    {
-      id: 2,
-      name: "أموكسيسيلين",
-      company: "XYZ Pharma",
-      form: "كبسولات",
-      price: 5,
-      quantity: 2,
-    },
-    {
-      id: 2,
-      name: "أموكسيسيلين",
-      company: "XYZ Pharma",
-      form: "كبسولات",
-      price: 5,
-      quantity: 2,
-    },
-    {
-      id: 2,
-      name: "أموكسيسيلين",
-      company: "XYZ Pharma",
-      form: "كبسولات",
-      price: 5,
-      quantity: 2,
-    },
-    {
-      id: 2,
-      name: "أموكسيسيلين",
-      company: "XYZ Pharma",
-      form: "كبسولات",
-      price: 5,
-      quantity: 2,
-    },
-    {
-      id: 2,
-      name: "أموكسيسيلين",
-      company: "XYZ Pharma",
-      form: "كبسولات",
-      price: 5,
-      quantity: 2,
-    },
-    {
-      id: 2,
-      name: "أموكسيسيلين",
-      company: "XYZ Pharma",
-      form: "كبسولات",
-      price: 5,
-      quantity: 2,
-    },
-    {
-      id: 2,
-      name: "أموكسيسيلين",
-      company: "XYZ Pharma",
-      form: "كبسولات",
-      price: 5,
-      quantity: 2,
-    },
-    {
-      id: 2,
-      name: "أموكسيسيلين",
-      company: "XYZ Pharma",
-      form: "كبسولات",
-      price: 5,
-      quantity: 2,
-    },
-    {
-      id: 2,
-      name: "أموكسيسيلين",
-      company: "XYZ Pharma",
-      form: "كبسولات",
-      price: 5,
-      quantity: 2,
-    },
-    {
-      id: 2,
-      name: "أموكسيسيلين",
-      company: "XYZ Pharma",
-      form: "كبسولات",
-      price: 5,
-      quantity: 2,
-    },
-    {
-      id: 2,
-      name: "أموكسيسيلين",
-      company: "XYZ Pharma",
-      form: "كبسولات",
-      price: 5,
-      quantity: 2,
-    },
-    {
-      id: 2,
-      name: "أموكسيسيلين",
-      company: "XYZ Pharma",
-      form: "كبسولات",
-      price: 5,
-      quantity: 2,
-    },
-    {
-      id: 2,
-      name: "أموكسيسيلين",
-      company: "XYZ Pharma",
-      form: "كبسولات",
-      price: 5,
-      quantity: 2,
-    }
+   
   ]);
 
   /* ===== تحديث الكمية ===== */
@@ -396,9 +94,9 @@ export default function Invoice() {
       <h3>فاتورة شراء أدوية</h3>
 
       <p>اختر المورد</p>
-      <MySelect />
+      <MySelect  options_v={["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20"]} />
 
-<div style={{height:"500px",overflow:"auto"}}>
+<div style={{height:"500px",overflow:"auto",width:"100%",marginTop:"20px",border:"1px solid #ccc",borderRadius:"5px"}}>
 
    <MyTable<InvoiceItem>
         columns={columns}
@@ -407,10 +105,15 @@ export default function Invoice() {
 </div>
 
    
+<div className="invoiceTotalDiv">
+      <h4>إجمالي الفاتورة: {invoiceTotal.toFixed(2)} $</h4>
+      <MyInput plaseholder_v={"المدفوع"} > </MyInput>
+</div>
+<div className="invoiceButs">
 
-      <div style={{ marginTop: "12px", fontWeight: "bold" }}>
-        الإجمالي الكلي: {invoiceTotal.toFixed(2)} $
-      </div>
+  <MyButton >حفظ الفاتورة</MyButton>
+    <MyButton >إلغاء الفاتورة</MyButton>
+</div>
     </div>
   );
 }

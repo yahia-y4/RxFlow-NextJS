@@ -4,6 +4,8 @@ import MyInput from "@/components/myInput/myInput";
 import MySelect from "@/components/mySelect/mySelect";
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import AssignmentAddIcon from '@mui/icons-material/AssignmentAdd';
+import { StorageContext } from "./storageContext"
+import { useContext } from "react"
 import React, { useState } from "react";
 
 type FormItemData = {
@@ -22,6 +24,7 @@ type FormItemData = {
   expire_date?: string;
 };
 export default function StorageRightPart() {
+  const [addItemsVisible, setAddItemsVisible] = useState(false);
   const [formItemData, setFormItemData] = useState<FormItemData>({
     name: "",
     company: "",
@@ -39,7 +42,8 @@ export default function StorageRightPart() {
 
   
   });
-  
+
+  const {addInvoiceVisible,setAddInvoiceVisible,setItemInfoVisible}= useContext(StorageContext);
   function handleName(e:React.ChangeEvent<HTMLInputElement>) {
     const value = e.target.value;
     setFormItemData({ ...formItemData, name: value });
@@ -101,13 +105,16 @@ function addclick(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
       //add to storage logic
       console.log(formItemData)
     } 
+    
   return (
     <div className="storageRightPart">
       <div className="topButsRightStorage">
-      <AddCircleOutlineIcon style={{fontSize:"30"}}/>
-      <AssignmentAddIcon style={{fontSize:"30"}}/>
+      <AddCircleOutlineIcon onClick={() => setAddItemsVisible(!addItemsVisible)} style={{fontSize:"30"} } />
+      <AssignmentAddIcon onClick={() => {setAddInvoiceVisible(!addInvoiceVisible)
+         setItemInfoVisible(false)}} style={{fontSize:"30" }}/>
       </div>
-      <form action="" className="formStorage">
+      {
+        addItemsVisible && ( <form action="" className="formStorage">
         <MyInput
             onChange={handleName}
           input_v={formItemData.name}
@@ -171,7 +178,9 @@ function addclick(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
           <MyButton onClick={addclick}>اضافة الى المخزن</MyButton>
           <MyButton>مسح البيانات</MyButton>
         </div>
-      </form>
+      </form>)
+      }
+     
     </div>
   );
 }

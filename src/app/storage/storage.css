@@ -4,6 +4,7 @@
     width: 100%;
     height: 95vh;
     direction: rtl;
+    /* position: absolute; */
 }
 .storageRightPart{
 border-left: 1px solid #ffffff;
@@ -56,6 +57,7 @@ padding-top: 10px;
     align-items: center;
     font-size: 24px;
     border-right: 1px solid #ffffff;
+    padding: 3px;
 
     
 }
@@ -72,4 +74,73 @@ padding: 5px;
     margin-bottom: 5px;
 }
 
+.invoiceTotalDiv{
+    display: flex;
+    width: 90%;
+    flex-direction: row;
+    margin-top: 5px;
+    gap: 5px;
+    height: 40px;
+    justify-content: center;
+    align-items: center;
+}
+
+.invoiceTotalDiv h4{
+    width: 50%;
+    text-align: center;
+    
+
+}
+
+.invoiceButs{
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.one-item-info-page{
+    width: 50%;
+    border-right: 1px solid #ffffff;
+ 
+}
+.one-item-info-top-buts{
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+
+align-items: center;
+  border-bottom: 1px solid #ffffff;
+  border-radius: 10px;
+    height: 50px;
+    margin-bottom: 15px;
+
+    padding-right:  10px;
+
+}
+
+.edit-item-page{
+  display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height:95vh;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.425);
+    position: absolute;
+}
+
+
+.edit-item-page .edit-item-form{
+
+    width: 40%;
+    background-color: #061a29;
+    padding: 20px;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    height: 80vh;
+}
 
