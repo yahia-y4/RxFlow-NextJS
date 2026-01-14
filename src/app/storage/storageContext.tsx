@@ -9,7 +9,7 @@ export const StorageProvider = ({
   children: React.ReactNode;
 }) => {
   const [editItemVisible, setEditItemVisible] = useState(false);
-  const [itemInfoVisible, setItemInfoVisible] = useState(true);
+  const [itemInfoVisible, setItemInfoVisible] = useState(false);
   const [addInvoiceVisible, setAddInvoiceVisible] = useState(false);
   const [storageItems, setStorageItems] = useState([]);
 

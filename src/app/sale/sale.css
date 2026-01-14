@@ -1,0 +1,39 @@
+.sale-page{
+    display: flex;
+    direction: rtl;
+}
+
+.sale-form-container{
+    width: 30%;
+    
+    height: 95vh;
+    border-left: #ffffff 1px solid;
+}
+
+.sale-top-buts{
+    display: flex;
+    padding: 10px;
+    align-items: center;
+    height: 6%;
+    border-bottom: 1px solid #ffffff;
+    border-radius: 15px;
+    gap: 15px;
+}
+
+.sale-form{
+   
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8;
+   
+}
+
+.sale-form .myInput, .sale-form .mySelect{
+    width: 50%;
+    min-width: 150px;
+}
+.sale-form p{
+    font-size: 18px;
+}  

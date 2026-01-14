@@ -1,15 +1,17 @@
 import "./storage.css"
 import EditSquareIcon from '@mui/icons-material/EditSquare';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
+import CloseIcon from '@mui/icons-material/Close';
 import { StorageContext } from "./storageContext"
 import { useContext } from "react"
 export default function OneItemInfo() {
-    const {setEditItemVisible} = useContext(StorageContext);
+    const {setEditItemVisible,setItemInfoVisible} = useContext(StorageContext);
   return (
     <div className="one-item-info-page">
         <div className="one-item-info-top-buts">
             <EditSquareIcon onClick={() => setEditItemVisible(true)} style={{fontSize:"30px",cursor:"pointer"}}></EditSquareIcon>
             <DeleteForeverIcon style={{fontSize:"30px",cursor:"pointer"}}></DeleteForeverIcon>
+            <CloseIcon style={{fontSize:"30px",cursor:"pointer"}} onClick={() => setItemInfoVisible(false)}></CloseIcon>
 
         </div>
          <div className="one-item-info-container">

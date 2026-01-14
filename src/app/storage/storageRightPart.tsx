@@ -105,6 +105,25 @@ function addclick(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
       //add to storage logic
       console.log(formItemData)
     } 
+
+function emptyHandle(e:React.MouseEvent<HTMLButtonElement, MouseEvent>){
+e.preventDefault();
+setFormItemData({
+      name: "",
+    company: "",
+    form: "",
+    concent: "",
+    concent_unit: "الواحدة",
+    titer: "",
+    titer_unit: "",
+    package: "",
+    quantity: 1,
+    price_buy: 0,
+    profit: 0,
+    barcode: "",
+    expire_date: "",
+})
+    }
     
   return (
     <div className="storageRightPart">
@@ -176,7 +195,7 @@ function addclick(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
         ></MyInput>
         <div className="item-form-buts">
           <MyButton onClick={addclick}>اضافة الى المخزن</MyButton>
-          <MyButton>مسح البيانات</MyButton>
+          <MyButton onClick={emptyHandle}>مسح البيانات</MyButton>
         </div>
       </form>)
       }

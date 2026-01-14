@@ -3,10 +3,21 @@
 import "./storage.css";
 import MyTable from "@/components/myTable/myTable";
 import MySearch from "@/components/mySearch/mySearch";
+import { StorageContext } from "./storageContext"
+import { useContext } from "react"
 
 export default function ItemsTable() {
+
+  const {addInvoiceVisible,setItemInfoVisible} = useContext(StorageContext)
   function onRowClick(row:object){
-    console.log("row clicked ",row);
+    if(!addInvoiceVisible){
+      setItemInfoVisible(true);
+       console.log("row clicked ",row);
+    }else{
+      console.log("adding item to invoice ",row);
+    }
+
+   
   }
   function onSearchf(value:string){
     console.log("searching for ",value);
