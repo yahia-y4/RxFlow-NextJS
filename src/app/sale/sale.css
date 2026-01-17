@@ -4,7 +4,7 @@
 }
 
 .sale-form-container{
-    width: 30%;
+    width: 25%;
     
     height: 95vh;
     border-left: #ffffff 1px solid;
@@ -37,3 +37,79 @@
 .sale-form p{
     font-size: 18px;
 }  
+
+
+.group-items{
+border-left: #ffffff 1px solid;
+    width: 55%;
+    display: flex;
+    flex-direction: column;
+   
+    align-items: center;
+
+}
+
+
+.group-items h3{
+    font-size: 24px;
+    padding-top: 15px;
+    width: 100%;
+    border-bottom: 1px solid #ffffff;
+    text-align: center;
+    height: 60px;
+}
+.group-items-table-div{
+    width: 100%;
+}
+.group-items-total-price{
+    width: 100%;
+    font-size: 24px;
+    border-bottom: 1px solid #ffffff;
+    text-align: center;
+    padding: 10px;
+}
+
+.group-items-buts{
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    padding: 10px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.record-sales-today{
+ width: 75%;
+   
+}
+
+.record-sales-today h3{
+    font-size: 24px;
+    padding-top: 15px;
+    width: 100%;
+    border-bottom: 1px solid #ffffff;
+    text-align: center;
+    height: 60px;
+}
+
+.group-items-table-div{
+    border-bottom: 1px solid #ffffff;
+    height: 500px;
+    overflow: auto;
+}
+
+
