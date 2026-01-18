@@ -7,8 +7,11 @@ import EventNoteIcon from "@mui/icons-material/EventNote";
 import MySelect from "@/components/mySelect/mySelect";
 import MyButton from "@/components/mybutton/myButton";
 import { useState } from "react";
+import { useContext } from "react";
+import { SaleContext } from "./saleContext";
 export default function SaleForm() {
-
+  const {setItemsInGroup} = useContext(SaleContext);  
+  const{setSaleRecordVisible,setSaleGroupVisible,saleGroupVisible,saleRecordVisible} = useContext(SaleContext);
     const[saleDataForm,setSaleDataForm]= useState({
         barcode:"",
         name:"",
@@ -71,10 +74,10 @@ function emptyHandle(e){
   return (
     <div className="sale-form-container">
       <div className="sale-top-buts">
-        <ShoppingCartIcon
+        <ShoppingCartIcon onClick={()=>{setSaleGroupVisible(!saleGroupVisible)}}
           style={{ fontSize: "30px", cursor: "pointer" }}
         ></ShoppingCartIcon>
-        <EventNoteIcon
+        <EventNoteIcon onClick={()=>{setSaleRecordVisible(!saleRecordVisible)}}
           style={{ fontSize: "30px", cursor: "pointer" }}
         ></EventNoteIcon>
       </div>
@@ -90,7 +93,7 @@ function emptyHandle(e){
 
         <h3> السعر الاجمالي : {saleDataForm.quantity * saleDataForm.price}</h3>
         <div className="sale-form-buts">
-            <MyButton onClick={handleSale}>بيع</MyButton>
+            <MyButton onClick={handleSale}>{saleGroupVisible === false ? "بيع":"اضافة"}</MyButton>
             <MyButton onClick={emptyHandle}>محو</MyButton>
            
         </div>

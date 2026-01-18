@@ -2,35 +2,12 @@
 import "./sale.css"
 import MyTable , { TableColumn } from "@/components/myTable/myTable";
 import MyButton from "@/components/mybutton/myButton";
-
+import { useContext } from "react";
+import { SaleContext } from "./saleContext";
 import { useState } from "react";
 export default function GroupItems() {
-    const [data, setData] = useState([
-        {
-          id: 1,
-          name: "باراسيتامول",
-          company: "ABC Pharma",
-          form: "أقراص",
-          sale_price: 2.5,
-          quantity: 1,
-        },
-        {
-          id: 2,
-          name: "أموكسيسيلين",
-          company: "XYZ Pharma",
-          form: "كبسولات",
-          sale_price: 5,
-          quantity: 2,
-        },
-        {
-          id: 3,
-          name: "ميكروبول",
-          company: "ABC Pharma",
-          form: "أقراص",
-          sale_price: 3,
-          quantity: 1,
-        },
-      ]);
+  const {setSaleGroupVisible,itemsInGroup} = useContext(SaleContext)
+   
     /* ===== الأعمدة ===== */
     const columns = [
         { key: "name", title: "اسم الدواء" },
@@ -51,16 +28,16 @@ export default function GroupItems() {
     <div className="group-items">
         <h3> بيع مجموعة أدوية</h3>
         <div className="group-items-table-div">
-            <MyTable data={data} columns={columns} />
+            <MyTable data={itemsInGroup} columns={columns} />
         </div>
         <div className="group-items-total-price">
        
-                السعر الإجمالي: {data.reduce((acc, cur) => acc + cur.sale_price * cur.quantity, 0)} $
+                السعر الإجمالي: {itemsInGroup.reduce((acc, cur) => acc + cur.sale_price * cur.quantity, 0)} $
            
         </div>
         <div className="group-items-buts">
-            <MyButton>بيع</MyButton>
-            <MyButton>الغاء </MyButton>
+            <MyButton >بيع</MyButton>
+            <MyButton onClick={()=>{setSaleGroupVisible(false)}}>الغاء </MyButton>
         </div>
      
     </div>
