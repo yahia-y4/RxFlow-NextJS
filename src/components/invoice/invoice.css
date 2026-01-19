@@ -1,0 +1,47 @@
+
+
+.Invoice{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+     border-radius: 10px;
+    border: 1px solid #bcc9cf;
+    padding: 10px;
+    height: 600px;
+
+}
+
+.Invoice .Invoice-title{
+    font-size: 18px;
+    width: 100%;
+    text-align: center;
+    border-bottom: 1px solid #bcc9cf;
+    padding-bottom: 10px;
+
+}
+.Invoice .Invoice-info{
+    margin-top: 10px;
+    padding-right: 20px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    font-size: 17px;
+}
+.Invoice .Invoice-info .one-info::before{
+    content: "";
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    background-color: #bcc9cf;
+    border-radius: 50%;
+    margin-left: 10px;
+}
+
+.Invoice .Invoice-table{
+    margin-top: 5px;
+    width: 90%;
+    overflow: auto;
+    height: 50%;
+}
