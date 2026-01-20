@@ -1,0 +1,184 @@
+
+/* -----------اضافة زبون جديد--------- */
+
+.Customers-page{
+    display: flex;
+    direction: rtl;
+}
+.customers-form{
+    width: 20%;
+    border-left: 1px solid #fff;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    height: 95vh;
+}
+
+.customers-form-buts{
+    display: flex;
+   
+    gap: 15px;
+    justify-content: center;
+}
+
+/* ------------قائمة الزبائن----------- */
+
+.customers-list{
+    display: flex;
+    flex-direction: column;
+    width: 40%;
+    height: 95vh;
+    border-left: 1px solid #fff;
+
+}
+.customers-list h2{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-bottom: #fff 1px solid;
+    width: 100%;
+    padding: 10px;
+
+}
+.customers-list .ListCustomers-table{
+    width: 100%;
+    padding: 10px;
+    height: 80vh;
+    overflow: auto;
+
+}
+
+/* ------------معلومات الزبون ----------- */
+
+.customers-info{
+    width: 40%;
+    height: 95vh;
+    border-left: 1px solid #fff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+}
+.customers-info h2{
+    border-bottom: #fff 1px solid;
+    width: 100%;
+    text-align: center;
+    padding: 10px;
+}
+
+.customers-info-control{
+    display: flex;
+    gap: 15px;
+    align-items: center;
+    width: 100%;
+    padding-right: 10px;
+
+}
+
+.customers-info-content{
+    margin-top: 10px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    height: 35%;
+    padding-right: 10px;
+
+}
+.customers-info-content .one-customer-info{
+    font-size: 18px;
+}
+
+.one-customer-info::before{
+    content: " - ";
+    margin-right: 10px;
+    font-size: 18px;
+    color: #fff;
+
+}
+
+.debt-control-buts{
+    display: flex;
+    width: 100%;
+    gap: 10px;
+    padding: 10px;
+    border-bottom: 1px solid #fff;
+    
+}
+
+.debt-inputs-div{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    
+}
+.debt-inputs-div h3{
+    font-size: 20px;
+    width: 100%;
+    text-align: center;
+    border-bottom: #fff 1px solid;
+}
+.selected-debt-state{
+
+    background-color: #ffffffbd;
+
+}
+
+/* ...............  و الدفعات  قائمة الديون ............ */
+
+.customer-debts-list{
+    display: flex;
+    flex-direction: column;
+    width: 25%;
+    border-left: 1px solid #fff;
+
+}
+
+.customer-debts-list h2{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-bottom: #fff 1px solid;
+    width: 100%;
+    padding: 10px;
+}
+
+.customer-debts-list .customer-debts-list-table{
+
+    height: 85vh;
+    overflow: auto;
+    
+}
+
+  /* --------------صفحة التعديل ---------- */
+
+.edit-customer{
+    position: absolute;
+    width: 100%;
+    height: 95vh;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.527);
+}
+
+.edit-customer-form {
+      display: flex;
+    flex-direction: column;
+    gap: 15px;
+    width: 40%;
+    height: 50vh;
+    padding: 20px;
+    border-radius: 12px;
+    background-color: #041018;
+}
+.edit-customer-form .edit-customer-form-buts{
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+}
+
+
