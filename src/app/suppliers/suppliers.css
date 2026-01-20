@@ -128,6 +128,8 @@ border-left: #fff 1px solid;
     flex-direction: column;
     align-items: center;
     gap: 15px;
+        border-left: #fff 1px solid;
+
 }
 .Suppliers-invoices-list h2{
     border-bottom: #fff 1px solid;

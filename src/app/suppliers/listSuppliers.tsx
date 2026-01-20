@@ -2,8 +2,15 @@
 import "./suppliers.css"
 import MyTable from "@/components/myTable/myTable"
 import MySearch from "@/components/mySearch/mySearch"
-import { useState } from "react"
+import { useState,useContext } from "react"
+import { SuppliersContext } from "@/app/suppliers/suppliersContext"
 export default function ListSuppliers() {
+    const {setSelectedSupplier,setSuppliersInfoVisible} = useContext(SuppliersContext);
+    function handleRowClick(rowData:any){
+        setSelectedSupplier(rowData);
+        setSuppliersInfoVisible(true);
+     console.log(rowData)
+    }
     const columns = [
         { key: "id", title: "ID" },
         { key: "name", title: "اسم المورد" },
@@ -19,7 +26,7 @@ export default function ListSuppliers() {
       <h2>قائمة الموردين</h2>
       <MySearch></MySearch>
       <div className="ListSuppliers-table">
-        <MyTable columns={columns} data={ListSuppliersData}></MyTable>
+        <MyTable columns={columns} data={ListSuppliersData} onRowClick={handleRowClick}></MyTable>
       </div>
 
     </div>

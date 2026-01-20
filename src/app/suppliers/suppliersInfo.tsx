@@ -10,17 +10,23 @@ import CloseIcon from '@mui/icons-material/Close';
 import MyInput from "@/components/myInput/myInput";
 import MyTextarea from "@/components/myTextarea/myTextarea";
 import MyButton from "@/components/mybutton/myButton";
+import { useContext } from "react";
+import { SuppliersContext } from "@/app/suppliers/suppliersContext";
 
 export default function SuppliersInfo() {
+    const {selectedSupplier,setSuppliersInfoVisible,setSupplierInvoicesVisible,setSuppliersPaymentsListVisible,setEditSupplierVisible,supplierInvoicesVisible,suppliersPaymentsListVisible} = useContext(SuppliersContext);
     return (
         <div className="Suppliers-info">
           <h2>تفاصيل المورد</h2>
           <div className="Suppliers-Info-Control">
-            <EditSquareIcon style={{fontSize:"30px",cursor:"pointer"}}></EditSquareIcon>
+            <EditSquareIcon onClick={()=>setEditSupplierVisible(true)} style={{fontSize:"30px",cursor:"pointer"}}></EditSquareIcon>
             <DeleteForeverIcon style={{fontSize:"30px",cursor:"pointer"}}></DeleteForeverIcon>
-            <ReceiptLongIcon style={{fontSize:"30px",cursor:"pointer"}}></ReceiptLongIcon>
-            <AttachMoneyIcon style={{fontSize:"30px",cursor:"pointer"}}></AttachMoneyIcon>
-            <CloseIcon style={{fontSize:"30px",cursor:"pointer"}}></CloseIcon>
+            <ReceiptLongIcon onClick={()=>setSupplierInvoicesVisible(!supplierInvoicesVisible)} style={{fontSize:"30px",cursor:"pointer"}}></ReceiptLongIcon>
+            <AttachMoneyIcon onClick={()=>setSuppliersPaymentsListVisible(!suppliersPaymentsListVisible)} style={{fontSize:"30px",cursor:"pointer"}}></AttachMoneyIcon>
+            <CloseIcon onClick={()=>{setSuppliersInfoVisible(false)
+              setSupplierInvoicesVisible(false)
+              setSuppliersPaymentsListVisible(false)
+            }} style={{fontSize:"30px",cursor:"pointer"}}></CloseIcon>
           </div>
 
           <div className="Suppliers-info-content">
