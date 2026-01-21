@@ -1,3 +1,5 @@
+"use client"
+
 import "./customers.css"
 import CustomersForm from "./CustomersForm"
 import CustomersList from "./CustomersList"
@@ -5,19 +7,25 @@ import CustomersInfo from "./CustomersInfo"
 import CustomerDebtsList from "./CustomerDebtsList"
 import CustomerPaymentsReceivedList from "./CustomerPaymentsReceivedList"
 import EditCustomer from "./EditCustomer"
-
-
+import {CustomersContext} from "@/app/customers/CustomersContext"
+import { useContext } from "react"
 
 export default function Customers() {
+
+  const {
+    CustomersInfoVisible,
+    CustomerPaymentsReceivedListVisible,
+    EditCustomerVisible,
+     CustomerDebtsListVisible}=useContext(CustomersContext)
   return (
     <div className="Customers-page">
 
         <CustomersForm/>
-        <CustomersList/>
-        <CustomersInfo/>
-        {/* <CustomerDebtsList/>
-        <CustomerPaymentsReceivedList/> */}
-        {/* <EditCustomer/> */}
+        {!CustomerPaymentsReceivedListVisible && !CustomerDebtsListVisible && <CustomersList/>}
+        {CustomersInfoVisible && <CustomersInfo/>}
+      {CustomersInfoVisible && CustomerDebtsListVisible &&  <CustomerDebtsList/>}
+        {CustomersInfoVisible && CustomerPaymentsReceivedListVisible && <CustomerPaymentsReceivedList/> }
+         {EditCustomerVisible && <EditCustomer/> }
    
     </div>
   )

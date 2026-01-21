@@ -12,20 +12,32 @@ import { useState } from "react";
 import MyInput from "@/components/myInput/myInput";
 import MyTextarea from "@/components/myTextarea/myTextarea";
 import MyButton from "@/components/mybutton/myButton";
+import { useContext } from "react"
+import { CustomersContext } from "@/app/customers/CustomersContext"
  export default function CustomersInfo() {
+    const {setCustomerPaymentsReceivedListVisible,
+        setCustomersInfoVisible,
+        setEditCustomerVisible,
+        CustomerPaymentsReceivedListVisible,
+        setCustomerDebtsListVisible,
+    CustomerDebtsListVisible} = useContext(CustomersContext);
+  
     const [debtState,setDebtState] = useState("Adding"); // Adding / Receiving
     return (
         <div className="customers-info">
             <h2>تفاصيل الزبون</h2>
             <div className="customers-info-control">
-                <EditSquareIcon style={{fontSize:"30px",cursor:"pointer"}}/>
+                <EditSquareIcon onClick={()=>setEditCustomerVisible(true)} style={{fontSize:"30px",cursor:"pointer"}}/>
                 <DeleteForeverIcon style={{fontSize:"30px",cursor:"pointer"}}/>
                 {/* الديون */}
-                <AutoStoriesIcon style={{fontSize:"30px",cursor:"pointer"}}/> 
+                <AutoStoriesIcon onClick={()=>setCustomerDebtsListVisible(!CustomerDebtsListVisible)} style={{fontSize:"30px",cursor:"pointer"}}/> 
                 {/* الدفعات المستلمة */}
-                <ChecklistRtlIcon style={{fontSize:"30px",cursor:"pointer"}}/>
+                <ChecklistRtlIcon onClick={()=>setCustomerPaymentsReceivedListVisible(!CustomerPaymentsReceivedListVisible)} style={{fontSize:"30px",cursor:"pointer"}}/>
 
-                <CloseIcon style={{fontSize:"30px",cursor:"pointer"}}/>
+                <CloseIcon onClick={()=>{setCustomersInfoVisible(false);
+                    setCustomerPaymentsReceivedListVisible(false);
+                    setCustomerDebtsListVisible(false);
+                }} style={{fontSize:"30px",cursor:"pointer"}}/>
             </div>
 
             <div className="customers-info-content">
