@@ -6,44 +6,48 @@ import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import AssignmentAddIcon from '@mui/icons-material/AssignmentAdd';
 import { StorageContext } from "./storageContext"
 import { useContext } from "react"
+import {addNewItemApi} from "@/APIs/addNewItemApi";
+import { getAllItemsApi } from "@/APIs/getAllItemsApi";
+import { ErrorContext } from "@/app/globalsContext/errorContext";
 import React, { useState } from "react";
 
 type FormItemData = {
   name?: string;
   company?: string;
   form?: string;
-  concent?: string;
+  concent?: number;
   concent_unit?: string;
-  titer?: string;
+  titer?: number;
   titer_unit?: string;
-  package?: string;
+  package_type?: string;
   quantity?: number;
-  price_buy?: number;
+  price?: number;
   profit?: number;
-  barcode?: string;
-  expire_date?: string;
+  code?: string;
+  expiry_date?: string;
 };
 export default function StorageRightPart() {
   const [addItemsVisible, setAddItemsVisible] = useState(false);
   const [formItemData, setFormItemData] = useState<FormItemData>({
     name: "",
     company: "",
-    form: "",
-    concent: "",
-    concent_unit: "الواحدة",
-    titer: "",
-    titer_unit: "",
-    package: "",
+    form: "أقراص",
+    concent: 0,
+    concent_unit: "mg",
+    titer: 0,
+    titer_unit:"mg",
+    package_type:"علبة",
     quantity: 1,
-    price_buy: 0,
+    price:0,
     profit: 0,
-    barcode: "",
-    expire_date: "",
+    code: "",
+    expiry_date: "",
 
   
   });
+  const {setErrorCardMessage,setErrorCardVisible}=useContext(ErrorContext);
 
-  const {addInvoiceVisible,setAddInvoiceVisible,setItemInfoVisible}= useContext(StorageContext);
+  const {addInvoiceVisible,setAddInvoiceVisible,setItemInfoVisible,setStorageItems}= useContext(StorageContext);
   function handleName(e:React.ChangeEvent<HTMLInputElement>) {
     const value = e.target.value;
     setFormItemData({ ...formItemData, name: value });
@@ -60,7 +64,7 @@ export default function StorageRightPart() {
   }
   function handleConcent(e:React.ChangeEvent<HTMLInputElement>) {
     const value = e.target.value;
-    setFormItemData({ ...formItemData, concent: value });
+    setFormItemData({ ...formItemData, concent: parseFloat(value) });
   }
   function handleConcentUnit(e: React.ChangeEvent<HTMLSelectElement>) {
     const value = e.target.value;
@@ -69,7 +73,7 @@ export default function StorageRightPart() {
   }
   function handleTiter(e:React.ChangeEvent<HTMLInputElement>) {
     const value = e.target.value;
-    setFormItemData({ ...formItemData, titer: value });
+    setFormItemData({ ...formItemData, titer: parseFloat(value) });
   }
     function handleTiterUnit(e: React.ChangeEvent<HTMLSelectElement>) {
     const value = e.target.value;
@@ -77,7 +81,7 @@ export default function StorageRightPart() {
     }
   function handlePackage(e: React.ChangeEvent<HTMLSelectElement>) {
     const value = e.target.value;
-    setFormItemData({ ...formItemData, package: value });}  
+    setFormItemData({ ...formItemData, package_type: value });}  
 
     function handleQuantity(e:React.ChangeEvent<HTMLInputElement>) {
     const value = parseInt(e.target.value);
@@ -85,7 +89,7 @@ export default function StorageRightPart() {
   }
   function handlePriceBuy(e:React.ChangeEvent<HTMLInputElement>) {
     const value = parseFloat(e.target.value);
-    setFormItemData({ ...formItemData, price_buy: value });
+    setFormItemData({ ...formItemData, price: value });
   }
     function handleProfit(e:React.ChangeEvent<HTMLInputElement>) {
     const value = parseFloat(e.target.value);
@@ -93,35 +97,50 @@ export default function StorageRightPart() {
   }
     function handleBarcode(e:React.ChangeEvent<HTMLInputElement>) {
     const value = e.target.value;
-    setFormItemData({ ...formItemData, barcode: value });
+      setFormItemData({ ...formItemData, code: value });
   }
     function handleExpireDate(e:React.ChangeEvent<HTMLInputElement>) {
     const value = e.target.value;
-    setFormItemData({ ...formItemData, expire_date: value });
+    setFormItemData({ ...formItemData, expiry_date: value });
     }
 
-function addclick(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
+async function addclick(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
         e.preventDefault();
       //add to storage logic
+      const {name,company,form,concent,concent_unit,titer,titer_unit,package_type,quantity,price,profit,code,expiry_date} = formItemData;
+      const response  = await addNewItemApi(name,company,form,concent,concent_unit,titer,titer_unit,package_type,quantity,price,profit,code,expiry_date);
+      if(response.success){
+        const newItems = await getAllItemsApi();
+        if(newItems.success){
+          setStorageItems(newItems.items);
+        }
+        emptyHandle(e);
+
+      
+    
+      }else{
+        setErrorCardMessage(response.message);
+        setErrorCardVisible(true);
+      }
       console.log(formItemData)
     } 
 
 function emptyHandle(e:React.MouseEvent<HTMLButtonElement, MouseEvent>){
 e.preventDefault();
 setFormItemData({
-      name: "",
+    name: "",
     company: "",
-    form: "",
-    concent: "",
-    concent_unit: "الواحدة",
-    titer: "",
-    titer_unit: "",
-    package: "",
+    form: "أقراص",
+    concent: 0,
+    concent_unit: "mg",
+    titer: 0,
+    titer_unit:"mg",
+    package_type:"علبة",
     quantity: 1,
-    price_buy: 0,
+    price:0,
     profit: 0,
-    barcode: "",
-    expire_date: "",
+    code: "",
+    expiry_date: "",
 })
     }
     
@@ -146,7 +165,7 @@ setFormItemData({
           label_v={"اسم الشركة"}
         ></MyInput>
         <p style={{ fontSize: "18px" }}>الشكل الصيدلاني</p>
-        <MySelect onChange={handleForm} options_v={["أقراص","كبسول","شراب"]}></MySelect>
+        <MySelect value_v={formItemData.form} onChange={handleForm} options_v={["أقراص","كبسول","شراب"]}></MySelect>
 
 
         <MyInput onChange={handleConcent} input_v={formItemData.concent} label_v={"التركيز"}>
@@ -162,7 +181,7 @@ setFormItemData({
         </MyInput>
         <p style={{ fontSize: "18px" }}>نوع العبوة</p>
 
-        <MySelect value_v={formItemData.package} onChange={handlePackage} options_v={["علبة", "قنينة", "شريط"]}></MySelect>
+        <MySelect value_v={formItemData.package_type} onChange={handlePackage} options_v={["علبة", "قنينة", "شريط"]}></MySelect>
 
         <MyInput
           input_v={formItemData.quantity}
@@ -172,7 +191,7 @@ setFormItemData({
         ></MyInput>
         <MyInput
         onChange={handlePriceBuy}
-          input_v={formItemData.price_buy}
+          input_v={formItemData.price}  
           label_v={"سعر الشراء"}
           type_v={"number"}
         ></MyInput>
@@ -184,12 +203,12 @@ setFormItemData({
         ></MyInput>
         <MyInput
         onChange={handleBarcode}
-          input_v={formItemData.barcode}
+          input_v={formItemData.code}
           label_v={"الباركود"}
         ></MyInput>
         <MyInput
         onChange={handleExpireDate}
-          input_v={formItemData.expire_date}
+          input_v={formItemData.expiry_date}
           label_v={"تاريخ الانتهاء"}
           type_v={"date"}
         ></MyInput>

@@ -5,7 +5,8 @@ import CloseIcon from '@mui/icons-material/Close';
 import { StorageContext } from "./storageContext"
 import { useContext } from "react"
 export default function OneItemInfo() {
-    const {setEditItemVisible,setItemInfoVisible} = useContext(StorageContext);
+    const {setEditItemVisible,setItemInfoVisible,selectedItem} = useContext(StorageContext);
+    console.log("selectedItem ",selectedItem);
   return (
     <div className="one-item-info-page">
         <div className="one-item-info-top-buts">

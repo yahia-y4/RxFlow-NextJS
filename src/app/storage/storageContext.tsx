@@ -12,6 +12,7 @@ export const StorageProvider = ({
   const [itemInfoVisible, setItemInfoVisible] = useState(false);
   const [addInvoiceVisible, setAddInvoiceVisible] = useState(false);
   const [storageItems, setStorageItems] = useState([]);
+  const [selectedItem, setSelectedItem] = useState(null);
 
   return (
     <StorageContext.Provider
@@ -24,6 +25,8 @@ export const StorageProvider = ({
         setItemInfoVisible,
         addInvoiceVisible,
         setAddInvoiceVisible,
+        selectedItem,
+        setSelectedItem,
       }}
     >
       {children}

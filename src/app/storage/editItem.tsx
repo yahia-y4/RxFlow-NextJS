@@ -21,6 +21,9 @@ type FormItemData = {
   expire_date?: string;
 };
 export default function EditItem() {
+  const {selectedItem} = useContext(StorageContext);
+
+
    const [formItemData, setFormItemData] = useState<FormItemData>({
       name: "",
       company: "",

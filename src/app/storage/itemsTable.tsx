@@ -5,16 +5,41 @@ import MyTable from "@/components/myTable/myTable";
 import MySearch from "@/components/mySearch/mySearch";
 import { StorageContext } from "./storageContext"
 import { useContext } from "react"
+import { useState } from "react";
+import { useEffect } from "react";
+import { getAllItemsApi } from "@/APIs/getAllItemsApi";
+import { getOneItemApi } from "@/APIs/getOneItemApi";
 
 export default function ItemsTable() {
 
-  const {addInvoiceVisible,setItemInfoVisible} = useContext(StorageContext)
-  function onRowClick(row:object){
+
+  const {addInvoiceVisible,setItemInfoVisible,storageItems,setStorageItems,selectedItem,setSelectedItem} = useContext(StorageContext)
+  
+useEffect(()=>{
+  async function fetchItems(){
+    const response = await getAllItemsApi();
+
+    if(response.success){
+      setStorageItems(response.items);
+    }
+  }
+  fetchItems();
+},[])
+
+  async function onRowClick(row:object){
     if(!addInvoiceVisible){
+      console.log("row clicked ",row.id);
+      const response = await getOneItemApi(row.id);
+      if(response.success){
+    
+       setSelectedItem(response.data);
+       
+      }
       setItemInfoVisible(true);
-       console.log("row clicked ",row);
+       
+       
     }else{
-      console.log("adding item to invoice ",row);
+      console.log("adding item to invoice ",row.id);
     }
 
    
@@ -27,39 +52,23 @@ export default function ItemsTable() {
   }
 
   const columns = [
-  { key: "name", title: "الاسم" },
-  { key: "company", title: "الشركة" },
-  { key: "form", title: "الشكل" },
-  { key: "price_sell", title: "سعر البيع" },
-  { key: "concent", title: "التركيز" },
-  { key: "quantity", title: "الكمية" }
+    { key: "id", title: "ID" },
+    { key: "name", title: "الاسم" },
+    { key: "company", title: "الشركة" },
+    { key: "form", title: "الشكل" },
+    { key: "sell_price", title: "سعر البيع" },
+    { key: "concent", title: "التركيز" },
+    { key: "titer", title: "العيار" },
+    { key: "package_type", title: "العبوة" },
+    { key: "quantity", title: "الكمية" }
 ];
-const data = [
-  {
-    id: 1,
-    name: "ترامادول",
-    company: "شركة النيل",
-    form: "اقراص",
-    price_sell: 50,
-    concent: "100mg",
-    quantity: 200,
+   
 
-  },
-  {
-    id: 2,
-    name: "ترامادول",
-    company: "شركة النيل",
-    form: "اقراص",
-    price_sell: 50,
-    concent: "100mg",
-    quantity: 200,
 
-  },
-
-];
   return (
     <div className="itemsTableStorage"> 
+
      <MySearch onSearch={onSearchf} onCancel={onCancelf}></MySearch>
-     <MyTable columns={columns} data={data} onRowClick={onRowClick}/>
+     <MyTable columns={columns} data={storageItems} onRowClick={onRowClick}/>
     </div>
     );}
