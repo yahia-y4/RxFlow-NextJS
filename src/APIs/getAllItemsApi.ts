@@ -11,7 +11,7 @@ export async function getAllItemsApi(){
             message: 'قم بتسجيل الدخول أولاً',
         }
     }
-    console.log(token);
+   
     try {
         const response = await fetch(API_URL + route+'/getAll', {
             method: 'GET',

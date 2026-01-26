@@ -9,7 +9,7 @@ import { StorageContext } from "./storageContext"
 import { useContext } from "react"
 export default function StoragePage() {  
   const {addInvoiceVisible , editItemVisible,itemInfoVisible} = useContext(StorageContext)
-console.log(itemInfoVisible);
+
   return(
    
 

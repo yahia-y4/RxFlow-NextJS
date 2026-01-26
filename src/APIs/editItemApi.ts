@@ -19,7 +19,7 @@ export async function editItemApi(
     code:string,
     expiry_date:string,
 ) {
-    const token = getToken();
+    const token = await getToken();
     if(!token){
         return {
             success: false,
@@ -61,6 +61,7 @@ export async function editItemApi(
             return {
                 success: true,
                 message: 'Item updated successfully',
+                data
             }
         }
         return {

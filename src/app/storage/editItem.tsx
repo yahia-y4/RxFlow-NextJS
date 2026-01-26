@@ -5,23 +5,29 @@ import MyButton from "@/components/mybutton/myButton";
 import { useState,useEffect } from "react";
 import { StorageContext } from "./storageContext"
 import { useContext } from "react"
+import { editItemApi } from "@/APIs/editItemApi";
+import { getAllItemsApi } from "@/APIs/getAllItemsApi";
+import { ErrorContext } from "../globalsContext/errorContext";
 type FormItemData = {
   name?: string;
   company?: string;
   form?: string;
-  concent?: string;
+  concent?: number;
   concent_unit?: string;
-  titer?: string;
+  titer?: number;
   titer_unit?: string;
-  package?: string;
+  package_type?: string;
   quantity?: number;
-  price_buy?: number;
+  price?: number;
   profit?: number;
-  barcode?: string;
-  expire_date?: string;
+  code?: string;
+  expiry_date?: string;
 };
 export default function EditItem() {
-  const {selectedItem} = useContext(StorageContext);
+     const {setEditItemVisible,setStorageItems,selectedItem,setItemInfoVisible}= useContext(StorageContext);
+     const {setErrorCardVisible,setErrorCardMessage}= useContext(ErrorContext);
+
+
   useEffect(() => {
     if(selectedItem){
       setFormItemData({
@@ -32,12 +38,12 @@ export default function EditItem() {
         concent_unit: selectedItem.concent_unit,
         titer: selectedItem.titer,
         titer_unit: selectedItem.titer_unit,
-        package: selectedItem.package,
+        package_type: selectedItem.package_type,
         quantity: selectedItem.quantity,
-        price_buy: selectedItem.price_buy,
+        price: selectedItem.price,
         profit: selectedItem.profit,
-        barcode: selectedItem.barcode,
-        expire_date: selectedItem.expire_date,
+        code: selectedItem.code,
+        expiry_date: selectedItem.expiry_date?.substring(0,10),
       })
     }
   },[selectedItem])
@@ -61,7 +67,6 @@ export default function EditItem() {
   
     
     });
-    const {setEditItemVisible}= useContext(StorageContext);
     function handleName(e:React.ChangeEvent<HTMLInputElement>) {
       const value = e.target.value;
       setFormItemData({ ...formItemData, name: value });
@@ -77,7 +82,7 @@ export default function EditItem() {
   
     }
     function handleConcent(e:React.ChangeEvent<HTMLInputElement>) {
-      const value = e.target.value;
+      const value = parseFloat(e.target.value);
       setFormItemData({ ...formItemData, concent: value });
     }
     function handleConcentUnit(e: React.ChangeEvent<HTMLSelectElement>) {
@@ -86,7 +91,7 @@ export default function EditItem() {
   
     }
     function handleTiter(e:React.ChangeEvent<HTMLInputElement>) {
-      const value = e.target.value;
+      const value = parseFloat(e.target.value);
       setFormItemData({ ...formItemData, titer: value });
     }
       function handleTiterUnit(e: React.ChangeEvent<HTMLSelectElement>) {
@@ -95,7 +100,7 @@ export default function EditItem() {
       }
     function handlePackage(e: React.ChangeEvent<HTMLSelectElement>) {
       const value = e.target.value;
-      setFormItemData({ ...formItemData, package: value });}  
+      setFormItemData({ ...formItemData, package_type: value });}  
   
       function handleQuantity(e:React.ChangeEvent<HTMLInputElement>) {
       const value = parseInt(e.target.value);
@@ -103,7 +108,7 @@ export default function EditItem() {
     }
     function handlePriceBuy(e:React.ChangeEvent<HTMLInputElement>) {
       const value = parseFloat(e.target.value);
-      setFormItemData({ ...formItemData, price_buy: value });
+      setFormItemData({ ...formItemData, price: value });
     }
       function handleProfit(e:React.ChangeEvent<HTMLInputElement>) {
       const value = parseFloat(e.target.value);
@@ -111,17 +116,46 @@ export default function EditItem() {
     }
       function handleBarcode(e:React.ChangeEvent<HTMLInputElement>) {
       const value = e.target.value;
-      setFormItemData({ ...formItemData, barcode: value });
+      setFormItemData({ ...formItemData, code: value });
     }
       function handleExpireDate(e:React.ChangeEvent<HTMLInputElement>) {
       const value = e.target.value;
-      setFormItemData({ ...formItemData, expire_date: value });
+      setFormItemData({ ...formItemData, expiry_date: value });
       }
   
-  function addclick(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
+  async function handleEdit(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
           e.preventDefault();
-        //add to storage logic
-        console.log(formItemData)
+      const resp = await editItemApi(
+        selectedItem.id,
+        formItemData.name,
+        formItemData.company,
+        formItemData.form,
+        formItemData.concent,
+        formItemData.concent_unit,
+        formItemData.titer,
+        formItemData.titer_unit,
+        formItemData.package_type,
+        formItemData.quantity,
+        formItemData.price,
+        formItemData.profit,
+        formItemData.code,
+        formItemData.expiry_date,
+      );
+        if(resp.success){
+          setEditItemVisible(false);
+          setItemInfoVisible(false);
+
+          
+          const items = await getAllItemsApi();
+          if(items.success){
+            setStorageItems(items.items);
+            
+           
+          }
+        }else{
+          setErrorCardVisible(true);
+          setErrorCardMessage(resp.message);
+        }
       } 
   return (
     <div className="edit-item-page">
@@ -139,7 +173,7 @@ export default function EditItem() {
                   label_v={"اسم الشركة"}
                 ></MyInput>
                 <p style={{ fontSize: "18px" }}>الشكل الصيدلاني</p>
-                <MySelect onChange={handleForm} options_v={["أقراص","كبسول","شراب"]}></MySelect>
+                <MySelect onChange={handleForm} value_v={formItemData.form} options_v={["أقراص","كبسول","شراب"]}></MySelect>
         
         
                 <MyInput onChange={handleConcent} input_v={formItemData.concent} label_v={"التركيز"}>
@@ -155,7 +189,7 @@ export default function EditItem() {
                 </MyInput>
                 <p style={{ fontSize: "18px" }}>نوع العبوة</p>
         
-                <MySelect value_v={formItemData.package} onChange={handlePackage} options_v={["علبة", "قنينة", "شريط"]}></MySelect>
+                <MySelect value_v={formItemData.package_type} onChange={handlePackage} options_v={["علبة", "قنينة", "شريط"]}></MySelect>
         
                 <MyInput
                   input_v={formItemData.quantity}
@@ -165,7 +199,7 @@ export default function EditItem() {
                 ></MyInput>
                 <MyInput
                 onChange={handlePriceBuy}
-                  input_v={formItemData.price_buy}
+                  input_v={formItemData.price}
                   label_v={"سعر الشراء"}
                   type_v={"number"}
                 ></MyInput>
@@ -177,17 +211,17 @@ export default function EditItem() {
                 ></MyInput>
                 <MyInput
                 onChange={handleBarcode}
-                  input_v={formItemData.barcode}
+                  input_v={formItemData.code}
                   label_v={"الباركود"}
                 ></MyInput>
                 <MyInput
                 onChange={handleExpireDate}
-                  input_v={formItemData.expire_date}
+                  input_v={formItemData.expiry_date}
                   label_v={"تاريخ الانتهاء"}
                   type_v={"date"}
                 ></MyInput>
                 <div className="item-form-buts">
-                  <MyButton > تعديل </MyButton>
+                  <MyButton onClick={handleEdit} > تعديل </MyButton>
                   <MyButton onClick={(e)=>{e.preventDefault()
                     setEditItemVisible(false);
                   }}> الغاء</MyButton>

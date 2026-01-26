@@ -29,8 +29,7 @@ export default function OneItemInfo() {
      setWarningCardMessage("هل أنت متأكد من حذف هذا العنصر؟");
      setWarningCardVisible(true);
     }
-    console.log("selectedItem ",selectedItem);
-
+   
   return (
     <div className="one-item-info-page">
         <div className="one-item-info-top-buts">
