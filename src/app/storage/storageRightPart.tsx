@@ -26,6 +26,26 @@ type FormItemData = {
   code?: string;
   expiry_date?: string;
 };
+
+const FORM_OPTIONS = [
+  { value: "أقراص", label: "أقراص" },
+  { value: "كبسول", label: "كبسول" },
+  { value: "شراب", label: "شراب" },
+];
+
+const UNIT_OPTIONS = [
+  { value: "mg", label: "mg" },
+  { value: "ml", label: "ml" },
+  { value: "g", label: "g" },
+];
+
+const PACKAGE_OPTIONS = [
+  { value: "علبة", label: "علبة" },
+  { value: "قنينة", label: "قنينة" },
+  { value: "شريط", label: "شريط" },
+];
+
+
 export default function StorageRightPart() {
   const [addItemsVisible, setAddItemsVisible] = useState(false);
   const [formItemData, setFormItemData] = useState<FormItemData>({
@@ -165,11 +185,18 @@ setFormItemData({
           label_v={"اسم الشركة"}
         ></MyInput>
         <p style={{ fontSize: "18px" }}>الشكل الصيدلاني</p>
-        <MySelect value_v={formItemData.form} onChange={handleForm} options_v={["أقراص","كبسول","شراب"]}></MySelect>
+        <MySelect 
+         options_v={FORM_OPTIONS}
+        value_v={formItemData.form}
+         onChange={handleForm}></MySelect>
 
 
         <MyInput onChange={handleConcent} input_v={formItemData.concent} label_v={"التركيز"}>
-          <MySelect value_v={formItemData.concent_unit} onChange={handleConcentUnit} options_v={["mg", "ml", "g"]}></MySelect>
+          <MySelect 
+          options_v={UNIT_OPTIONS}
+          value_v={formItemData.concent_unit}
+          onChange={handleConcentUnit}
+          ></MySelect>
         </MyInput>
 
 
@@ -177,11 +204,19 @@ setFormItemData({
         onChange={handleTiter}
         input_v={formItemData.titer} label_v={"العيار"}>
 
-          <MySelect value_v={formItemData.titer_unit} onChange={handleTiterUnit} options_v={["mg", "ml", "g"]}></MySelect>
+          <MySelect 
+           options_v={UNIT_OPTIONS}
+           value_v={formItemData.titer_unit}
+           onChange={handleTiterUnit}
+          ></MySelect>
         </MyInput>
         <p style={{ fontSize: "18px" }}>نوع العبوة</p>
 
-        <MySelect value_v={formItemData.package_type} onChange={handlePackage} options_v={["علبة", "قنينة", "شريط"]}></MySelect>
+        <MySelect
+        options_v={PACKAGE_OPTIONS}
+       value_v={formItemData.package_type}
+        onChange={handlePackage}
+        ></MySelect>
 
         <MyInput
           input_v={formItemData.quantity}

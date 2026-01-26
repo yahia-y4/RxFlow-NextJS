@@ -13,7 +13,7 @@ import { getOneItemApi } from "@/APIs/getOneItemApi";
 export default function ItemsTable() {
 
 
-  const {addInvoiceVisible,setItemInfoVisible,storageItems,setStorageItems,selectedItem,setSelectedItem} = useContext(StorageContext)
+  const {addInvoiceVisible,setItemInfoVisible,storageItems,setStorageItems,selectedItem,setSelectedItem,InvoiceData,setInvoiceData,tempItemsInvoice,setTempItemsInvoice} = useContext(StorageContext)
   
 useEffect(()=>{
   async function fetchItems(){
@@ -28,7 +28,7 @@ useEffect(()=>{
 
   async function onRowClick(row:object){
     if(!addInvoiceVisible){
-      console.log("row clicked ",row.id);
+      console.log("row clicked ",row);
       const response = await getOneItemApi(row.id);
       if(response.success){
     
@@ -39,7 +39,35 @@ useEffect(()=>{
        
        
     }else{
-      console.log("adding item to invoice ",row.id);
+      const exists = InvoiceData.items.some(
+  (item) => item.id === row.id
+);
+
+if (exists) {
+  // موجود مسبقًا → لا تضف
+  return;
+}
+
+// غير موجود → أضف
+setInvoiceData((prev) => ({
+  ...prev,
+  items: [
+    ...prev.items,
+    { id: row.id, quantity: 1, price: row.price_buy },
+  ],
+}));
+
+setTempItemsInvoice((prev) => [
+  ...prev,
+  {
+    id: row.id,
+    name: row.name,
+    company: row.company,
+    form: row.form,
+    quantity: 1,
+    price: row.price_buy,
+  },
+]);
     }
 
    

@@ -19,7 +19,7 @@ export default function MyTable<T extends { id?: string | number }>({
   onRowClick,
 }: MyTableProps<T>) {
   if (columns.length === 0 || data.length === 0) {
-    return <div className="myTable-empty">No data to display</div>;
+    return <div className="myTable-empty">لا يوجد بيانات لعرضها!! </div>;
   }
 
   return (

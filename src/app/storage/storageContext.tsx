@@ -13,7 +13,13 @@ export const StorageProvider = ({
   const [addInvoiceVisible, setAddInvoiceVisible] = useState(false);
   const [storageItems, setStorageItems] = useState([]);
   const [selectedItem, setSelectedItem] = useState(null);
-
+  const [InvoiceData, setInvoiceData] = useState({
+    warehouseId: "",
+    paid_amount:"",
+    note:"y",
+    items: []
+  });
+const [tempItemsInvoice,setTempItemsInvoice] = useState([]);
   return (
     <StorageContext.Provider
       value={{
@@ -27,6 +33,10 @@ export const StorageProvider = ({
         setAddInvoiceVisible,
         selectedItem,
         setSelectedItem,
+        InvoiceData,
+        setInvoiceData,
+        tempItemsInvoice,
+        setTempItemsInvoice,
       }}
     >
       {children}
