@@ -2,7 +2,7 @@ import "./storage.css";
 import MySelect from "@/components/mySelect/mySelect";
 import MyInput from "@/components/myInput/myInput";
 import MyButton from "@/components/mybutton/myButton";
-import React, { useState } from "react";
+import { useState,useEffect } from "react";
 import { StorageContext } from "./storageContext"
 import { useContext } from "react"
 type FormItemData = {
@@ -22,6 +22,26 @@ type FormItemData = {
 };
 export default function EditItem() {
   const {selectedItem} = useContext(StorageContext);
+  useEffect(() => {
+    if(selectedItem){
+      setFormItemData({
+        name: selectedItem.name,
+        company: selectedItem.company,
+        form: selectedItem.form,
+        concent: selectedItem.concent,
+        concent_unit: selectedItem.concent_unit,
+        titer: selectedItem.titer,
+        titer_unit: selectedItem.titer_unit,
+        package: selectedItem.package,
+        quantity: selectedItem.quantity,
+        price_buy: selectedItem.price_buy,
+        profit: selectedItem.profit,
+        barcode: selectedItem.barcode,
+        expire_date: selectedItem.expire_date,
+      })
+    }
+  },[selectedItem])
+
 
 
    const [formItemData, setFormItemData] = useState<FormItemData>({

@@ -119,6 +119,16 @@ align-items: center;
 
 }
 
+.one-item-info-container{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding-right: 20px;
+}
+.one-item-info-container .one-item-info{
+font-size: 20px;
+}
+
 .edit-item-page{
   display: flex;
     flex-direction: column;

@@ -9,7 +9,7 @@ export const WarningProvider = ({
 }) => {
   const [WarningCardVisible, setWarningCardVisible] = useState(false);  
   const [WarningCardMessage, setWarningCardMessage] = useState("رسالة تحذير");  
-  const [WarningFunction, setWarningFunction] = useState(()=>{});
+const [WarningFunction, setWarningFunction] = useState(() => () => {});
     return (
     <WarningContext.Provider
       value ={{
