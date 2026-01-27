@@ -16,7 +16,7 @@ export const SuppliersProvider = ({
     const [suppliersPaymentsListVisible,setSuppliersPaymentsListVisible] = useState(false);
     const [supplierInvoicesVisible,setSupplierInvoicesVisible] = useState(false);
     const [selectedSupplierID,setSelectedSupplierID] = useState(null);
-    const [selectedSupplier,setSelectedSupplier] = useState(null);
+    const [selectedSupplier,setSelectedSupplier] = useState({});
     const [Suppliers,setSuppliers] = useState([]);
     return (
     <SuppliersContext.Provider

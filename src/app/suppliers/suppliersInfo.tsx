@@ -8,14 +8,26 @@ import CloseIcon from "@mui/icons-material/Close";
 import MyInput from "@/components/myInput/myInput";
 import MyTextarea from "@/components/myTextarea/myTextarea";
 import MyButton from "@/components/mybutton/myButton";
-import { useContext, useEffect ,useState } from "react";
+import { useContext, useEffect,useState } from "react";
 import { SuppliersContext } from "@/app/suppliers/suppliersContext";
 import { getOneSupplierApi } from "@/APIs/getOneSupplierApi";
 import { ErrorContext } from "../globalsContext/errorContext";
+import { WarningContext } from "../globalsContext/warningContext";
+import { deleteSupplierApi } from "@/APIs/deleteSupplierApi";
+import { getSuppliersApi } from "@/APIs/getSuppliersApi";
+import { sendPaymentSupplierApi } from "@/APIs/sendPaymentSupplierApi";
+
 
 export default function SuppliersInfo() {
   
   const {setErrorCardMessage,setErrorCardVisible,}=useContext(ErrorContext)
+  const {setWarningFunction,setWarningCardVisible,setWarningCardMessage}=useContext(WarningContext)
+  const [sendPaymentData,setSendPaymentData]=useState({
+    payable_amount_send:0,
+    note:""
+  })
+
+
   const {
     selectedSupplier,
     setSelectedSupplier,
@@ -26,6 +38,7 @@ export default function SuppliersInfo() {
     supplierInvoicesVisible,
     suppliersPaymentsListVisible,
     selectedSupplierID,
+    setSuppliers
     
   } = useContext(SuppliersContext);
 
@@ -33,7 +46,8 @@ export default function SuppliersInfo() {
     async function getOneSupplier() {
       const response = await getOneSupplierApi(selectedSupplierID);
       if(response.success){
-          setSelectedSupplier(response.supplier)
+        await  setSelectedSupplier(response.supplier)
+        
       }else{
         setErrorCardMessage(response.message)
         setErrorCardVisible(true)
@@ -42,6 +56,56 @@ export default function SuppliersInfo() {
     }
     getOneSupplier()
   }, [selectedSupplierID]);
+
+async function deleteSupplier(){
+  const response = await deleteSupplierApi(selectedSupplierID)
+  if(response.success){
+    const supps = await getSuppliersApi()
+    if(supps.success){
+      setSuppliers(supps.suppliers)
+       setSuppliersInfoVisible(false)
+      setSupplierInvoicesVisible(false)
+      setSuppliersPaymentsListVisible(false)
+    }
+   
+
+  }else{
+    setErrorCardMessage(response.message)
+    setErrorCardVisible(true)
+  }
+}
+function confirmDeleteSupplier(){
+  setWarningCardMessage("هل أنت متأكد من حذف هذا المورد ؟")
+  setWarningFunction(() => deleteSupplier)
+  setWarningCardVisible(true)
+}
+
+async function sendPaymentSupplier(){
+  const response = await sendPaymentSupplierApi(selectedSupplierID,sendPaymentData)
+  if(response.success){
+    const supps = await getSuppliersApi()
+    const updatedSupplier = await getOneSupplierApi(selectedSupplierID)
+    
+    if(supps.success && updatedSupplier.success){
+      setSuppliers(supps.suppliers)
+      setSelectedSupplier(updatedSupplier.supplier)
+      emptyPaymentSupplier()
+       
+    }
+   
+
+  }else{
+    setErrorCardMessage(response.message)
+    setErrorCardVisible(true)
+  }
+}
+function emptyPaymentSupplier(){
+  setSendPaymentData({
+    payable_amount_send:0,
+    note:""
+  })
+}
+
   return (
     <div className="Suppliers-info">
       <h2>تفاصيل المورد</h2>
@@ -50,13 +114,14 @@ export default function SuppliersInfo() {
           onClick={() => setEditSupplierVisible(true)}
           style={{ fontSize: "30px", cursor: "pointer" }}
         ></EditSquareIcon>
-        <DeleteForeverIcon
+        <DeleteForeverIcon 
+          onClick={confirmDeleteSupplier}
           style={{ fontSize: "30px", cursor: "pointer" }}
         ></DeleteForeverIcon>
-        <ReceiptLongIcon
+        {/* <ReceiptLongIcon
           onClick={() => setSupplierInvoicesVisible(!supplierInvoicesVisible)}
           style={{ fontSize: "30px", cursor: "pointer" }}
-        ></ReceiptLongIcon>
+        ></ReceiptLongIcon> */}
         <AttachMoneyIcon
           onClick={() =>
             setSuppliersPaymentsListVisible(!suppliersPaymentsListVisible)
@@ -74,24 +139,24 @@ export default function SuppliersInfo() {
       </div>
 
       <div className="Suppliers-info-content">
-        <p>الرقم : {setSelectedSupplier.id}</p>
-        <p>اسم المورد: {setSelectedSupplier.name}</p>
-        <p>اسم المستودع: {setSelectedSupplier.warehouse_name}</p>
-        <p>رقم الهاتف: {setSelectedSupplier.phone_number}</p>
-        <p>العنوان: {setSelectedSupplier.location}</p>
-        <p>تاريخ الاضافة : {setSelectedSupplier.createdAt}</p>
-        {setSelectedSupplier.isUpdated &&  <p> معدل</p>}
-        {setSelectedSupplier.isUpdated && <p>تاريخ اخر تعديل : {setSelectedSupplier.updatedAt}</p>}
-        <p>المستحقات : {setSelectedSupplier.payable_amount}</p>
+        <p>الرقم : {selectedSupplier.id}</p>
+        <p>اسم المورد: {selectedSupplier.name}</p>
+        <p>اسم المستودع: {selectedSupplier.warehouse_name}</p>
+        <p>رقم الهاتف: {selectedSupplier.phone_number}</p>
+        <p>العنوان: {selectedSupplier.location}</p>
+        <p>تاريخ الاضافة : {selectedSupplier.createdAt}</p>
+        {selectedSupplier.isUpdated &&  <p> معدل</p>}
+        {selectedSupplier.isUpdated && <p>تاريخ اخر تعديل : {selectedSupplier.updatedAt}</p>}
+        <p>المستحقات : {selectedSupplier.payable_amount}</p>
       </div>
 
       <div className="Suppliers-info-inputs">
-        <MyInput label_v={"المبلغ"} />
-        <MyTextarea label_v={"ملاحظة"} />
+        <MyInput  label_v={"المبلغ"} value={sendPaymentData.payable_amount_send} onChange={(e) => setSendPaymentData({...sendPaymentData, payable_amount_send: Number(e.target.value)})} />
+        <MyTextarea label_v={"ملاحظة"} value={sendPaymentData.note} onChange={(e) => setSendPaymentData({...sendPaymentData, note: e.target.value})} />
       </div>
       <div className="Suppliers-info-buts">
-        <MyButton>دفع</MyButton>
-        <MyButton>الغاء</MyButton>
+        <MyButton onClick={sendPaymentSupplier}>دفع</MyButton>
+        <MyButton onClick={emptyPaymentSupplier}>الغاء</MyButton>
       </div>
     </div>
   );

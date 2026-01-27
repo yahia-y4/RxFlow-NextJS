@@ -5,7 +5,6 @@ import AddNewSuppForm from "./addNewSuppForm"
 import ListSuppliers from "./listSuppliers"
 import SuppliersInfo from "./suppliersInfo"
 import SuppliersPaymentsList from "./suppliersPaymentsList"
-import SupplierInvoices from "./supplierInvoices"
 import EditSuppliers from "./editSuppliers"
 
 import { useContext } from "react"
@@ -23,7 +22,7 @@ export default function Suppliers() {
       <AddNewSuppForm></AddNewSuppForm>
       {!suppliersPaymentsListVisible && !supplierInvoicesVisible && <ListSuppliers/>}
      { suppliersInfoVisible && <SuppliersInfo/>}
-    { supplierInvoicesVisible && suppliersInfoVisible && <SupplierInvoices/>}
+
      { suppliersPaymentsListVisible && suppliersInfoVisible && <SuppliersPaymentsList/>}
      { editSupplierVisible && <EditSuppliers/>}
     </div>

@@ -1,14 +1,16 @@
 "use client";
-import { useContext } from "react";
+
+import { useContext, useEffect, useState } from "react";
 import "./storage.css";
 
 import MySelect from "@/components/mySelect/mySelect";
 import MyTable, { TableColumn } from "@/components/myTable/myTable";
 import MyInput from "@/components/myInput/myInput";
 import MyButton from "@/components/mybutton/myButton";
+
 import { getSuppliersApi } from "@/APIs/getSuppliersApi";
-import {addPurchaseInvoiceApi} from "@/APIs/addPurchaseInvoiceApi";
-import { useEffect, useState } from "react";
+import { addPurchaseInvoiceApi } from "@/APIs/addPurchaseInvoiceApi";
+
 import { StorageContext } from "./storageContext";
 import { ErrorContext } from "../globalsContext/errorContext";
 
@@ -24,12 +26,11 @@ type InvoiceItem = {
 
 /* ================== Component ================== */
 export default function Invoice() {
-  const context = useContext(StorageContext);
-  const [suppliers,setSuppliers] = useState([]);
-  const {setErrorCardMessage,setErrorCardVisible} = useContext(ErrorContext)
+  const storageContext = useContext(StorageContext);
+  const errorContext = useContext(ErrorContext);
 
-  if (!context) {
-    throw new Error("Invoice must be used within StorageContext.Provider");
+  if (!storageContext || !errorContext) {
+    throw new Error("Context not found");
   }
 
   const {
@@ -37,25 +38,32 @@ export default function Invoice() {
     setInvoiceData,
     tempItemsInvoice,
     setTempItemsInvoice,
-    setAddInvoiceVisible
-  } = context;
+    setAddInvoiceVisible,
+  } = storageContext;
 
-useEffect(()=>{
-  async function getSuppliers() {
-    const suppliers = await getSuppliersApi();
-    if(suppliers.success){
-      const supplierOptions = suppliers.suppliers.map((supplier) => ({
-        value: supplier.id,
-        label: supplier.name,
-      }));
-      setSuppliers(supplierOptions);
-      
+  const { setErrorCardMessage, setErrorCardVisible } = errorContext;
+
+  const [suppliers, setSuppliers] = useState<
+    { value: number; label: string }[]
+  >([]);
+
+  /* ================== جلب الموردين ================== */
+  useEffect(() => {
+    async function fetchSuppliers() {
+      const res = await getSuppliersApi();
+      if (res?.success) {
+        setSuppliers(
+          res.suppliers.map((s: any) => ({
+            value: s.id,
+            label: s.name,
+          }))
+        );
+      }
     }
-  }
-  getSuppliers();
-},[])
+    fetchSuppliers();
+  }, []);
 
-  /* ===== تحديث الكمية ===== */
+  /* ================== تحديث الكمية ================== */
   const updateQuantity = (id: number, quantity: number) => {
     if (Number.isNaN(quantity) || quantity < 0) return;
 
@@ -66,7 +74,7 @@ useEffect(()=>{
     );
   };
 
-  /* ===== الأعمدة ===== */
+  /* ================== أعمدة الجدول ================== */
   const columns: TableColumn<InvoiceItem>[] = [
     { key: "name", title: "اسم الدواء" },
     { key: "company", title: "الشركة" },
@@ -97,42 +105,58 @@ useEffect(()=>{
     },
   ];
 
-  /* ===== إجمالي الفاتورة ===== */
+  /* ================== إجمالي الفاتورة ================== */
   const invoiceTotal = tempItemsInvoice.reduce(
     (sum, item) => sum + item.price * item.quantity,
     0
   );
 
-  /* ===== حفظ الفاتورة ===== */
- async function saveInvoice() {
-  const response = await addPurchaseInvoiceApi(InvoiceData)
-  if(response.success){
-   console.log(response.message)
-    setInvoiceData({
-    warehouseId: "",
-    paid_amount:"",
-    note:"y",
-    items: []
-  })
-  setTempItemsInvoice([]);
-  setAddInvoiceVisible(false)
-  }else{
-     setErrorCardVisible(true)
-     setErrorCardMessage(response.message)
+  /* ================== حفظ الفاتورة ================== */
+  async function saveInvoice() {
+    if (tempItemsInvoice.length === 0) {
+      setErrorCardVisible(true);
+      setErrorCardMessage("الفاتورة فارغة");
+      return;
+    }
+
+    const payload = {
+      warehouseId: Number(InvoiceData.warehouseId),
+      paid_amount: Number(InvoiceData.paid_amount),
+      note: InvoiceData.note,
+      items: tempItemsInvoice.map((item) => ({
+        id: item.id,
+        quantity: item.quantity,
+        price: item.price,
+      })),
+    };
+
+    const response = await addPurchaseInvoiceApi(payload);
+
+    if (response.success) {
+      setInvoiceData({
+        warehouseId: "",
+        paid_amount: "",
+        note: "",
+        items: [],
+      });
+      setTempItemsInvoice([]);
+      setAddInvoiceVisible(false);
+    } else {
+      setErrorCardVisible(true);
+      setErrorCardMessage(response.message);
+    }
   }
-    
 
-  };
-  const cancelInvoice =()=>{
+  /* ================== إلغاء الفاتورة ================== */
+  function cancelInvoice() {
     setInvoiceData({
-    warehouseId: "",
-    paid_amount:"",
-    note:"y",
-    items: []
-  })
-
-  setTempItemsInvoice([]);
-  setAddInvoiceVisible(false)
+      warehouseId: "",
+      paid_amount: "",
+      note: "",
+      items: [],
+    });
+    setTempItemsInvoice([]);
+    setAddInvoiceVisible(false);
   }
 
   /* ================== JSX ================== */
@@ -141,19 +165,17 @@ useEffect(()=>{
       <h3>فاتورة شراء أدوية</h3>
 
       <p>اختر المورد</p>
-   <MySelect
-  options_v={suppliers}
-  value_v={InvoiceData.warehouseId}
-  placeholder="اختر المورد"
-  onChange={(e) => {
-    setInvoiceData((prev) => ({
-      ...prev,
-      warehouseId: e.target.value,
-    }));
-  }}
-/>
-
-
+      <MySelect
+        options_v={suppliers}
+        value_v={InvoiceData.warehouseId}
+        placeholder="اختر المورد"
+        onChange={(e) =>
+          setInvoiceData((prev) => ({
+            ...prev,
+            warehouseId: e.target.value,
+          }))
+        }
+      />
 
       <div
         style={{

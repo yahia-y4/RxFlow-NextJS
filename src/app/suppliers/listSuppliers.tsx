@@ -7,7 +7,8 @@ import { SuppliersContext } from "@/app/suppliers/suppliersContext"
 import {getSuppliersApi} from "@/APIs/getSuppliersApi"
 
 export default function ListSuppliers() {
-    const {setSelectedSupplierID,setSuppliersInfoVisible,Suppliers,setSuppliers} = useContext(SuppliersContext);
+    const {setSelectedSupplierID,setSuppliersInfoVisible,Suppliers,setSuppliers,selectedSupplierID} = useContext(SuppliersContext);
+
 useEffect(()=>{
 
     async function fetchSuppliers(){
@@ -20,8 +21,9 @@ useEffect(()=>{
     }
     fetchSuppliers();
 },[])
-    function handleRowClick(rowData:object){
-        setSelectedSupplierID(rowData.id);
+    async function handleRowClick(rowData:object){
+       await setSelectedSupplierID(rowData.id);
+    
         setSuppliersInfoVisible(true);
     }
     const columns = [

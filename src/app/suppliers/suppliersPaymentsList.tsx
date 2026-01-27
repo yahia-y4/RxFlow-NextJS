@@ -2,21 +2,36 @@
 import "./suppliers.css"
 import MyTable from "@/components/myTable/myTable";
 import {useState} from "react"
+import {getPaymentSentHistorySupplier} from "@/APIs/getPaymentSentHistorySupplier"
+import { useEffect,useContext } from "react";
+import { SuppliersContext } from "@/app/suppliers/suppliersContext";
+import { formatDateTime } from "@/APIs/formatDateTime";
 export default function SuppliersPaymentsList() {
-    const [PaymentsListData,setPaymentsListData] = useState([
-           {id:1,Amount:1000,Date:"2023-01-01",Note:"دفعة اولى"},
-        {id:2,Amount:2000,Date:"2023-02-01",Note:"دفعة ثانية"},
-        {id:3,Amount:3000,Date:"2023-03-01",Note:"دفعة ثالثة"},
-    ])
+    const [PaymentsListData,setPaymentsListData] = useState([])
+    const {selectedSupplier,} = useContext(SuppliersContext);
+    console.log(selectedSupplier)
+    useEffect(()=>{
+        async function fetchPaymentsList(){
+            const response = await getPaymentSentHistorySupplier(selectedSupplier.id); // هنا 1 هو معرف المورد كمثال
+            if(response.success){
+                const formattedData = response.data.map((payment:any) => ({
+                    ...payment,
+                    payment_date: formatDateTime(payment.payment_date)
+                }));
+                setPaymentsListData(formattedData);
+            }
+        }
+        fetchPaymentsList();
+    },[])
      const columns = [
         { key: "id", title: "ID" },
-        { key: "Amount", title: "المبلغ المدفوع" },
-        {key:"Date",title:"تاريخ الدفعة"},
-        {key:"Note",title:"ملاحظة"} 
+        { key: "amount", title: "المبلغ المدفوع" },
+        {key:"payment_date",title:"تاريخ الدفعة"},
+        {key:"note",title:"ملاحظة"} 
     ]
     return (
         <div className="Suppliers-payments-list">
-            <h2> قائمة المدفوعات للمورد : {"فلان"}</h2>
+            <h2> قائمة المدفوعات للمورد : {selectedSupplier.name}</h2>
             <div className="Suppliers-payments-list-table">
                 <MyTable columns={columns} data={PaymentsListData}/>
             </div>
