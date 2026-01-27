@@ -15,7 +15,8 @@ export const SuppliersProvider = ({
     const [editSupplierVisible,setEditSupplierVisible] = useState(false);
     const [suppliersPaymentsListVisible,setSuppliersPaymentsListVisible] = useState(false);
     const [supplierInvoicesVisible,setSupplierInvoicesVisible] = useState(false);
-    const [selectedSupplier,setSelectedSupplier] = useState(null);
+    const [selectedSupplierID,setSelectedSupplierID] = useState(null);
+    const [Suppliers,setSuppliers] = useState([]);
     return (
     <SuppliersContext.Provider
       value ={{suppliersListVisible,
@@ -24,12 +25,15 @@ export const SuppliersProvider = ({
         setSuppliersInfoVisible,
         editSupplierVisible,
         setEditSupplierVisible,
-        selectedSupplier,
-        setSelectedSupplier,
         suppliersPaymentsListVisible,
         setSuppliersPaymentsListVisible,
         supplierInvoicesVisible,
         setSupplierInvoicesVisible,
+        Suppliers,
+        setSuppliers,
+        selectedSupplierID,
+        setSelectedSupplierID
+        
       }}
     >
       {children}
