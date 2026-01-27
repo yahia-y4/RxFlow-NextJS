@@ -1,68 +1,99 @@
-import { useState } from "react";
-import "./sale.css"
+"use client";
+
+import { useEffect,useState } from "react";
+import "./sale.css";
 import MyTable, { TableColumn } from "@/components/myTable/myTable";
+import {getAllSalesRecords} from "@/APIs/getAllSalesRecords";
+
+/* ================== Types ================== */
+
+type SalesRecordItem = {
+  invoiceId: number;
+  name: string;
+  company: string;
+  form: string;
+  quantity: number;
+  price: number;
+  total: number;
+  createdAt: string;
+};
+
+/* ================== Component ================== */
+
 export default function RecordSalesToday() {
-    const [data, setData] = useState<InvoiceItem[]>([
-        {
-          id: 1,
-          name: "باراسيتامول",
-          company: "ABC Pharma",
-          form: "أقراص",
-          price: 2.5,
-          quantity: 1,
-          date:"2023-09-01"
-        },
-        {
-          id: 2,
-          name: "أموكسيسيلين",
-          company: "XYZ Pharma",
-          form: "كبسولات",
-          price: 5,
-          quantity: 2,
-          date:"2023-09-01"
-        },
-        {
-          id: 3,
-          name: "كولسترول",
-          company: "LMN Pharma",
-          form: "أقراص",
-          price: 3,
-          quantity: 1,
-          date:"2023-09-01"
-        },
-      ]);
-      /* ===== الأعمدة ===== */
-      const columns: TableColumn<InvoiceItem>[] = [
-        { key: "name", title: "اسم الدواء" },
-        { key: "company", title: "الشركة" },
-        { key: "form", title: "الشكل" },
-        {
-          key: "price",
-          title: "سعر الشراء",
-          render: (row) => `${row.price} $`,
-        },
-        {
-          key: "quantity",
-          title: "الكمية",
-          render: (row) => `${row.quantity} ${row.form}`,
-        },
-        {
-          key: "total",
-          title: "المجموع",
-          render: (row) => `${row.price * row.quantity} $`,
-        },
-        {
-            key:"date",
-            title:"التاريخ",
-            render:(row)=>`${row.date}`
-        }
-      ];
-    return (
-        <div className="record-sales-today">
-            <h3> بيع اليوم</h3>
-            <div className="record-today-table-div">
-                <MyTable data={data} columns={columns} />
-            </div>
-        </div>
-    )
+  /* ===== بيانات تجريبية (كما تأتي من الباك اند) ===== */
+  const [SalesRecordData, setSalesRecordData] = useState<any[]>([
+  ]);
+
+  useEffect(() => {
+    async function fetchSalesRecords() {
+      const res = await getAllSalesRecords();
+      if (res.success) {
+        setSalesRecordData(res.data);
+      } else {
+        console.log("Failed to fetch sales records");
+      }
+    }
+    fetchSalesRecords();
+  }, []); 
+
+  /* ===== تجهيز البيانات للجدول (Flatten) ===== */
+  
+  const tableData: SalesRecordItem[] = SalesRecordData.flatMap((invoice) =>
+    invoice.Items.map((item: any) => ({
+      invoiceId: invoice.id,
+      name: item.name,
+      company: item.company,
+      form: item.form,
+      quantity: item.item_many_salesRecord.quantity,
+      price: item.item_many_salesRecord.price,
+      total:
+        item.item_many_salesRecord.quantity *
+        item.item_many_salesRecord.price,
+      createdAt: invoice.createdAt,
+    }))
+  );
+
+  /* ===== الأعمدة ===== */
+  const columns: TableColumn<SalesRecordItem>[] = [
+    { key: "name", title: "اسم الدواء" },
+    { key: "company", title: "الشركة" },
+    { key: "form", title: "الشكل" },
+    {
+      key: "price",
+      title: "السعر للوحدة",
+      render: (row) => `${row.price} $`,
+    },
+    {
+      key: "quantity",
+      title: "الكمية",
+      render: (row) => `${row.quantity}`,
+    },
+    {
+      key: "total",
+      title: "المجموع",
+      render: (row) => `${row.total} $`,
+    },
+    {
+      key: "createdAt",
+      title: "التاريخ",
+      render: (row) =>
+        new Date(row.createdAt).toLocaleDateString("SY", {
+          year: "numeric",
+          month: "2-digit",
+          day: "2-digit",
+        }),
+    },
+  ];
+
+  /* ================== JSX ================== */
+  return (
+    <div className="record-sales-today">
+      <h3>سجل المبيعات</h3>
+
+      <div className="record-today-table-div">
+        <MyTable data={tableData} columns={columns} />
+      </div>
+    </div>
+  );
 }

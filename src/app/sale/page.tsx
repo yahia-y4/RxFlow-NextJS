@@ -11,7 +11,7 @@ export default function SalePage() {
   return (
     <div className="sale-page">
      <SaleForm></SaleForm>
-    { saleGroupVisible && <GroupItems></GroupItems>}
+    {/* { saleGroupVisible && <GroupItems></GroupItems>} */}
     { saleRecordVisible && <RecordSalesToday></RecordSalesToday>}
     </div>
   );

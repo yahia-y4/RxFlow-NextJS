@@ -21,14 +21,16 @@ export async function getAllItemsApi(){
             },
         });
         const data = await response.json();
+        if (response.ok) {
         return {
             success: true,
             items: data,
         };
+    }
     } catch (error) {
         return {
             success: false,
-            message: 'Error fetching items',
+            message: error || 'Error fetching items',
         }
     }
 }
