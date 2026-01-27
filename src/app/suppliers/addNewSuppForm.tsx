@@ -23,6 +23,7 @@ export default function AddNewSuppForm() {
   const {setSuppliers,Suppliers} = useContext(SuppliersContext)
 
   // Handle form input changes
+
   function handleNameChange(e: React.ChangeEvent<HTMLTextAreaElement>) {
     setSupplierData({ ...supplierData, name: e.target.value });
   }
@@ -35,6 +36,7 @@ export default function AddNewSuppForm() {
   function handleLocationChange(e: React.ChangeEvent<HTMLTextAreaElement>){
     setSupplierData({...supplierData,location:e.target.value})
   }
+  
   //---------------------
   //--- handle submits----
   async function addSupplier(e: React.ChangeEvent<HTMLTextAreaElement>) {

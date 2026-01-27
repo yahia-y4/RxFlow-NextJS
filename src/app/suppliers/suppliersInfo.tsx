@@ -14,9 +14,11 @@ import { getOneSupplierApi } from "@/APIs/getOneSupplierApi";
 import { ErrorContext } from "../globalsContext/errorContext";
 
 export default function SuppliersInfo() {
-  const {setErrorCardMessage,setErrorCardVisible}=useContext(ErrorContext)
+  
+  const {setErrorCardMessage,setErrorCardVisible,}=useContext(ErrorContext)
   const {
     selectedSupplier,
+    setSelectedSupplier,
     setSuppliersInfoVisible,
     setSupplierInvoicesVisible,
     setSuppliersPaymentsListVisible,
@@ -24,15 +26,14 @@ export default function SuppliersInfo() {
     supplierInvoicesVisible,
     suppliersPaymentsListVisible,
     selectedSupplierID,
+    
   } = useContext(SuppliersContext);
 
-  const [Supplier,setSupplier]=useState({})
-  console.log(Supplier)
   useEffect(() => {
     async function getOneSupplier() {
       const response = await getOneSupplierApi(selectedSupplierID);
       if(response.success){
-          setSupplier(response.supplier)
+          setSelectedSupplier(response.supplier)
       }else{
         setErrorCardMessage(response.message)
         setErrorCardVisible(true)
@@ -73,15 +74,15 @@ export default function SuppliersInfo() {
       </div>
 
       <div className="Suppliers-info-content">
-        <p>الرقم : {Supplier.id}</p>
-        <p>اسم المورد: {Supplier.name}</p>
-        <p>اسم المستودع: {Supplier.warehouse_name}</p>
-        <p>رقم الهاتف: {Supplier.phone_number}</p>
-        <p>العنوان: {Supplier.location}</p>
-        <p>تاريخ الاضافة : {Supplier.createdAt}</p>
-        {Supplier.isUpdated &&  <p> معدل</p>}
-        {Supplier.isUpdated && <p>تاريخ اخر تعديل : {Supplier.updatedAt}</p>}
-        <p>المستحقات : {Supplier.payable_amount}</p>
+        <p>الرقم : {setSelectedSupplier.id}</p>
+        <p>اسم المورد: {setSelectedSupplier.name}</p>
+        <p>اسم المستودع: {setSelectedSupplier.warehouse_name}</p>
+        <p>رقم الهاتف: {setSelectedSupplier.phone_number}</p>
+        <p>العنوان: {setSelectedSupplier.location}</p>
+        <p>تاريخ الاضافة : {setSelectedSupplier.createdAt}</p>
+        {setSelectedSupplier.isUpdated &&  <p> معدل</p>}
+        {setSelectedSupplier.isUpdated && <p>تاريخ اخر تعديل : {setSelectedSupplier.updatedAt}</p>}
+        <p>المستحقات : {setSelectedSupplier.payable_amount}</p>
       </div>
 
       <div className="Suppliers-info-inputs">
