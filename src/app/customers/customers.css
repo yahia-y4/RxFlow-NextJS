@@ -6,7 +6,7 @@
     direction: rtl;
 }
 .customers-form{
-    width: 20%;
+    width: 15%;
     border-left: 1px solid #fff;
     padding: 20px;
     display: flex;
@@ -52,7 +52,7 @@
 /* ------------معلومات الزبون ----------- */
 
 .customers-info{
-    width: 40%;
+    width: 35%;
     height: 95vh;
     border-left: 1px solid #fff;
     display: flex;
