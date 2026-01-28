@@ -15,19 +15,104 @@ import MyButton from "@/components/mybutton/myButton";
 import { useContext } from "react"
 import { CustomersContext } from "@/app/customers/CustomersContext"
 import { formatDateTime } from "@/APIs/formatDateTime";
+import{ErrorContext} from "@/app/globalsContext/errorContext"
+import { addDebtCustomerApi } from "@/APIs/addDebtCustomerApi";
+import{getOneCustomerApi} from "@/APIs/getOneCustomerApi"
+import {receivePaymentCustomerApi} from "@/APIs/receivePaymentCustomerApi";
  export default function CustomersInfo() {
     // -----------state & context-----------//
+    const {setErrorCardMessage,setErrorCardVisible} = useContext(ErrorContext);
     const {setCustomerPaymentsReceivedListVisible,
         setCustomersInfoVisible,
         setEditCustomerVisible,
         CustomerPaymentsReceivedListVisible,
         setCustomerDebtsListVisible,
         CustomerDebtsListVisible,
-        selectedCustomer
+        selectedCustomer,
+        setSelectedCustomer
     } = useContext(CustomersContext);
   
     const [debtState,setDebtState] = useState("Adding"); // Adding / Receiving
+    const [formData,setFormData] = useState({
+        amount: '',
+        note: ''
+    });
     //-------------------------------------//
+
+
+//-----------handle inputs change-----------//
+
+function handleAmountChange(e: React.ChangeEvent<HTMLInputElement>) {
+    setFormData({
+        ...formData,
+        amount: (+e.target.value),
+    })
+}
+function handleNoteChange(e: React.ChangeEvent<HTMLTextAreaElement>) {
+    setFormData({
+        ...formData,
+        note: e.target.value,
+    })
+}
+
+//-----------------------------------------//
+
+
+//------------handle form submit------------//
+function emptyForm(){
+    setFormData({
+        amount: 0,
+        note: ''
+    })
+}
+
+async function handleDebtFormSubmit() {
+    if(debtState === "Adding"){
+    // Logic to add debt
+    const result = await addDebtCustomerApi(selectedCustomer.id,formData);
+    if(result.success){
+        console.log("Debt added successfully");
+        // Refresh selected customer data
+        const res = await getOneCustomerApi(selectedCustomer.id);
+        if (res.success) {
+            setSelectedCustomer(res.customer);
+            emptyForm();
+        }else{
+         setErrorCardMessage(res.message);
+         setErrorCardVisible(true);
+        }
+
+
+    }else{
+     setErrorCardMessage(result.message);
+     setErrorCardVisible(true);
+    }
+
+    }else{
+     // Logic to receive payment
+        const result = await receivePaymentCustomerApi(selectedCustomer.id,formData);
+        if(result.success){
+            console.log("Payment received successfully");
+            // Refresh selected customer data
+            const res = await getOneCustomerApi(selectedCustomer.id);
+            if (res.success) {
+                setSelectedCustomer(res.customer);
+                emptyForm();
+            }else{
+             setErrorCardMessage(res.message);
+             setErrorCardVisible(true);
+            }
+        }else{
+         setErrorCardMessage(result.message);
+         setErrorCardVisible(true);
+        }
+
+
+    }
+}
+//-----------------------------------------//
+
+
     return (
         <div className="customers-info">
             <h2>تفاصيل الزبون</h2>
@@ -64,11 +149,11 @@ import { formatDateTime } from "@/APIs/formatDateTime";
 
             <div className="debt-inputs-div" >
                 <h3>{debtState === "Adding" ? "اضافة دين" : "استلام دفعة"}</h3>
-                <MyInput input_v="" label_v="المبلغ" type_v="number" onChange={()=>{}} plaseholder_v="0.00" onClick={()=>{}}/>
-                <MyTextarea label_v="ملاحظة"/>    
+                <MyInput input_v={formData.amount} label_v="المبلغ" type_v="number" onChange={handleAmountChange} plaseholder_v="0.00" onClick={()=>{}}/>
+                <MyTextarea data_v={formData.note} label_v="ملاحظة" onChange={handleNoteChange}/>    
                  <div className="buts-div">
-                    <MyButton>{debtState === "Adding" ? "اضافة" : "استلام"}</MyButton>
-                    <MyButton>الغاء</MyButton>
+                    <MyButton onClick={handleDebtFormSubmit}> {debtState === "Adding" ? "اضافة" : "استلام"}</MyButton>
+                    <MyButton onClick={emptyForm}>الغاء</MyButton>
                     </div>   
 
             </div>
