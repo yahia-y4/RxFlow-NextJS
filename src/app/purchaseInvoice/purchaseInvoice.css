@@ -1,9 +1,9 @@
 .Purchase-invoice-page{
     direction: rtl;
     display: flex;
- 
-    align-items: center;
     justify-content: center;
+    height: 95vh;
+       overflow: auto;
 }
 .Suppliers-invoices-list{
     width: 90%;
@@ -24,8 +24,8 @@
     display: flex;
     flex-direction: column;
     gap: 50px;
-    width: 100%;
-    padding: 10px;
-    height: 85vh;
+ 
+   width: 80%;
+   
     overflow: auto;
 }

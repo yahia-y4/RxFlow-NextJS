@@ -1,30 +1,22 @@
 "use client"
 
 import "./invoice.css"
-import { useState } from "react";
 
+import { formatDateTime } from "@/APIs/formatDateTime";
 import MyTable from "@/components/myTable/myTable";
-export default function Invoice() {
-  const data = [
-          {
-            id: 1,
-            name: "ترامادول",
-            company: "شركة النيل",
-            form: "اقراص",
-            price: 50,
-            quantity: 200,
-            total_price: 1000,
-          },
-          {
-            id: 2,
-            name: "ترامادول",
-            company: "شركة النيل",
-            form: "اقراص",
-            price: 50,
-            quantity: 200,
-            total_price: 1000,
-          },
-       ]
+export default function Invoice({dataInvoice}:{dataInvoice:object}) {
+
+console.log(dataInvoice);
+const itemsData = dataInvoice.Items.map((item:object)=>({
+    id: item.id,
+    name:item.name,
+    company:item.company,
+    form:item.form,
+    price: item.item_many_invoice.price,
+    quantity: item.item_many_invoice.quantity,
+    total_price: item.item_many_invoice.price * item.item_many_invoice.quantity,
+}))
+
         const columns = [
            { key: "name", title: "اسم الدواء" },
            { key: "company", title: "الشركة" },
@@ -36,20 +28,20 @@ export default function Invoice() {
   return (
     <div className="Invoice">
 <div className="Invoice-title">
-  فاتورة مشتريات من المورد : {"فلان"}
+  فاتورة مشتريات من المورد : {dataInvoice.warehouse.name}
 </div>
 <div className="Invoice-info">
-    <p className="one-info">رقم الفاتورة : {"123456"}</p>
-    <p className="one-info">عدد الأصناف : {"3"}</p>
-    <p className="one-info"> عدد القطع : {"6"}</p>
-    <p className="one-info">سعر الإجمالي : {"15.00 $"}</p>
-    <p className="one-info">المبلغ المدفوع : {"15.00 $"}</p>
-    <p className="one-info">حالة التسديد وقت الشراء : {"مدفوع"}</p>
-    <p className="one-info">تاريخ الفاتورة : {"2023-01-01"}</p>
+    <p className="one-info">رقم الفاتورة : {dataInvoice.id}</p>
+    <p className="one-info">عدد الأصناف : {dataInvoice.Items.length}</p>
+    <p className="one-info"> عدد القطع : {dataInvoice.Items.reduce((acc, item) => acc + item.item_many_invoice.quantity, 0)}</p>
+    <p className="one-info">سعر الإجمالي : {dataInvoice.total_price}</p>
+    <p className="one-info">المبلغ المدفوع : {dataInvoice.paid_amount}</p>
+    <p className="one-info">حالة التسديد وقت الشراء : {dataInvoice.payment_status}</p>
+    <p className="one-info">تاريخ الفاتورة : {formatDateTime(dataInvoice.createdAt)}</p>
     <p className="one-info">جدول الادوية : </p>
 </div>
 <div className="Invoice-table">
-  <MyTable columns={columns} data={data} />
+  <MyTable columns={columns} data={itemsData} />
 </div>
 
 

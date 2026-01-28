@@ -4,11 +4,12 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 5px;
-     border-radius: 10px;
+     gap: 5px;
+    border-radius: 10px;
     border: 1px solid #bcc9cf;
     padding: 10px;
     height: 600px;
+    padding-bottom: 50px;
 
 }
 
