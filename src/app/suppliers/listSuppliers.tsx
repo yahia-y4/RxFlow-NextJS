@@ -7,7 +7,13 @@ import { SuppliersContext } from "@/app/suppliers/suppliersContext"
 import {getSuppliersApi} from "@/APIs/getSuppliersApi"
 
 export default function ListSuppliers() {
-    const {setSelectedSupplierID,setSuppliersInfoVisible,Suppliers,setSuppliers,selectedSupplierID} = useContext(SuppliersContext);
+  const [searchValue, setSearchValue] = useState("");
+    const {setSelectedSupplierID,
+      setSuppliersInfoVisible,
+      Suppliers,
+      setSuppliers,
+      selectedSupplierID
+    } = useContext(SuppliersContext);
 
 useEffect(()=>{
 
@@ -23,7 +29,6 @@ useEffect(()=>{
 },[])
     async function handleRowClick(rowData:object){
        await setSelectedSupplierID(rowData.id);
-    
         setSuppliersInfoVisible(true);
     }
     const columns = [
@@ -32,10 +37,39 @@ useEffect(()=>{
         {key:"phone_number",title:"رقم الهاتف"} 
     ]
  
+
+
+   //---------البحث -------------
+   function onSearchf(value:string){
+    setSearchValue(value);
+    console.log("searching for ",value);
+    const filteredSuppliers = Suppliers.filter((supplier:object)=>
+      supplier.name.toLowerCase().includes(value.toLowerCase()) ||
+      supplier.phone_number.toLowerCase().includes(value.toLowerCase())
+    );
+    setSuppliers(filteredSuppliers);
+
+    } 
+
+    function onCancelf(){
+      // إعادة جلب جميع الموردين عند إلغاء البحث
+      async function fetchSuppliers(){
+        const result = await getSuppliersApi();
+        if(result.success){
+          setSuppliers(result.suppliers);
+        }else{
+          console.log(result.message);
+        }
+      setSearchValue("");
+ 
+    }
+  
+       fetchSuppliers();
+  }
   return (
     <div className="List-Suppliers">
       <h2>قائمة الموردين</h2>
-      <MySearch></MySearch>
+      <MySearch onSearch={onSearchf} onCancel={onCancelf}></MySearch>
       <div className="ListSuppliers-table">
         <MyTable columns={columns} data={Suppliers} onRowClick={handleRowClick}></MyTable>
       </div>

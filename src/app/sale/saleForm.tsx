@@ -1,190 +1,261 @@
 "use client";
 
 import "./sale.css";
+import { useState, useEffect, useContext } from "react";
+
 import MyInput from "@/components/myInput/myInput";
-import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
-import EventNoteIcon from "@mui/icons-material/EventNote";
-import MySelect from "@/components/mySelect/mySelect";
 import MyButton from "@/components/mybutton/myButton";
-import { useState,useEffect } from "react";
-import { useContext } from "react";
+import EventNoteIcon from "@mui/icons-material/EventNote";
+
 import { SaleContext } from "./saleContext";
+import { ErrorContext } from "../globalsContext/errorContext";
+
 import { getAllItemsApi } from "@/APIs/getAllItemsApi";
-import {ErrorContext} from "../globalsContext/errorContext";
-import{sellOneItemApi} from "@/APIs/sellOneItemApi"
+import { sellOneItemApi } from "@/APIs/sellOneItemApi";
+
+/* ================= TYPES ================= */
+
+type Item = {
+  id: number;
+  code: string;
+  name: string;
+  company: string;
+  form: string;
+  sell_price: number;
+};
+
+type SaleFormData = {
+  id: number;
+  barcode: string;
+  name: string;
+  company: string;
+  form: string;
+  quantity: number;
+  price: number;
+};
+
+/* ================ COMPONENT ================ */
+
 export default function SaleForm() {
-  const {setErrorCardMessage,setErrorCardVisible} = useContext(ErrorContext);
-  const {setItemsInGroup} = useContext(SaleContext);  
-  const{setSaleRecordVisible,setSaleGroupVisible,saleGroupVisible,saleRecordVisible} = useContext(SaleContext);
-  const[saleDataForm,setSaleDataForm]= useState({
-         id:0,
-        barcode:"",
-        name:"",
-        company:"",
-        form:"",
-        quantity:1,
-        price:0,
-    });
+  const { setErrorCardMessage, setErrorCardVisible } =
+    useContext(ErrorContext);
 
+  const {
+    setItemsInGroup,
+    setSaleRecordVisible,
+    saleRecordVisible,
+    saleGroupVisible,
+  } = useContext(SaleContext);
 
-    const [items, setItems] = useState([]);
+  /* ================ STATE ================= */
 
-   useEffect(() => {
+  const [saleDataForm, setSaleDataForm] = useState<SaleFormData>({
+    id: 0,
+    barcode: "",
+    name: "",
+    company: "",
+    form: "",
+    quantity: 1,
+    price: 0,
+  });
+
+  const [items, setItems] = useState<Item[]>([]);
+
+  /* ================ EFFECT ================= */
+
+  useEffect(() => {
     async function fetchItems() {
-        const res = await getAllItemsApi();
-        if (res.success) {
-            setItems(res.items);
-        } else {
-            console.log("Failed to fetch items");
-        }
+      const res = await getAllItemsApi();
+      if (res.success) {
+        setItems(res.items);
+      } else {
+        console.error("Failed to fetch items");
+      }
     }
     fetchItems();
-}, []);
+  }, []);
 
-  function findItemByBarcode(code: string) {
-    return items.find((item: { code: string }) => item.code === code);
+  /* ================ HELPERS ================= */
+
+  function findItemByBarcode(code: string): Item | undefined {
+    return items.find(item => item.code === code);
   }
-    // handle inputs
-    function handleBarcode(e:React.ChangeEvent<HTMLInputElement>) {
+
+  /* ================ HANDLERS ================= */
+
+  function handleBarcode(e: React.ChangeEvent<HTMLInputElement>) {
     const value = e.target.value;
-      const foundItem = findItemByBarcode(value);
-      console.log("found item ",foundItem);
-      
-    setSaleDataForm({ ...saleDataForm, barcode: value });
+    const foundItem = findItemByBarcode(value);
+
     if (foundItem) {
-      setSaleDataForm({
-        ...saleDataForm,
+      setSaleDataForm(prev => ({
+        ...prev,
         id: foundItem.id,
         barcode: value,
         name: foundItem.name,
         company: foundItem.company,
         form: foundItem.form,
         price: foundItem.sell_price,
-      })
- 
-
-    }
-    else{
-      setSaleDataForm({ ...saleDataForm, barcode: value });
-      setSaleDataForm({
-        ...saleDataForm,
+      }));
+    } else {
+      setSaleDataForm(prev => ({
+        ...prev,
         barcode: value,
-        id:0,
-        name:"",
-        company:"",
-        form:"",
-        quantity:1,
-        price:0,
-    })
+        id: 0,
+        name: "",
+        company: "",
+        form: "",
+        quantity: 1,
+        price: 0,
+      }));
     }
   }
-    function handleName(e:React.ChangeEvent<HTMLInputElement>) {
-      const value = e.target.value;
-      setSaleDataForm({ ...saleDataForm, name: value });
-    }
-    function handleCompany(e:React.ChangeEvent<HTMLInputElement>) {
-      const value = e.target.value;
-      setSaleDataForm({ ...saleDataForm, company: value });
-    }
-    function handleForm(e: React.ChangeEvent<HTMLSelectElement>) {
-      const value = e.target.value;
-      setSaleDataForm({ ...saleDataForm, form: value });
-    }
-    function handleQuantity(e:React.ChangeEvent<HTMLInputElement>) {
-      const value = parseInt(e.target.value);
-      setSaleDataForm({ ...saleDataForm, quantity: value });
-      
-    }
-    function handlePrice(e:React.ChangeEvent<HTMLInputElement>) {
-      const value = parseFloat(e.target.value);
-      setSaleDataForm({ ...saleDataForm, price: value });
-    }
 
-    // ==handle inputs==
+  function handleName(e: React.ChangeEvent<HTMLInputElement>) {
+    setSaleDataForm(prev => ({ ...prev, name: e.target.value }));
+  }
 
+  function handleCompany(e: React.ChangeEvent<HTMLInputElement>) {
+    setSaleDataForm(prev => ({ ...prev, company: e.target.value }));
+  }
 
-    //نقر البيع
-    async function handleSale(e:React.MouseEvent<HTMLButtonElement, MouseEvent>){
+  function handleForm(e: React.ChangeEvent<HTMLInputElement>) {
+    setSaleDataForm(prev => ({ ...prev, form: e.target.value }));
+  }
+
+  function handleQuantity(e: React.ChangeEvent<HTMLInputElement>) {
+    setSaleDataForm(prev => ({
+      ...prev,
+      quantity: Number(e.target.value) || 1,
+    }));
+  }
+
+  function handlePrice(e: React.ChangeEvent<HTMLInputElement>) {
+    setSaleDataForm(prev => ({
+      ...prev,
+      price: Number(e.target.value) || 0,
+    }));
+  }
+
+  async function handleSale(
+    e: React.MouseEvent<HTMLButtonElement>
+  ) {
     e.preventDefault();
-   
-    const dataObjct = {
-      items:[{
-        id:saleDataForm.id,
-        quantity:saleDataForm.quantity,
-        salePrice:saleDataForm.price,
-      }]
-    }
-    const response = await sellOneItemApi(dataObjct)
-    if(response.success){
-      console.log("item sold successfully");
+
+    const dataObject = {
+      items: [
+        {
+          id: saleDataForm.id,
+          quantity: saleDataForm.quantity,
+          salePrice: saleDataForm.price,
+        },
+      ],
+    };
+
+    const response = await sellOneItemApi(dataObject);
+
+    if (response.success) {
       const responseItems = await getAllItemsApi();
-      if(responseItems.success){
+      if (responseItems.success) {
         setItemsInGroup(responseItems.items);
-      }else{
-        setErrorCardMessage(responseItems.message)
-        setErrorCardVisible(true)
+      } else {
+        setErrorCardMessage(responseItems.message);
+        setErrorCardVisible(true);
       }
+
       setSaleDataForm({
-        id:0,
-        barcode:"",
-        name:"",
-        company:"",
-        form:"",
-        quantity:1,
-        price:0,
-    }) 
-}
-else{
-  setErrorCardMessage(response.message)
-  setErrorCardVisible(true)
-}
+        id: 0,
+        barcode: "",
+        name: "",
+        company: "",
+        form: "",
+        quantity: 1,
+        price: 0,
+      });
+    } else {
+      setErrorCardMessage(response.message);
+      setErrorCardVisible(true);
+    }
+  }
 
-}
-
-    //==نقر البيع==
-
-
-    // نقر محو
-function emptyHandle(e:React.MouseEvent<HTMLButtonElement, MouseEvent>){
+  function emptyHandle(
+    e: React.MouseEvent<HTMLButtonElement>
+  ) {
     e.preventDefault();
     setSaleDataForm({
-        id:0,
-        barcode:"",
-        name:"",
-        company:"",
-        form:"",
-        quantity:1,
-        price:0,
-    });}
-    // ==نقر محو==
+      id: 0,
+      barcode: "",
+      name: "",
+      company: "",
+      form: "",
+      quantity: 1,
+      price: 0,
+    });
+  }
+
+  /* ================ RENDER ================= */
 
   return (
     <div className="sale-form-container">
       <div className="sale-top-buts">
-        {/* <ShoppingCartIcon onClick={()=>{setSaleGroupVisible(!saleGroupVisible)}}
+        <EventNoteIcon
+          onClick={() =>
+            setSaleRecordVisible(!saleRecordVisible)
+          }
           style={{ fontSize: "30px", cursor: "pointer" }}
-        ></ShoppingCartIcon> */}
-        <EventNoteIcon onClick={()=>{setSaleRecordVisible(!saleRecordVisible)}}
-          style={{ fontSize: "30px", cursor: "pointer" }}
-        ></EventNoteIcon>
+        />
       </div>
 
       <form className="sale-form">
-        <MyInput onChange={handleBarcode} input_v={saleDataForm.barcode} label_v={"الباركود"} />
-        <MyInput  input_v={saleDataForm.name} label_v={"اسم الدواء"} />
-        <MyInput  input_v={saleDataForm.company} label_v={"الشركة"} />
-        
-        <MyInput  input_v={saleDataForm.form}  label_v={"الشكل"} />
-        <MyInput onChange={handleQuantity}  input_v={saleDataForm.quantity} label_v={"الكمية"} type_v={"number"} />
-        <MyInput  input_v={saleDataForm.price} label_v={"السعر"} type_v={"number"} />
+        <MyInput
+          label_v="الباركود"
+          input_v={saleDataForm.barcode}
+          onChange={handleBarcode}
+        />
 
-        <h3> السعر الاجمالي : {saleDataForm.quantity * saleDataForm.price}</h3>
+        <MyInput
+          label_v="اسم الدواء"
+          input_v={saleDataForm.name}
+          onChange={handleName}
+        />
+
+        <MyInput
+          label_v="الشركة"
+          input_v={saleDataForm.company}
+          onChange={handleCompany}
+        />
+
+        <MyInput
+          label_v="الشكل"
+          input_v={saleDataForm.form}
+          onChange={handleForm}
+        />
+
+        <MyInput
+          label_v="الكمية"
+          type_v="number"
+          input_v={saleDataForm.quantity}
+          onChange={handleQuantity}
+        />
+
+        <MyInput
+          label_v="السعر"
+          type_v="number"
+          input_v={saleDataForm.price}
+          onChange={handlePrice}
+        />
+
+        <h3>
+          السعر الاجمالي :
+          {saleDataForm.quantity * saleDataForm.price}
+        </h3>
+
         <div className="sale-form-buts">
-            <MyButton onClick={handleSale}>{saleGroupVisible === false ? "بيع":"اضافة"}</MyButton>
-            <MyButton onClick={emptyHandle}>محو</MyButton>
-           
+          <MyButton onClick={handleSale}>
+            {saleGroupVisible ? "اضافة" : "بيع"}
+          </MyButton>
+          <MyButton onClick={emptyHandle}>محو</MyButton>
         </div>
-
       </form>
     </div>
   );

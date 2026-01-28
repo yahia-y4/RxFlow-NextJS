@@ -6,8 +6,14 @@ import Invoice from "./invoice"
 import OneItemInfo from "./oneItemInfo"
 import IditItem from "./editItem"
 import { StorageContext } from "./storageContext"
-import { useContext } from "react"
-export default function StoragePage() {  
+import { useContext,useEffect } from "react"
+import{SelectedPageContext} from "@/app/globalsContext/selectedPageContext"
+export default function StoragePage() { 
+  const {setSelectedPage}=useContext(SelectedPageContext);
+  
+  useEffect(()=>{
+    setSelectedPage("المخزن");
+  },[]) 
   const {addInvoiceVisible , editItemVisible,itemInfoVisible} = useContext(StorageContext)
 
   return(

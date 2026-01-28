@@ -62,8 +62,9 @@
     display: flex;
     flex-direction: row;
     align-items: center;
-    justify-content: space-around;
+    gap: 20px;
     border-bottom: 1px solid #fff;
+    padding-right: 10px;
 }
 
 .statistics-table-div{

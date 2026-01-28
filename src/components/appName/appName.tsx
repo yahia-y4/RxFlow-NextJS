@@ -1,10 +1,10 @@
-import "./userName.css"
+import "./appName.css"
 type Props = {
     userN?:string
 }
-export default function UserName({userN}:Props) {
+export default function AppName({userN}:Props) {
     return(
-        <div className="user-name">
+        <div className="app-name">
             <p className="name">{userN}</p>
         </div>
     )

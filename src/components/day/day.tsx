@@ -1,8 +1,8 @@
 import "./day.css";
-export default function Day() {
+export default function Day({date}: {date?: string}) {
   return ( 
     <div className="day-container">
-      <p className="day-text">Monday, 12 June</p>
+      <p className="day-text">{date}</p>
     </div>
    );
 }   

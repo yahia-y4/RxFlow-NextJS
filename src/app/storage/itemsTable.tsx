@@ -11,10 +11,21 @@ import { getAllItemsApi } from "@/APIs/getAllItemsApi";
 import { getOneItemApi } from "@/APIs/getOneItemApi";
 
 export default function ItemsTable() {
+  const [searchValue, setSearchValue] = useState("");
 
+  const {addInvoiceVisible,
+    setItemInfoVisible,
+    storageItems,
+    setStorageItems,
+    selectedItem,
+    setSelectedItem,
+    InvoiceData,
+    setInvoiceData
+    ,tempItemsInvoice,
+    setTempItemsInvoice}
+     = useContext(StorageContext)
 
-  const {addInvoiceVisible,setItemInfoVisible,storageItems,setStorageItems,selectedItem,setSelectedItem,InvoiceData,setInvoiceData,tempItemsInvoice,setTempItemsInvoice} = useContext(StorageContext)
-  
+  // --------- جلب البيانات من API -------------
 useEffect(()=>{
   async function fetchItems(){
     const response = await getAllItemsApi();
@@ -74,9 +85,23 @@ setTempItemsInvoice((prev) => [
   }
   function onSearchf(value:string){
     console.log("searching for ",value);
+    setSearchValue(value);
+    const filteredItems = storageItems.filter((item:object)=>
+      item.name.toLowerCase().includes(value.toLowerCase()) ||
+      item.company.toLowerCase().includes(value.toLowerCase()) ||
+      item.form.toLowerCase().includes(value.toLowerCase())
+      );
+      setStorageItems(filteredItems);
   }
   function onCancelf(){
-    console.log("cancelling search ");
+  
+    setSearchValue("");
+    async function fetchItems(){
+      const response = await getAllItemsApi();
+      if(response.success){
+        setStorageItems(response.items);
+      }}
+    fetchItems();
   }
 
   const columns = [

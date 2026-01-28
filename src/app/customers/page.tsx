@@ -8,9 +8,18 @@ import CustomerDebtsList from "./CustomerDebtsList"
 import CustomerPaymentsReceivedList from "./CustomerPaymentsReceivedList"
 import EditCustomer from "./EditCustomer"
 import {CustomersContext} from "@/app/customers/CustomersContext"
-import { useContext } from "react"
+import{SelectedPageContext} from "@/app/globalsContext/selectedPageContext"
+
+import { useContext, useEffect } from "react"
 
 export default function Customers() {
+
+    const {setSelectedPage}=useContext(SelectedPageContext);
+  
+  useEffect(()=>{
+    setSelectedPage("الزبائن");
+  },[])
+
 
   const {
     CustomersInfoVisible,

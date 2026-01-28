@@ -7,10 +7,18 @@ nav{
     direction: rtl;
     border-bottom: white 1px solid;
     padding-right: 10px;
+    
    
 }
 nav .nav-link{
     color: rgb(255, 255, 255);
  
+
+}
+
+nav .main-title{
+    color: white;
+    font-weight: bold;
+    margin: auto;
 
 }

@@ -7,10 +7,17 @@ import SuppliersInfo from "./suppliersInfo"
 import SuppliersPaymentsList from "./suppliersPaymentsList"
 import EditSuppliers from "./editSuppliers"
 
-import { useContext } from "react"
+import { useContext,useEffect } from "react"
 import { SuppliersContext } from "./suppliersContext"
+import{SelectedPageContext} from "@/app/globalsContext/selectedPageContext"
 
 export default function Suppliers() {
+
+    const {setSelectedPage}=useContext(SelectedPageContext);
+  
+  useEffect(()=>{
+    setSelectedPage("الموردين");
+  },[])
   const {
     suppliersInfoVisible,
     editSupplierVisible,

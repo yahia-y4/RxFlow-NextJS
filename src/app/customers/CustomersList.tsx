@@ -3,7 +3,7 @@
 import "./customers.css";
 import MyTable from "@/components/myTable/myTable";
 import MySearch from "@/components/mySearch/mySearch";
-import { useContext, useEffect } from "react";
+import { useContext, useEffect,useState } from "react";
 import { CustomersContext } from "@/app/customers/CustomersContext";
 import { getAllCustomerApi } from "@/APIs/getAllCustomerApi";
 import {getOneCustomerApi} from "@/APIs/getOneCustomerApi";
@@ -11,6 +11,7 @@ import{ErrorContext} from "@/app/globalsContext/errorContext"
 
 export default function CustomersList() {
   // --------state & context-------- //
+  const [searchValue, setSearchValue] = useState("");
   const { setCustomersInfoVisible,selectedCustomer, setSelectedCustomer,ListCustomersData,setListCustomersData } = useContext(CustomersContext);
   const {setErrorCardMessage,setErrorCardVisible} = useContext(ErrorContext);
   const columns = [
@@ -51,10 +52,43 @@ fetchCustomers();
 
   }
   //---------------------------------//
+
+
+
+//---------البحث -------------
+function onSearchf(value: string) {
+  setSearchValue(value);
+
+  const search = value.toLowerCase();
+
+  const filteredCustomers = ListCustomersData.filter(
+    (customer: Customer) =>
+      customer.name.toLowerCase().includes(search) ||
+      String(customer.phone_number ?? "").includes(value)
+  );
+
+  setListCustomersData(filteredCustomers);
+}
+
+  function onCancelf() {
+
+    setSearchValue("");
+    async function fetchCustomers() {
+      const res = await getAllCustomerApi();
+      if (res.success) {
+        setListCustomersData(res.customers);
+      } else {
+        console.log("Failed to fetch customers");
+      }
+  }
+    fetchCustomers();
+  }
+
+
   return (
     <div className="customers-list">
       <h2>قائمة الزبائن</h2>
-      <MySearch />
+      <MySearch onSearch={onSearchf} onCancel={onCancelf}></MySearch>
       <div className="ListCustomers-table">
         <MyTable
           columns={columns}
