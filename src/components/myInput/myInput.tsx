@@ -1,10 +1,10 @@
 import "./myInput.css";
 
 type MyInputProps = {
-  input_v: string | number;
+  input_v: string | number |"";
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   type_v?: string;
-  label_v?: string;
+  label_v?: string ;
   plaseholder_v?: string;
   children?: React.ReactNode;
   onClick?: React.MouseEventHandler<HTMLInputElement>;
@@ -27,7 +27,7 @@ export default function MyInput({
         <input
           type={type_v}
           placeholder={plaseholder_v}
-          value={input_v}
+          value={input_v || ""}
           onChange={onChange}
           onClick={onClick}
         />

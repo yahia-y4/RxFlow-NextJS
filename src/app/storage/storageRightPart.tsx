@@ -29,22 +29,33 @@ type FormItemData = {
 
 const FORM_OPTIONS = [
   { value: "أقراص", label: "أقراص" },
-  { value: "كبسول", label: "كبسول" },
+  { value: "كبسولات", label: "كبسولات" },
   { value: "شراب", label: "شراب" },
+  { value: "معلق", label: "معلق" },
+  { value: "حقن", label: "حقن" },
+  { value: "كريم", label: "كريم" },
+  { value: "مرهم", label: "مرهم" },
+  { value: "قطرات", label: "قطرات" },
+  { value: "بخاخ", label: "بخاخ" },
 ];
 
 const UNIT_OPTIONS = [
   { value: "mg", label: "mg" },
-  { value: "ml", label: "ml" },
   { value: "g", label: "g" },
+  { value: "mcg", label: "mcg" },
+  { value: "ml", label: "ml" },
+  { value: "iu", label: "iu" },
 ];
+
 
 const PACKAGE_OPTIONS = [
   { value: "علبة", label: "علبة" },
   { value: "قنينة", label: "قنينة" },
   { value: "شريط", label: "شريط" },
+  { value: "أنبوب", label: "أنبوب" },
+  { value: "أمبولة", label: "أمبولة" },
+  { value: "كيس", label: "كيس" },
 ];
-
 
 export default function StorageRightPart() {
   const [addItemsVisible, setAddItemsVisible] = useState(false);

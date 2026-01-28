@@ -7,6 +7,7 @@ import { WarningContext } from "@/app/globalsContext/warningContext"
 import {deleteItemApi} from "@/APIs/deleteItemApi"
 import {getAllItemsApi} from "@/APIs/getAllItemsApi"
 import { useContext } from "react"
+import { formatDateTime } from "@/APIs/formatDateTime";
 export default function OneItemInfo() {
 
     const {setEditItemVisible,setItemInfoVisible,selectedItem,setStorageItems} = useContext(StorageContext);
@@ -50,12 +51,11 @@ export default function OneItemInfo() {
             <p className="one-item-info">سعر الشراء : {selectedItem.price} </p>
             <p className="one-item-info">سعر البيع : {selectedItem.price + (selectedItem.price * selectedItem.profit)} </p>
             <p className="one-item-info">نسبة الربح : {selectedItem.profit / 100} %</p>
-            <p className="one-item-info"> تاريخ انتهاء الصلاحية : {selectedItem.expiry_date}</p>
+            <p className="one-item-info"> تاريخ انتهاء الصلاحية : {formatDateTime(selectedItem.expiry_date)}</p>
             <p className="one-item-info">الكود : {selectedItem.code}</p>
-            <p className="one-item-info">تاريخ الاضافة : {selectedItem.createdAt}</p>
+            <p className="one-item-info">تاريخ الاضافة : {formatDateTime(selectedItem.createdAt)}</p>
             {selectedItem.isUpdated && <p className="one-item-info"> معدل</p>}
-           {selectedItem.isUpdated && <p className="one-item-info">تاريخ اخر تعديل : {selectedItem.updatedAt}</p>}
-
+           {selectedItem.isUpdated && <p className="one-item-info">تاريخ اخر تعديل : {formatDateTime(selectedItem.updatedAt)}</p>}
          </div>
     </div>
 

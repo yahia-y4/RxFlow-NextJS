@@ -16,7 +16,7 @@ import { WarningContext } from "../globalsContext/warningContext";
 import { deleteSupplierApi } from "@/APIs/deleteSupplierApi";
 import { getSuppliersApi } from "@/APIs/getSuppliersApi";
 import { sendPaymentSupplierApi } from "@/APIs/sendPaymentSupplierApi";
-
+import { formatDateTime } from "@/APIs/formatDateTime";
 
 export default function SuppliersInfo() {
   
@@ -144,9 +144,9 @@ function emptyPaymentSupplier(){
         <p>اسم المستودع: {selectedSupplier.warehouse_name}</p>
         <p>رقم الهاتف: {selectedSupplier.phone_number}</p>
         <p>العنوان: {selectedSupplier.location}</p>
-        <p>تاريخ الاضافة : {selectedSupplier.createdAt}</p>
+        <p>تاريخ الاضافة : {formatDateTime(selectedSupplier.createdAt)}</p>
         {selectedSupplier.isUpdated &&  <p> معدل</p>}
-        {selectedSupplier.isUpdated && <p>تاريخ اخر تعديل : {selectedSupplier.updatedAt}</p>}
+        {selectedSupplier.isUpdated && <p>تاريخ اخر تعديل : {formatDateTime(selectedSupplier.updatedAt)}</p>}
         <p>المستحقات : {selectedSupplier.payable_amount}</p>
       </div>
 
