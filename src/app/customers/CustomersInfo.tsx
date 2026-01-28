@@ -19,9 +19,15 @@ import{ErrorContext} from "@/app/globalsContext/errorContext"
 import { addDebtCustomerApi } from "@/APIs/addDebtCustomerApi";
 import{getOneCustomerApi} from "@/APIs/getOneCustomerApi"
 import {receivePaymentCustomerApi} from "@/APIs/receivePaymentCustomerApi";
+import {WarningContext} from "@/app/globalsContext/warningContext"
+import {deleteCustomerApi} from "@/APIs/deleteCustomerApi"
+
  export default function CustomersInfo() {
     // -----------state & context-----------//
     const {setErrorCardMessage,setErrorCardVisible} = useContext(ErrorContext);
+
+    const {setWarningFunction,setWarningCardMessage,setWarningCardVisible} = useContext(WarningContext);
+
     const {setCustomerPaymentsReceivedListVisible,
         setCustomersInfoVisible,
         setEditCustomerVisible,
@@ -113,12 +119,38 @@ async function handleDebtFormSubmit() {
 //-----------------------------------------//
 
 
+
+
+//-------------delete customer -------------//
+async function confirmDeleteCustomer() {
+    // Logic to delete customer
+    const result = await deleteCustomerApi(selectedCustomer.id);
+    if(result.success){
+        console.log("Customer deleted successfully");
+        setCustomersInfoVisible(false);
+        setCustomerPaymentsReceivedListVisible(false);
+        setCustomerDebtsListVisible(false);
+    }else{
+        setErrorCardMessage(result.message);
+        setErrorCardVisible(true);
+    }
+}
+
+async function deleteCustomerHandler() {
+    setWarningCardMessage("هل أنت متأكد من حذف هذا الزبون؟");
+    setWarningFunction(() => confirmDeleteCustomer);
+    setWarningCardVisible(true);
+}
+
+//-----------------------------------------//
+
+
     return (
         <div className="customers-info">
             <h2>تفاصيل الزبون</h2>
             <div className="customers-info-control">
                 <EditSquareIcon onClick={()=>setEditCustomerVisible(true)} style={{fontSize:"30px",cursor:"pointer"}}/>
-                <DeleteForeverIcon style={{fontSize:"30px",cursor:"pointer"}}/>
+                <DeleteForeverIcon onClick={deleteCustomerHandler} style={{fontSize:"30px",cursor:"pointer"}}/>
                 {/* الديون */}
                 <AutoStoriesIcon onClick={()=>setCustomerDebtsListVisible(!CustomerDebtsListVisible)} style={{fontSize:"30px",cursor:"pointer"}}/> 
                 {/* الدفعات المستلمة */}

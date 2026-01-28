@@ -1,7 +1,6 @@
 "use client";
 
 import "./customers.css";
-import { useState } from "react";
 import MyTable from "@/components/myTable/myTable";
 import MySearch from "@/components/mySearch/mySearch";
 import { useContext, useEffect } from "react";
@@ -12,10 +11,8 @@ import{ErrorContext} from "@/app/globalsContext/errorContext"
 
 export default function CustomersList() {
   // --------state & context-------- //
-  const { setCustomersInfoVisible,selectedCustomer, setSelectedCustomer } = useContext(CustomersContext);
+  const { setCustomersInfoVisible,selectedCustomer, setSelectedCustomer,ListCustomersData,setListCustomersData } = useContext(CustomersContext);
   const {setErrorCardMessage,setErrorCardVisible} = useContext(ErrorContext);
-
-  const [ListCustomersData, setListCustomersData] = useState([]);
   const columns = [
     { key: "id", title: "ID" },
     { key: "name", title: "اسم الزبون" },

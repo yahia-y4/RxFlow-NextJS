@@ -11,6 +11,7 @@ export const CustomersProvider = ({children}:{children:any}) => {
     const [CustomerDebtsListVisible,setCustomerDebtsListVisible] = useState(false);
     const [EditCustomerVisible,setEditCustomerVisible] = useState(false)
     const[selectedCustomer,setSelectedCustomer] = useState({});
+    const [ListCustomersData,setListCustomersData] = useState([]);
     return(
         <CustomersContext.Provider value={{
             CustomersInfoVisible,setCustomersInfoVisible,
@@ -20,7 +21,9 @@ export const CustomersProvider = ({children}:{children:any}) => {
             CustomerDebtsListVisible,
             setCustomerDebtsListVisible,
             selectedCustomer,
-            setSelectedCustomer
+            setSelectedCustomer,
+            ListCustomersData,
+            setListCustomersData
 
         }}>
             {children}

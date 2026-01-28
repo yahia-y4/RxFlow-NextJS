@@ -6,6 +6,8 @@ import MyInput from "@/components/myInput/myInput"
 import {addCustomerApi} from "@/APIs/addCustomerApi"
 import { useState,useContext } from "react"
 import {ErrorContext} from "@/app/globalsContext/errorContext"
+import { CustomersContext } from "@/app/customers/CustomersContext"
+import { getAllCustomerApi } from "@/APIs/getAllCustomerApi"
 /* ================== Component ================== */
  export default function CustomersForm() {
   const [customerData,setCustomerData] = useState({
@@ -16,6 +18,7 @@ import {ErrorContext} from "@/app/globalsContext/errorContext"
 
 
 const {setErrorCardMessage,setErrorCardVisible} = useContext(ErrorContext);
+const {setListCustomersData} = useContext(CustomersContext);
 
   // ------------handle inputs change------------//
   function handleNameChange(e: React.ChangeEvent<HTMLInputElement>) {
@@ -46,8 +49,15 @@ const {setErrorCardMessage,setErrorCardVisible} = useContext(ErrorContext);
 async function addCustomerHandler() {
 const result = await addCustomerApi(customerData);
 if(result.success){
-  console.log("Customer added successfully", result);
-emptyForm();
+    const res = await getAllCustomerApi();
+    if (res.success) {
+      setListCustomersData(res.customers);
+      emptyForm();
+
+    }else {
+      setErrorCardMessage(res.message);
+      setErrorCardVisible(true);
+    }
 }else{
 setErrorCardMessage(result.message);
 setErrorCardVisible(true);
