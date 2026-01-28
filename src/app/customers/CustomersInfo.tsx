@@ -14,15 +14,20 @@ import MyTextarea from "@/components/myTextarea/myTextarea";
 import MyButton from "@/components/mybutton/myButton";
 import { useContext } from "react"
 import { CustomersContext } from "@/app/customers/CustomersContext"
+import { formatDateTime } from "@/APIs/formatDateTime";
  export default function CustomersInfo() {
+    // -----------state & context-----------//
     const {setCustomerPaymentsReceivedListVisible,
         setCustomersInfoVisible,
         setEditCustomerVisible,
         CustomerPaymentsReceivedListVisible,
         setCustomerDebtsListVisible,
-    CustomerDebtsListVisible} = useContext(CustomersContext);
+        CustomerDebtsListVisible,
+        selectedCustomer
+    } = useContext(CustomersContext);
   
     const [debtState,setDebtState] = useState("Adding"); // Adding / Receiving
+    //-------------------------------------//
     return (
         <div className="customers-info">
             <h2>تفاصيل الزبون</h2>
@@ -41,13 +46,15 @@ import { CustomersContext } from "@/app/customers/CustomersContext"
             </div>
 
             <div className="customers-info-content">
-                     <p className="one-customer-info">اسم الزبون : {"فلان"}</p>
-                     <p className="one-customer-info">رقم الهاتف : {"456789"}</p>
-                     <p className="one-customer-info">العنوان : {"ghg hsgdhhs jkhskjsh"}</p>
-                     <p className="one-customer-info">تاريخ الاضافة : {"10/1/2019"}</p>
-                     <p className="one-customer-info">تاريخ التحديث : {""}</p>
-                     <p className="one-customer-info">{"معدل"}</p>
-                     <p className="one-customer-info">مجموع الديون : {"200$"}</p>
+                     <p className="one-customer-info">رقم الزبون : {selectedCustomer?.id}</p>
+                     <p className="one-customer-info">اسم الزبون : {selectedCustomer?.name}</p>
+                     <p className="one-customer-info">رقم الهاتف : {selectedCustomer?.phone_number}</p>
+                     <p className="one-customer-info">العنوان : {selectedCustomer?.address}</p>
+                     <p className="one-customer-info">تاريخ الاضافة : {formatDateTime(selectedCustomer?.createdAt)}</p>
+                    {selectedCustomer.isUpdated && <p className="one-customer-info">{"معدل"}</p> }
+
+                    { selectedCustomer.isUpdated && <p className="one-customer-info">تاريخ التحديث : {formatDateTime(selectedCustomer.updatedAt)}</p>}
+                     <p className="one-customer-info">مجموع الديون : {selectedCustomer?.debts}</p>
             </div>
 
             <div className="debt-control-buts">
