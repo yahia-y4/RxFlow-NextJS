@@ -16,13 +16,14 @@ export default function Navbar() {
   return (
     <nav>
     <Link className='nav-link' href="/"><PersonalVideoIcon /></Link>
-    <Link className='nav-link' href="/account"><AccountBoxIcon /></Link>
     <Link className='nav-link' href="/storage"><ArrowCircleDownIcon /></Link>
     <Link className='nav-link' href="/sale"><ArrowCircleUpIcon /></Link>
     <Link className='nav-link' href="/purchaseInvoice"><ReceiptLongIcon /></Link>
     <Link className='nav-link' href="/suppliers"><GroupAddIcon /></Link>
     <Link className='nav-link' href="/customers"><GroupRemoveIcon /></Link>
     <Link className='nav-link' href="/statistics"><AssessmentIcon/></Link>
+        <Link className='nav-link' href="/account"><AccountBoxIcon /></Link>
+
     <h1 className='main-title'>{selectedPage}</h1>
     </nav>
   );

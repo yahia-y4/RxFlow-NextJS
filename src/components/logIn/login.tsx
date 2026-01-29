@@ -8,6 +8,8 @@ import { CreateNewUser } from "@/APIs/registerApis"
 import { loginApi } from "@/APIs/loginApi"
 import {useContext} from 'react'
 import {ErrorContext} from '@/app/globalsContext/errorContext'
+import { AccountContext } from "@/app/account/accountContext"
+
 
 type UserData = {
   UserName?: string,
@@ -23,6 +25,8 @@ export default function Login() {
     Email: "",
     Password: ""
   }) 
+    const {isLogin, setIsLogin} = useContext(AccountContext);
+
   const {setErrorCardMessage,setErrorCardVisible} = useContext(ErrorContext)
   async function loginHandler(e:React.FormEvent){
     e.preventDefault()
@@ -34,6 +38,8 @@ export default function Login() {
      if(response.success){
       console.log(response)
         setMode("login")
+        setIsLogin(true)
+
      }else{
         console.log(response)
         setErrorCardMessage(response.message)
@@ -44,6 +50,7 @@ export default function Login() {
         const response = await loginApi(userData.Email!,userData.Password!)
         if(response.success){
             console.log(response)
+            setIsLogin(true)
         }else{
             console.log(response)
             setErrorCardMessage(response.message)
