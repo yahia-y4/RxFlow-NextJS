@@ -4,7 +4,10 @@ import "./globals.css";
 import { ErrorProvider } from "@/app/globalsContext/errorContext";
 import { WarningProvider } from "@/app/globalsContext/warningContext";
 import{SelectedPageProvider} from "@/app/globalsContext/selectedPageContext"
+import {SuccessProvider} from "@/app/globalsContext/successContext"
 import WarningCard from "@/components/warning/warning";
+import SuccessCard from "@/components/successCard/successCard";
+
 
 
 
@@ -16,9 +19,11 @@ export default function RootLayout({ children,}: Readonly<{children: React.React
   return (
     <html lang="en">
       <body className="layout-body">
+        <SuccessProvider>
         <SelectedPageProvider>
         <WarningProvider>
         <ErrorProvider>
+        <SuccessCard/>
         <Navbar/>
         <ErrorCard/>
         <WarningCard/>
@@ -26,6 +31,7 @@ export default function RootLayout({ children,}: Readonly<{children: React.React
         </ErrorProvider>
         </WarningProvider>
         </SelectedPageProvider>
+        </SuccessProvider>
       </body>
     </html>
   );

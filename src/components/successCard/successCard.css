@@ -1,0 +1,25 @@
+.success-container{
+    position: absolute;
+    background-color: rgba(100, 237, 134, 0.671);
+    width: 25%;
+    height: 5vh;
+    border-radius: 0px 20px 20px 0px;
+    font-size: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    /* Animation */
+    animation: slideFromLeft 0.3s ease-out forwards;
+}
+
+@keyframes slideFromLeft {
+    from {
+        transform: translateX(-100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
