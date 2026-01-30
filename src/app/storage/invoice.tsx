@@ -14,6 +14,10 @@ import { addPurchaseInvoiceApi } from "@/APIs/addPurchaseInvoiceApi";
 import { StorageContext } from "./storageContext";
 import { ErrorContext } from "../globalsContext/errorContext";
 
+
+import {LoaderContext} from "@/app/globalsContext/loaderContext"
+import {SuccessContext} from "@/app/globalsContext/successContext"
+
 /* ================== Types ================== */
 type InvoiceItem = {
   id: number;
@@ -24,10 +28,11 @@ type InvoiceItem = {
   quantity: number;
 };
 
-/* ================== Component ================== */
 export default function Invoice() {
   const storageContext = useContext(StorageContext);
   const errorContext = useContext(ErrorContext);
+  const {setIsLoading} =  useContext(LoaderContext);
+  const {setIsSuccess , setSuccessMessage} = useContext(SuccessContext);
 
   if (!storageContext || !errorContext) {
     throw new Error("Context not found");
@@ -113,9 +118,11 @@ export default function Invoice() {
 
   /* ================== حفظ الفاتورة ================== */
   async function saveInvoice() {
+    setIsLoading(true);
     if (tempItemsInvoice.length === 0) {
       setErrorCardVisible(true);
       setErrorCardMessage("الفاتورة فارغة");
+      setIsLoading(false);
       return;
     }
 
@@ -141,9 +148,13 @@ export default function Invoice() {
       });
       setTempItemsInvoice([]);
       setAddInvoiceVisible(false);
+      setIsLoading(false);
+      setSuccessMessage("تم حفظ الفاتورة بنجاح");
+      setIsSuccess(true);
     } else {
       setErrorCardVisible(true);
       setErrorCardMessage(response.message);
+      setIsLoading(false);
     }
   }
 

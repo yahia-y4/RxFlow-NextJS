@@ -7,16 +7,24 @@ import {getReceivePaymentCustomerApi} from "@/APIs/getReceivePaymentCustomerApi"
 import { useContext } from "react"
 import { CustomersContext } from "@/app/customers/CustomersContext"
 import { formatDateTime } from "@/APIs/formatDateTime";
+
+
+import {LoaderContext} from "@/app/globalsContext/loaderContext"
+import {SuccessContext} from "@/app/globalsContext/successContext"
+
 export default function CustomerPaymentsReceivedList() {
     const {selectedCustomer} = useContext(CustomersContext);
     const [customerPaymentsReceived,setCustomerPaymentsReceived] = useState([]);
 
 
+    const {setIsLoading} =  useContext(LoaderContext);
+    const {setIsSuccess , setSuccessMessage} = useContext(SuccessContext);
 
 
 
 useEffect(()=>{
         async function fetchCustomerPaymentsReceived(){
+            setIsLoading(true);
             const result = await getReceivePaymentCustomerApi(selectedCustomer.id);
             if(result.success){
                 const formatData = result.payments.map((payment: object) => ({
@@ -24,10 +32,12 @@ useEffect(()=>{
                     payment_date: formatDateTime(payment.payment_date),
                 }));
                 setCustomerPaymentsReceived(formatData);
-            }
+                setIsLoading(false);
+            }else{
+                setIsLoading(false);}
         }
         fetchCustomerPaymentsReceived();
-    })
+    },[])
 
 
     /* ===== الأعمدة ===== */

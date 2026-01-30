@@ -12,6 +12,8 @@ import { getAllCustomerApi } from "@/APIs/getAllCustomerApi"
 import { ErrorContext } from "@/app/globalsContext/errorContext"
 import { editCustomerApi } from "@/APIs/editCustomerApi"
 
+import {LoaderContext} from "@/app/globalsContext/loaderContext"
+import {SuccessContext} from "@/app/globalsContext/successContext"
 
 export default function EditCustomer() {
   const [formData,setFormData] = useState({
@@ -19,8 +21,13 @@ export default function EditCustomer() {
     phone_number: '',
     location: ''
   })
-    const {setEditCustomerVisible,selectedCustomer,setSelectedCustomer} = useContext(CustomersContext);
+    const {setEditCustomerVisible,selectedCustomer,setSelectedCustomer,setListCustomersData} = useContext(CustomersContext);
     const {setErrorCardMessage,setErrorCardVisible}=useContext(ErrorContext);
+
+
+
+    const {setIsLoading} =  useContext(LoaderContext);
+    const {setIsSuccess , setSuccessMessage} = useContext(SuccessContext);
 
     useEffect(()=>{
       setFormData({
@@ -33,22 +40,29 @@ export default function EditCustomer() {
 
 
 async function editCustomerHandler(){
+    setIsLoading(true);
     const result = await editCustomerApi(selectedCustomer.id,formData);
     if(result.success){
         const res = await getAllCustomerApi();
         const resOne = await getOneCustomerApi(selectedCustomer.id);
         if (res.success && resOne.success) {
           setSelectedCustomer(resOne.customer);
+          setListCustomersData(res.customers);
           setEditCustomerVisible(false);
+          setIsLoading(false);
+          setSuccessMessage("تم تعديل بيانات الزبون بنجاح");
+          setIsSuccess(true);
         }else {
           setErrorCardMessage(res.message);
           setErrorCardVisible(true);
+          setIsLoading(false);
         }
 
   
 }else{
     setErrorCardMessage(result.message);
     setErrorCardVisible(true);
+    setIsLoading(false);
 }
 
 

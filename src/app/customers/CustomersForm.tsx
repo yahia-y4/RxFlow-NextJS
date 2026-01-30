@@ -8,7 +8,11 @@ import { useState,useContext } from "react"
 import {ErrorContext} from "@/app/globalsContext/errorContext"
 import { CustomersContext } from "@/app/customers/CustomersContext"
 import { getAllCustomerApi } from "@/APIs/getAllCustomerApi"
-/* ================== Component ================== */
+
+
+import {LoaderContext} from "@/app/globalsContext/loaderContext"
+import {SuccessContext} from "@/app/globalsContext/successContext"
+
  export default function CustomersForm() {
   const [customerData,setCustomerData] = useState({
     name: '',
@@ -19,6 +23,11 @@ import { getAllCustomerApi } from "@/APIs/getAllCustomerApi"
 
 const {setErrorCardMessage,setErrorCardVisible} = useContext(ErrorContext);
 const {setListCustomersData} = useContext(CustomersContext);
+
+
+
+    const {setIsLoading} =  useContext(LoaderContext);
+    const {setIsSuccess , setSuccessMessage} = useContext(SuccessContext);
 
   // ------------handle inputs change------------//
   function handleNameChange(e: React.ChangeEvent<HTMLInputElement>) {
@@ -47,20 +56,26 @@ const {setListCustomersData} = useContext(CustomersContext);
   //------------handle form submit------------//
 
 async function addCustomerHandler() {
+    setIsLoading(true);
 const result = await addCustomerApi(customerData);
 if(result.success){
     const res = await getAllCustomerApi();
     if (res.success) {
       setListCustomersData(res.customers);
       emptyForm();
+      setIsLoading(false);
+      setSuccessMessage("تمت إضافة الزبون بنجاح");
+      setIsSuccess(true);
 
     }else {
       setErrorCardMessage(res.message);
       setErrorCardVisible(true);
+      setIsLoading(false);
     }
 }else{
 setErrorCardMessage(result.message);
 setErrorCardVisible(true);
+setIsLoading(false);
 }
   }
 

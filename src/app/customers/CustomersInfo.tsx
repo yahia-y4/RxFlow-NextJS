@@ -21,6 +21,13 @@ import{getOneCustomerApi} from "@/APIs/getOneCustomerApi"
 import {receivePaymentCustomerApi} from "@/APIs/receivePaymentCustomerApi";
 import {WarningContext} from "@/app/globalsContext/warningContext"
 import {deleteCustomerApi} from "@/APIs/deleteCustomerApi"
+import { getAllCustomerApi } from "@/APIs/getAllCustomerApi";
+
+
+
+import {LoaderContext} from "@/app/globalsContext/loaderContext"
+import {SuccessContext} from "@/app/globalsContext/successContext"
+
 
  export default function CustomersInfo() {
     // -----------state & context-----------//
@@ -35,7 +42,8 @@ import {deleteCustomerApi} from "@/APIs/deleteCustomerApi"
         setCustomerDebtsListVisible,
         CustomerDebtsListVisible,
         selectedCustomer,
-        setSelectedCustomer
+        setSelectedCustomer,
+        setListCustomersData
     } = useContext(CustomersContext);
   
     const [debtState,setDebtState] = useState("Adding"); // Adding / Receiving
@@ -43,6 +51,12 @@ import {deleteCustomerApi} from "@/APIs/deleteCustomerApi"
         amount: '',
         note: ''
     });
+
+
+
+    
+    const {setIsLoading} =  useContext(LoaderContext);
+    const {setIsSuccess , setSuccessMessage} = useContext(SuccessContext);
     //-------------------------------------//
 
 
@@ -73,25 +87,29 @@ function emptyForm(){
 }
 
 async function handleDebtFormSubmit() {
+    setIsLoading(true);
     if(debtState === "Adding"){
     // Logic to add debt
     const result = await addDebtCustomerApi(selectedCustomer.id,formData);
     if(result.success){
-        console.log("Debt added successfully");
-        // Refresh selected customer data
         const res = await getOneCustomerApi(selectedCustomer.id);
         if (res.success) {
             setSelectedCustomer(res.customer);
             emptyForm();
+            setIsLoading(false);
+            setSuccessMessage("تمت إضافة الدين بنجاح");
+            setIsSuccess(true);
         }else{
          setErrorCardMessage(res.message);
          setErrorCardVisible(true);
+         setIsLoading(false);
         }
 
 
     }else{
      setErrorCardMessage(result.message);
      setErrorCardVisible(true);
+        setIsLoading(false);
     }
 
     }else{
@@ -103,14 +121,19 @@ async function handleDebtFormSubmit() {
             const res = await getOneCustomerApi(selectedCustomer.id);
             if (res.success) {
                 setSelectedCustomer(res.customer);
+                setIsLoading(false);
+                setSuccessMessage("تم استلام الدفعة بنجاح");
+                setIsSuccess(true);
                 emptyForm();
             }else{
              setErrorCardMessage(res.message);
              setErrorCardVisible(true);
+                setIsLoading(false);
             }
         }else{
          setErrorCardMessage(result.message);
          setErrorCardVisible(true);
+            setIsLoading(false);
         }
 
 
@@ -124,15 +147,21 @@ async function handleDebtFormSubmit() {
 //-------------delete customer -------------//
 async function confirmDeleteCustomer() {
     // Logic to delete customer
+    setIsLoading(true);
     const result = await deleteCustomerApi(selectedCustomer.id);
-    if(result.success){
-        console.log("Customer deleted successfully");
+    const res = await getAllCustomerApi();
+    if(result.success && res.success){
+        setListCustomersData(res.customers);
+        setIsLoading(false);
         setCustomersInfoVisible(false);
         setCustomerPaymentsReceivedListVisible(false);
         setCustomerDebtsListVisible(false);
+        setSuccessMessage("تم حذف الزبون بنجاح");
+        setIsSuccess(true);
     }else{
         setErrorCardMessage(result.message);
         setErrorCardVisible(true);
+        setIsLoading(false);
     }
 }
 

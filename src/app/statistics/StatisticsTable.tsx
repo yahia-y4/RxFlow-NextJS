@@ -2,10 +2,13 @@
 import "./statistics.css"
 import TextButton from "@/components/textButton/textButton"
 import MyTable from "@/components/myTable/myTable"
-import { useState,useEffect } from "react"
+import { useState,useEffect,useContext } from "react"
 import{TopSellingBySalesApi} from "@/APIs/TopSellingBySalesApi"
 import{LowSellingBySalesApi} from "@/APIs/lowSellingBySalesApi"
 import{LowQuantityItemsApi} from "@/APIs/lowQuantity_itemsApi"
+
+import {LoaderContext} from "@/app/globalsContext/loaderContext"
+import {SuccessContext} from "@/app/globalsContext/successContext"
 export default function StatisticsTable() {
     const [statisticState,setStatisticState]=useState("mostSold") // mostSold | leastSold 
     const columns = [
@@ -21,10 +24,15 @@ export default function StatisticsTable() {
     ]
     const [data,setData]=useState([])
 
+    
+    const {setIsLoading} = useContext(LoaderContext);
+    const {setIsSuccess , setSuccessMessage} = useContext(SuccessContext);
+
 useEffect(()=>{
 
 
     async function fetchStatistics (){
+        setIsLoading(true);
         if(statisticState==="mostSold"){
             //call most sold api
             const result = await TopSellingBySalesApi();
@@ -41,6 +49,9 @@ useEffect(()=>{
                     
                 }))
                 setData(dataFormatted);
+                setIsLoading(false);
+            }else{
+                setIsLoading(false);
             }
         }else if(statisticState==="leastSold"){
             //call least sold api
@@ -57,6 +68,9 @@ useEffect(()=>{
                     totalProfit:item0.profit,
                 }))
                 setData(dataFormatted);
+                setIsLoading(false);
+            }else{
+                setIsLoading(false);
             }
         } 
 
