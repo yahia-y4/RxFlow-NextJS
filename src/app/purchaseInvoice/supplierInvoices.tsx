@@ -2,17 +2,26 @@
 
 import "./purchaseInvoice.css"
 import Invoice from "@/components/invoice/invoice"
-import {useState} from "react";
+import {useState,useContext,useEffect} from "react";
 import {getAllPurchaseInvoiceApi} from "@/APIs/getAllPurchaseInvoiceApi";
+
+import {LoaderContext} from "@/app/globalsContext/loaderContext"
+import {SuccessContext} from "@/app/globalsContext/successContext"
 export default function SupplierInvoices() {
     const [invoicesData, setInvoicesData] = useState([]);
-    useState(()=>{
-
-
+    
+    const {setIsLoading} =  useContext(LoaderContext);
+    const {setIsSuccess , setSuccessMessage} = useContext(SuccessContext);
+    useEffect(()=>{
         async function fetchInvoices(){
+            setIsLoading(true);
             const result = await getAllPurchaseInvoiceApi();
             if(result.success){
                 setInvoicesData(result.invoice);
+                setIsLoading(false);
+            }else{
+                console.log("error in fetching invoices");
+                setIsLoading(false);
             }
         }
    fetchInvoices();

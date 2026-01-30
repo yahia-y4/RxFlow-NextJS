@@ -13,6 +13,10 @@ import { ErrorContext } from "../globalsContext/errorContext";
 import { getAllItemsApi } from "@/APIs/getAllItemsApi";
 import { sellOneItemApi } from "@/APIs/sellOneItemApi";
 
+
+import {LoaderContext} from "@/app/globalsContext/loaderContext"
+import {SuccessContext} from "@/app/globalsContext/successContext"
+
 /* ================= TYPES ================= */
 
 type Item = {
@@ -61,15 +65,22 @@ export default function SaleForm() {
 
   const [items, setItems] = useState<Item[]>([]);
 
+  
+    const {setIsLoading} =  useContext(LoaderContext);
+    const {setIsSuccess , setSuccessMessage} = useContext(SuccessContext);
+
   /* ================ EFFECT ================= */
 
   useEffect(() => {
+    setIsLoading(true);
     async function fetchItems() {
       const res = await getAllItemsApi();
       if (res.success) {
         setItems(res.items);
+        setIsLoading(false);
       } else {
         console.error("Failed to fetch items");
+        setIsLoading(false);
       }
     }
     fetchItems();
@@ -137,9 +148,8 @@ export default function SaleForm() {
     }));
   }
 
-  async function handleSale(
-    e: React.MouseEvent<HTMLButtonElement>
-  ) {
+  async function handleSale(e: React.MouseEvent<HTMLButtonElement>) {
+setIsLoading(true);
     e.preventDefault();
 
     const dataObject = {
@@ -152,15 +162,20 @@ export default function SaleForm() {
       ],
     };
 
+  
     const response = await sellOneItemApi(dataObject);
 
     if (response.success) {
       const responseItems = await getAllItemsApi();
       if (responseItems.success) {
         setItemsInGroup(responseItems.items);
+        setIsLoading(false);
+        setIsSuccess(true);
+        setSuccessMessage("تم البيع بنجاح");
       } else {
         setErrorCardMessage(responseItems.message);
         setErrorCardVisible(true);
+        setIsLoading(false);
       }
 
       setSaleDataForm({

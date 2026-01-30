@@ -8,17 +8,27 @@ import {deleteItemApi} from "@/APIs/deleteItemApi"
 import {getAllItemsApi} from "@/APIs/getAllItemsApi"
 import { useContext } from "react"
 import { formatDateTime } from "@/APIs/formatDateTime";
+
+import {LoaderContext} from "@/app/globalsContext/loaderContext"
+import {SuccessContext} from "@/app/globalsContext/successContext"
 export default function OneItemInfo() {
 
+    const {setIsLoading} =  useContext(LoaderContext);
+    const {setIsSuccess , setSuccessMessage} = useContext(SuccessContext);
     const {setEditItemVisible,setItemInfoVisible,selectedItem,setStorageItems} = useContext(StorageContext);
     const {setWarningFunction,setWarningCardMessage,setWarningCardVisible} = useContext(WarningContext);
     async function deleteItem(id:number) {
+        setIsLoading(true);
+
         const res = await deleteItemApi(id);
         if(res.success){
             setItemInfoVisible(false);
             const res = await getAllItemsApi();
             if(res.success){
                 setStorageItems(res.items);
+                setIsLoading(false);
+                setIsSuccess(true);
+                setSuccessMessage("تم حذف العنصر بنجاح");
             }
 
         }
