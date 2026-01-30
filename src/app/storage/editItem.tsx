@@ -13,6 +13,9 @@ import { ErrorContext } from "../globalsContext/errorContext";
 import { editItemApi } from "@/APIs/editItemApi";
 import { getAllItemsApi } from "@/APIs/getAllItemsApi";
 
+import {LoaderContext} from "@/app/globalsContext/loaderContext"
+import {SuccessContext} from "@/app/globalsContext/successContext"
+
 /* ================= TYPES ================= */
 
 type FormItemData = {
@@ -63,9 +66,11 @@ const PACKAGE_OPTIONS = [
   { value: "كيس", label: "كيس" },
 ];
 
-/* ================ COMPONENT ================= */
 
 export default function EditItem() {
+    const {setIsLoading} =  useContext(LoaderContext);
+      const {setIsSuccess , setSuccessMessage} = useContext(SuccessContext);
+
   const {
     setEditItemVisible,
     setStorageItems,
@@ -118,9 +123,7 @@ export default function EditItem() {
 
   /* ================ HANDLERS ================= */
 
-  const update =
-    (key: keyof FormItemData) =>
-    (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) =>
+  const update =(key: keyof FormItemData) =>(e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) =>
       setFormItemData(prev => ({
         ...prev,
         [key]:
@@ -129,11 +132,9 @@ export default function EditItem() {
             : e.target.value,
       }));
 
-  async function handleEdit(
-    e: React.MouseEvent<HTMLButtonElement>
-  ) {
+  async function handleEdit(e: React.MouseEvent<HTMLButtonElement>) {
     e.preventDefault();
-
+    setIsLoading(true);
     const resp = await editItemApi(
       selectedItem.id,
       formItemData.name,
@@ -154,18 +155,20 @@ export default function EditItem() {
     if (resp.success) {
       setEditItemVisible(false);
       setItemInfoVisible(false);
-
       const items = await getAllItemsApi();
       if (items.success) {
         setStorageItems(items.items);
+        setIsLoading(false);
+        setSuccessMessage("تم تعديل الدواء بنجاح");
+        setIsSuccess(true);
       }
     } else {
       setErrorCardVisible(true);
       setErrorCardMessage(resp.message);
+      setIsLoading(false);
     }
   }
 
-  /* ================ RENDER ================= */
 
   return (
     <div className="edit-item-page">

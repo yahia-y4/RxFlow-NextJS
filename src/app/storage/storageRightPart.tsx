@@ -11,6 +11,9 @@ import { getAllItemsApi } from "@/APIs/getAllItemsApi";
 import { ErrorContext } from "@/app/globalsContext/errorContext";
 import React, { useState } from "react";
 
+import {LoaderContext} from "@/app/globalsContext/loaderContext"
+import {SuccessContext} from "@/app/globalsContext/successContext"
+
 type FormItemData = {
   name?: string;
   company?: string;
@@ -58,6 +61,8 @@ const PACKAGE_OPTIONS = [
 ];
 
 export default function StorageRightPart() {
+
+  // states and contexts----------
   const [addItemsVisible, setAddItemsVisible] = useState(false);
   const [formItemData, setFormItemData] = useState<FormItemData>({
     name: "",
@@ -79,11 +84,26 @@ export default function StorageRightPart() {
   const {setErrorCardMessage,setErrorCardVisible}=useContext(ErrorContext);
 
   const {addInvoiceVisible,setAddInvoiceVisible,setItemInfoVisible,setStorageItems}= useContext(StorageContext);
-  function handleName(e:React.ChangeEvent<HTMLInputElement>) {
+
+    const {setIsLoading} =  useContext(LoaderContext);
+    const {setIsSuccess , setSuccessMessage} = useContext(SuccessContext);
+
+  
+
+  //----------------------------------------------------------------
+
+
+
+
+  //-------------- input handlers -----------------
+
+
+function handleName(e:React.ChangeEvent<HTMLInputElement>) {
     const value = e.target.value;
     setFormItemData({ ...formItemData, name: value });
 
   }
+
   function handleCompany(e:React.ChangeEvent<HTMLInputElement>) {
     const value = e.target.value;
     setFormItemData({ ...formItemData, company: value });
@@ -135,23 +155,32 @@ export default function StorageRightPart() {
     setFormItemData({ ...formItemData, expiry_date: value });
     }
 
+
+ //------------------------------------------------------------
+
+
+
+    //-------------- add item to storage function -----------------
+
 async function addclick(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
         e.preventDefault();
-      //add to storage logic
+          setIsLoading(true);
       const {name,company,form,concent,concent_unit,titer,titer_unit,package_type,quantity,price,profit,code,expiry_date} = formItemData;
       const response  = await addNewItemApi(name,company,form,concent,concent_unit,titer,titer_unit,package_type,quantity,price,profit,code,expiry_date);
       if(response.success){
         const newItems = await getAllItemsApi();
         if(newItems.success){
           setStorageItems(newItems.items);
+                  emptyHandle(e);
+          setIsLoading(false);
+          setSuccessMessage("تمت اضافة الدواء بنجاح");
+          setIsSuccess(true);
         }
-        emptyHandle(e);
-
-      
     
       }else{
         setErrorCardMessage(response.message);
         setErrorCardVisible(true);
+        setIsLoading(false);
       }
       console.log(formItemData)
     } 
@@ -174,6 +203,8 @@ setFormItemData({
     expiry_date: "",
 })
     }
+
+    //------------------------------------------------------------
     
   return (
     <div className="storageRightPart">
