@@ -16,7 +16,7 @@ export default function Suppliers() {
     const {setSelectedPage}=useContext(SelectedPageContext);
   
   useEffect(()=>{
-    setSelectedPage("الموردين");
+    setSelectedPage("الموردون");
   },[])
   const {
     suppliersInfoVisible,

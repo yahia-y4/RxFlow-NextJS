@@ -12,12 +12,27 @@ nav{
 }
 nav .nav-link{
     color: rgb(255, 255, 255);
+    border-bottom: 1px solid #fff;
  
 
+}
+
+nav .nav-link:hover{
+    color: #00b4d8;
+    border-bottom: 1px solid #00b4d8;   
 }
 
 nav .main-title{
     color: white;
     font-weight: bold;
 
+}
+
+.selected{
+    
+}
+
+.nav-link.selected {
+    color: #0391ad;
+    border-bottom: 1px solid #00b4d8;   
 }

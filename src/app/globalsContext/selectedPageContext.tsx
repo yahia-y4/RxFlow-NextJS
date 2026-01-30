@@ -8,7 +8,7 @@ export const SelectedPageProvider = ({
 }: {
   children: React.ReactNode;
 }) => {
-  const [selectedPage, setSelectedPage] = useState("");
+  const [selectedPage, setSelectedPage] = useState("الرئيسية");
     return (
     <SelectedPageContext.Provider
       value ={{ selectedPage, setSelectedPage }}
