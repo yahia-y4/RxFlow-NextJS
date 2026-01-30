@@ -9,6 +9,9 @@ import { loginApi } from "@/APIs/loginApi"
 import {useContext} from 'react'
 import {ErrorContext} from '@/app/globalsContext/errorContext'
 import { AccountContext } from "@/app/account/accountContext"
+import {LoaderContext} from "@/app/globalsContext/loaderContext"
+import {SuccessContext} from "@/app/globalsContext/successContext"
+
 
 
 type UserData = {
@@ -19,6 +22,9 @@ type UserData = {
 type SignupOrLogin = "login" | "signup"
 
 export default function Login() {
+      const {setIsLoading} =  useContext(LoaderContext);
+      const {setIsSuccess , setSuccessMessage} = useContext(SuccessContext);
+
   const [mode,setMode] = useState<SignupOrLogin>("signup")
   const [userData, setUserData] = useState<UserData>({
     UserName: "",
@@ -34,27 +40,38 @@ export default function Login() {
     if(mode === "signup"){
         //signup logic
      const response = await CreateNewUser(userData.UserName!,userData.Email!,userData.Password!)
+     setIsLoading(true);
 
      if(response.success){
       console.log(response)
         setMode("login")
         setIsLogin(true)
+        setIsLoading(false)
+        setSuccessMessage("تم انشاء الحساب بنجاح")
+        setIsSuccess(true)
+        
 
      }else{
         console.log(response)
         setErrorCardMessage(response.message)
         setErrorCardVisible(true)
+        setIsLoading(false)
      }
     }else{
         //login logic
         const response = await loginApi(userData.Email!,userData.Password!)
+        setIsLoading(true);
         if(response.success){
             console.log(response)
             setIsLogin(true)
+            setIsLoading(false);
+            setSuccessMessage("تم تسجيل الدخول بنجاح")
+            setIsSuccess(true)
         }else{
             console.log(response)
             setErrorCardMessage(response.message)
             setErrorCardVisible(true)
+            setIsLoading(false);
         }
        
     }

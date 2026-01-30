@@ -4,7 +4,7 @@ import "./successCard.css";
 import {SuccessContext} from "@/app/globalsContext/successContext"
 import { useContext } from "react";
 export default function SuccessCard() {
-    const {isSuccess, setIsSuccess} =  useContext(SuccessContext);
+    const {isSuccess, setIsSuccess,successMessage} =  useContext(SuccessContext);
 
     if (!isSuccess) {
         return null;
@@ -19,7 +19,7 @@ export default function SuccessCard() {
     return (
         <div className="success-container">
             <div className="success-message">
-                تمت العملية بنجاح!
+                {successMessage}
             </div>
         </div>
     );
