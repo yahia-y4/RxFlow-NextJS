@@ -7,9 +7,15 @@ import { useContext,useState,useEffect } from "react"
 import { SuppliersContext } from "@/app/suppliers/suppliersContext";
 import { editSupplierApi } from "@/APIs/editSupplierApi"
 import { ErrorContext } from "../globalsContext/errorContext"
+import { getOneSupplierApi } from "@/APIs/getOneSupplierApi"
+import { getSuppliersApi } from "@/APIs/getSuppliersApi"
+import {LoaderContext} from "@/app/globalsContext/loaderContext"
+import {SuccessContext} from "@/app/globalsContext/successContext"
 export default function EditSuppliers() {
-const {setEditSupplierVisible,selectedSupplier} = useContext(SuppliersContext);
+const {setEditSupplierVisible,selectedSupplier,setSelectedSupplier,setSuppliers} = useContext(SuppliersContext);
 const {setErrorCardMessage,setErrorCardVisible} = useContext(ErrorContext)
+const {setIsLoading} = useContext(LoaderContext)
+const {setIsSuccess,setSuccessMessage} = useContext(SuccessContext)
 const [editSupplierData,setEditSupplierData] = useState({
     name:"",
     phone_number:"",
@@ -49,13 +55,24 @@ useEffect(()=>{
 // handle submit -----
 
 async function editClick(){
+    setIsLoading(true)
 const response = await editSupplierApi(selectedSupplier.id,editSupplierData)
-if(response.success){
+const suppDetails = await getOneSupplierApi(selectedSupplier.id)
+const supps = await getSuppliersApi()
+
+if(response.success && suppDetails.success && supps.success){
+    
+ setSelectedSupplier(suppDetails.supplier)
+ setSuppliers(supps.suppliers)
 setEditSupplierVisible(false)
+setIsLoading(false)
+setSuccessMessage("تم تعديل المورد بنجاح")
+setIsSuccess(true)
 
 }else{
     setErrorCardMessage(response.message)
     setErrorCardVisible(true)
+    setIsLoading(false)
 }
 } 
 

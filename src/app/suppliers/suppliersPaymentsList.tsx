@@ -6,19 +6,28 @@ import {getPaymentSentHistorySupplier} from "@/APIs/getPaymentSentHistorySupplie
 import { useEffect,useContext } from "react";
 import { SuppliersContext } from "@/app/suppliers/suppliersContext";
 import { formatDateTime } from "@/APIs/formatDateTime";
+
+import {LoaderContext} from "@/app/globalsContext/loaderContext"
+import {SuccessContext} from "@/app/globalsContext/successContext"
+
 export default function SuppliersPaymentsList() {
     const [PaymentsListData,setPaymentsListData] = useState([])
     const {selectedSupplier,} = useContext(SuppliersContext);
-    console.log(selectedSupplier)
+
+    const {setIsLoading} =  useContext(LoaderContext);
+    const {setIsSuccess , setSuccessMessage} = useContext(SuccessContext);
+
     useEffect(()=>{
         async function fetchPaymentsList(){
-            const response = await getPaymentSentHistorySupplier(selectedSupplier.id); // هنا 1 هو معرف المورد كمثال
+            setIsLoading(true);
+            const response = await getPaymentSentHistorySupplier(selectedSupplier.id); 
             if(response.success){
                 const formattedData = response.data.map((payment:any) => ({
                     ...payment,
                     payment_date: formatDateTime(payment.payment_date)
                 }));
                 setPaymentsListData(formattedData);
+                setIsLoading(false);
             }
         }
         fetchPaymentsList();

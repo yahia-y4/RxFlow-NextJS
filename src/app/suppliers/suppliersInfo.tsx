@@ -18,6 +18,9 @@ import { getSuppliersApi } from "@/APIs/getSuppliersApi";
 import { sendPaymentSupplierApi } from "@/APIs/sendPaymentSupplierApi";
 import { formatDateTime } from "@/APIs/formatDateTime";
 
+import {LoaderContext} from "@/app/globalsContext/loaderContext"
+import {SuccessContext} from "@/app/globalsContext/successContext"
+
 export default function SuppliersInfo() {
   
   const {setErrorCardMessage,setErrorCardVisible,}=useContext(ErrorContext)
@@ -42,6 +45,12 @@ export default function SuppliersInfo() {
     
   } = useContext(SuppliersContext);
 
+
+
+    const {setIsLoading} =  useContext(LoaderContext);
+    const {setIsSuccess , setSuccessMessage} = useContext(SuccessContext);
+
+
   useEffect(() => {
     async function getOneSupplier() {
       const response = await getOneSupplierApi(selectedSupplierID);
@@ -58,6 +67,7 @@ export default function SuppliersInfo() {
   }, [selectedSupplierID]);
 
 async function deleteSupplier(){
+  setIsLoading(true)
   const response = await deleteSupplierApi(selectedSupplierID)
   if(response.success){
     const supps = await getSuppliersApi()
@@ -66,12 +76,16 @@ async function deleteSupplier(){
        setSuppliersInfoVisible(false)
       setSupplierInvoicesVisible(false)
       setSuppliersPaymentsListVisible(false)
+      setIsLoading(false)
+      setSuccessMessage("تم حذف المورد بنجاح")
+      setIsSuccess(true)
     }
    
 
   }else{
     setErrorCardMessage(response.message)
     setErrorCardVisible(true)
+    setIsLoading(false)
   }
 }
 function confirmDeleteSupplier(){
@@ -81,6 +95,7 @@ function confirmDeleteSupplier(){
 }
 
 async function sendPaymentSupplier(){
+  setIsLoading(true)
   const response = await sendPaymentSupplierApi(selectedSupplierID,sendPaymentData)
   if(response.success){
     const supps = await getSuppliersApi()
@@ -90,6 +105,9 @@ async function sendPaymentSupplier(){
       setSuppliers(supps.suppliers)
       setSelectedSupplier(updatedSupplier.supplier)
       emptyPaymentSupplier()
+      setIsLoading(false)
+      setSuccessMessage("تمت عملية الدفع بنجاح")
+      setIsSuccess(true)
        
     }
    
@@ -97,6 +115,7 @@ async function sendPaymentSupplier(){
   }else{
     setErrorCardMessage(response.message)
     setErrorCardVisible(true)
+    setIsLoading(false)
   }
 }
 function emptyPaymentSupplier(){
@@ -151,8 +170,8 @@ function emptyPaymentSupplier(){
       </div>
 
       <div className="Suppliers-info-inputs">
-        <MyInput  label_v={"المبلغ"} value={sendPaymentData.payable_amount_send} onChange={(e) => setSendPaymentData({...sendPaymentData, payable_amount_send: Number(e.target.value)})} />
-        <MyTextarea label_v={"ملاحظة"} value={sendPaymentData.note} onChange={(e) => setSendPaymentData({...sendPaymentData, note: e.target.value})} />
+        <MyInput  label_v={"المبلغ"} input_v={sendPaymentData.payable_amount_send} onChange={(e) => setSendPaymentData({...sendPaymentData, payable_amount_send: Number(e.target.value)})} />
+        <MyTextarea label_v={"ملاحظة"} data_v={sendPaymentData.note} onChange={(e) => setSendPaymentData({...sendPaymentData, note: e.target.value})} />
       </div>
       <div className="Suppliers-info-buts">
         <MyButton onClick={sendPaymentSupplier}>دفع</MyButton>
