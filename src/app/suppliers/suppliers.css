@@ -102,6 +102,8 @@ border-left: #fff 1px solid;
 }
 
 .Suppliers-payments-list{
+        border-left: #fff 1px solid;
+
     width: 40%;
     display: flex;
     flex-direction: column;
@@ -176,4 +178,7 @@ border-left: #fff 1px solid;
     display: flex;
     align-items: center;
     justify-content: center;
+}
+.active{
+    color: #00b4d8;
 }

@@ -1,4 +1,5 @@
 "use client";
+import "./storage.css"
 import MyButton from "@/components/mybutton/myButton";
 import MyInput from "@/components/myInput/myInput";
 import MySelect from "@/components/mySelect/mySelect";
@@ -209,8 +210,8 @@ setFormItemData({
   return (
     <div className="storageRightPart">
       <div className="topButsRightStorage">
-      <AddCircleOutlineIcon onClick={() => setAddItemsVisible(!addItemsVisible)} style={{fontSize:"30"} } />
-      <AssignmentAddIcon onClick={() => {setAddInvoiceVisible(!addInvoiceVisible)
+      <AddCircleOutlineIcon className={addItemsVisible === true ? "active" : ""} onClick={() => setAddItemsVisible(!addItemsVisible)} style={{fontSize:"30"} } />
+      <AssignmentAddIcon className={addInvoiceVisible === true ? "active" : ""} onClick={() => {setAddInvoiceVisible(!addInvoiceVisible)
          setItemInfoVisible(false)}} style={{fontSize:"30" }}/>
       </div>
       {

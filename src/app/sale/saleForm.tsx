@@ -213,7 +213,7 @@ setIsLoading(true);
   return (
     <div className="sale-form-container">
       <div className="sale-top-buts">
-        <EventNoteIcon
+        <EventNoteIcon className={saleRecordVisible === true ? "active" : ""} 
           onClick={() =>
             setSaleRecordVisible(!saleRecordVisible)
           }

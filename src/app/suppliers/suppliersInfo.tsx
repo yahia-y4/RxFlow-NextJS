@@ -141,7 +141,7 @@ function emptyPaymentSupplier(){
           onClick={() => setSupplierInvoicesVisible(!supplierInvoicesVisible)}
           style={{ fontSize: "30px", cursor: "pointer" }}
         ></ReceiptLongIcon> */}
-        <AttachMoneyIcon
+        <AttachMoneyIcon className={suppliersPaymentsListVisible === true ? "active" : ""} 
           onClick={() =>
             setSuppliersPaymentsListVisible(!suppliersPaymentsListVisible)
           }

@@ -181,9 +181,9 @@ async function deleteCustomerHandler() {
                 <EditSquareIcon onClick={()=>setEditCustomerVisible(true)} style={{fontSize:"30px",cursor:"pointer"}}/>
                 <DeleteForeverIcon onClick={deleteCustomerHandler} style={{fontSize:"30px",cursor:"pointer"}}/>
                 {/* الديون */}
-                <AutoStoriesIcon onClick={()=>setCustomerDebtsListVisible(!CustomerDebtsListVisible)} style={{fontSize:"30px",cursor:"pointer"}}/> 
+                <AutoStoriesIcon  className={CustomerDebtsListVisible === true ? "active" : ""} onClick={()=>setCustomerDebtsListVisible(!CustomerDebtsListVisible)} style={{fontSize:"30px",cursor:"pointer"}}/> 
                 {/* الدفعات المستلمة */}
-                <ChecklistRtlIcon onClick={()=>setCustomerPaymentsReceivedListVisible(!CustomerPaymentsReceivedListVisible)} style={{fontSize:"30px",cursor:"pointer"}}/>
+                <ChecklistRtlIcon className={CustomerPaymentsReceivedListVisible === true ? "active" : ""} onClick={()=>setCustomerPaymentsReceivedListVisible(!CustomerPaymentsReceivedListVisible)} style={{fontSize:"30px",cursor:"pointer"}}/>
 
                 <CloseIcon onClick={()=>{setCustomersInfoVisible(false);
                     setCustomerPaymentsReceivedListVisible(false);

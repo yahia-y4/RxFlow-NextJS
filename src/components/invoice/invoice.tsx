@@ -6,7 +6,6 @@ import { formatDateTime } from "@/APIs/formatDateTime";
 import MyTable from "@/components/myTable/myTable";
 export default function Invoice({dataInvoice}:{dataInvoice:object}) {
 
-console.log(dataInvoice);
 const itemsData = dataInvoice.Items.map((item:object)=>({
     id: item.id,
     name:item.name,
@@ -18,12 +17,13 @@ const itemsData = dataInvoice.Items.map((item:object)=>({
 }))
 
         const columns = [
+          { key: "id", title: "id" },
            { key: "name", title: "اسم الدواء" },
            { key: "company", title: "الشركة" },
            { key: "form", title: "الشكل" },
            { key: "price", title: "سعر الشراء" },
            { key: "quantity", title: "الكمية" },
-           { key: "total_price", title: "سعر الإجمالي" },
+           { key: "total_price", title: "السعر الإجمالي" },
        ]
   return (
     <div className="Invoice">
