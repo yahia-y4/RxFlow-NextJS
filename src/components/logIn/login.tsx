@@ -40,9 +40,10 @@ export default function Login() {
     if(mode === "signup"){
         //signup logic
      const response = await CreateNewUser(userData.UserName!,userData.Email!,userData.Password!)
+     const response2 = await loginApi(userData.Email!,userData.Password!)
      setIsLoading(true);
 
-     if(response.success){
+     if(response.success && response2.success){
       console.log(response)
         setMode("login")
         setIsLogin(true)
