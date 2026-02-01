@@ -60,7 +60,7 @@ export default function OneItemInfo() {
             <p className="one-item-info">العبوة : {selectedItem.package_type}</p>
             <p className="one-item-info">سعر الشراء : {selectedItem.price} </p>
             <p className="one-item-info">سعر البيع : {selectedItem.price + (selectedItem.price * selectedItem.profit)} </p>
-            <p className="one-item-info">نسبة الربح : {selectedItem.profit / 100} %</p>
+            <p className="one-item-info">نسبة الربح : {selectedItem.profit * 100} %</p>
             <p className="one-item-info"> تاريخ انتهاء الصلاحية : {formatDateTime(selectedItem.expiry_date)}</p>
             <p className="one-item-info">الكود : {selectedItem.code}</p>
             <p className="one-item-info">تاريخ الاضافة : {formatDateTime(selectedItem.createdAt)}</p>

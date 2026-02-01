@@ -25,8 +25,8 @@ type FormItemData = {
   titer_unit?: string;
   package_type?: string;
   quantity?: number;
-  price?: number;
-  profit?: number;
+  price?: number | string;
+  profit?: number | string;
   code?: string;
   expiry_date?: string;
 };
@@ -76,7 +76,7 @@ export default function StorageRightPart() {
     package_type:"علبة",
     quantity: 1,
     price:0,
-    profit: 0,
+    profit:0,
     code: "",
     expiry_date: "",
 
@@ -84,12 +84,15 @@ export default function StorageRightPart() {
   });
   const {setErrorCardMessage,setErrorCardVisible}=useContext(ErrorContext);
 
-  const {addInvoiceVisible,setAddInvoiceVisible,setItemInfoVisible,setStorageItems}= useContext(StorageContext);
+  const {addInvoiceVisible,setAddInvoiceVisible,setItemInfoVisible,setStorageItems,storageItems}= useContext(StorageContext);
 
     const {setIsLoading} =  useContext(LoaderContext);
     const {setIsSuccess , setSuccessMessage} = useContext(SuccessContext);
+    console.info("storage items in right part",storageItems);
+    
 
   
+   
 
   //----------------------------------------------------------------
 
@@ -140,12 +143,13 @@ function handleName(e:React.ChangeEvent<HTMLInputElement>) {
     setFormItemData({ ...formItemData, quantity: value });
   }
   function handlePriceBuy(e:React.ChangeEvent<HTMLInputElement>) {
-    const value = parseFloat(e.target.value);
-    setFormItemData({ ...formItemData, price: value });
+    
+    setFormItemData({ ...formItemData, price: e.target.value });
   }
     function handleProfit(e:React.ChangeEvent<HTMLInputElement>) {
-    const value = parseFloat(e.target.value);
-    setFormItemData({ ...formItemData, profit: value });
+    
+  
+    setFormItemData({ ...formItemData, profit:e.target.value});
   }
     function handleBarcode(e:React.ChangeEvent<HTMLInputElement>) {
     const value = e.target.value;
@@ -167,7 +171,7 @@ async function addclick(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
         e.preventDefault();
           setIsLoading(true);
       const {name,company,form,concent,concent_unit,titer,titer_unit,package_type,quantity,price,profit,code,expiry_date} = formItemData;
-      const response  = await addNewItemApi(name,company,form,concent,concent_unit,titer,titer_unit,package_type,quantity,price,profit,code,expiry_date);
+      const response  = await addNewItemApi(name,company,form,concent,concent_unit,titer,titer_unit,package_type,quantity,price,(+profit / 100),code,expiry_date);
       if(response.success){
         const newItems = await getAllItemsApi();
         if(newItems.success){
@@ -265,19 +269,21 @@ setFormItemData({
           input_v={formItemData.quantity}
         onChange={handleQuantity}
           label_v={"الكمية"}
-          type_v={"number"}
+          
         ></MyInput>
         <MyInput
         onChange={handlePriceBuy}
           input_v={formItemData.price}  
           label_v={"سعر الشراء"}
           type_v={"number"}
+         
         ></MyInput>
         <MyInput
         onChange={handleProfit}
           input_v={formItemData.profit}
-          label_v={"نسبة الربح %"}
+          label_v={"نسبة الربح % "}
           type_v={"number"}
+         
         ></MyInput>
         <MyInput
         onChange={handleBarcode}

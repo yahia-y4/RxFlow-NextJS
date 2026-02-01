@@ -89,7 +89,8 @@ setTempItemsInvoice((prev) => [
     const filteredItems = storageItems.filter((item:object)=>
       item.name.toLowerCase().includes(value.toLowerCase()) ||
       item.company.toLowerCase().includes(value.toLowerCase()) ||
-      item.form.toLowerCase().includes(value.toLowerCase())
+      item.form.toLowerCase().includes(value.toLowerCase()) || 
+      item.code.toLowerCase() == value.toLowerCase()
       );
       setStorageItems(filteredItems);
   }
@@ -119,9 +120,14 @@ setTempItemsInvoice((prev) => [
 
 
   return (
+
     <div className="itemsTableStorage"> 
 
      <MySearch onSearch={onSearchf} onCancel={onCancelf}></MySearch>
-     <MyTable columns={columns} data={storageItems} onRowClick={onRowClick}/>
+     <div className="itemsTableStorage-table">
+<MyTable columns={columns} data={storageItems} onRowClick={onRowClick}/>
+
+     </div>
+     
     </div>
     );}

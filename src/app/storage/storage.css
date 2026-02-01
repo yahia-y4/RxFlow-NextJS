@@ -153,6 +153,13 @@ font-size: 20px;
     gap: 5px;
     height: 80vh;
 }
+.itemsTableStorage{
+    margin-top: 10px;
+}
+.itemsTableStorage-table{
+    overflow-y: auto;
+    height: 85vh;
+}
 
 .active{
     color: #00b4d8;
