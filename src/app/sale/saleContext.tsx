@@ -10,6 +10,7 @@ export const SaleProvider = ({
 }) => {
 const [saleGroupVisible, setSaleGroupVisible] = useState(false);
 const [saleRecordVisible, setSaleRecordVisible] = useState(false);
+const [SalesRecordData,setSalesRecordData] = useState<any[]>([]);
 const [itemsInGroup, setItemsInGroup] = useState([ {
           id: 1,
           name: "باراسيتامول",
@@ -19,8 +20,9 @@ const [itemsInGroup, setItemsInGroup] = useState([ {
           quantity: 1,
         }]);
 
+
   return (
-    <SaleContext.Provider value={{saleGroupVisible, setSaleGroupVisible, saleRecordVisible, setSaleRecordVisible, itemsInGroup, setItemsInGroup}}>
+    <SaleContext.Provider value={{saleGroupVisible, setSaleGroupVisible, saleRecordVisible, setSaleRecordVisible, itemsInGroup, setItemsInGroup, SalesRecordData , setSalesRecordData}}>
       {children}
     </SaleContext.Provider>
   );

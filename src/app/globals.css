@@ -17,23 +17,20 @@ body {
 
 /* عرض السكرول */
 ::-webkit-scrollbar {
-  width: 0px;
-  height: 0px;
+  width: 4px;
+
 }
 
 /* خلفية المسار */
 ::-webkit-scrollbar-track {
-  background: #f1f1f1;
+  background: #ffffff00;
   border-radius: 8px;
 }
 
 /* المقبض */
 ::-webkit-scrollbar-thumb {
-  background: #150333;
+  background: #8cc5b7;
   border-radius: 8px;
+  border-radius: 15px;
 }
 
-/* عند hover */
-::-webkit-scrollbar-thumb:hover {
-  background: #760885;
-}

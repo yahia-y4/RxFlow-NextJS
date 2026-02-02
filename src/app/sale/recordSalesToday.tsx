@@ -1,9 +1,9 @@
 "use client";
-
-import { useEffect,useState } from "react";
 import "./sale.css";
+import { useEffect,useState,useContext } from "react";
 import MyTable, { TableColumn } from "@/components/myTable/myTable";
 import {getAllSalesRecords} from "@/APIs/getAllSalesRecords";
+import { SaleContext } from "./saleContext";
 
 /* ================== Types ================== */
 
@@ -22,8 +22,7 @@ type SalesRecordItem = {
 
 export default function RecordSalesToday() {
   /* ===== بيانات تجريبية (كما تأتي من الباك اند) ===== */
-  const [SalesRecordData, setSalesRecordData] = useState<any[]>([
-  ]);
+  const {SalesRecordData , setSalesRecordData} = useContext(SaleContext);
 
   useEffect(() => {
     async function fetchSalesRecords() {
@@ -53,6 +52,8 @@ export default function RecordSalesToday() {
       createdAt: invoice.createdAt,
     }))
   );
+  // ترتيب البيانات حسب التاريخ (الأحدث أولاً)
+  tableData.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
 
   /* ===== الأعمدة ===== */
   const columns: TableColumn<SalesRecordItem>[] = [

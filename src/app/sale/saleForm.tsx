@@ -12,6 +12,7 @@ import { ErrorContext } from "../globalsContext/errorContext";
 
 import { getAllItemsApi } from "@/APIs/getAllItemsApi";
 import { sellOneItemApi } from "@/APIs/sellOneItemApi";
+import { getAllSalesRecords } from "@/APIs/getAllSalesRecords";
 
 
 import {LoaderContext} from "@/app/globalsContext/loaderContext"
@@ -49,6 +50,7 @@ export default function SaleForm() {
     setSaleRecordVisible,
     saleRecordVisible,
     saleGroupVisible,
+    setSalesRecordData,
   } = useContext(SaleContext);
 
   /* ================ STATE ================= */
@@ -163,34 +165,53 @@ setIsLoading(true);
     };
 
   
-    const response = await sellOneItemApi(dataObject);
+   setIsLoading(true);
 
-    if (response.success) {
-      const responseItems = await getAllItemsApi();
-      if (responseItems.success) {
-        setItemsInGroup(responseItems.items);
-        setIsLoading(false);
-        setIsSuccess(true);
-        setSuccessMessage("تم البيع بنجاح");
-      } else {
-        setErrorCardMessage(responseItems.message);
-        setErrorCardVisible(true);
-        setIsLoading(false);
-      }
+try {
+  const response = await sellOneItemApi(dataObject);
 
-      setSaleDataForm({
-        id: 0,
-        barcode: "",
-        name: "",
-        company: "",
-        form: "",
-        quantity: 1,
-        price: 0,
-      });
-    } else {
-      setErrorCardMessage(response.message);
-      setErrorCardVisible(true);
-    }
+  if (!response.success) {
+    throw new Error(response.message);
+  }
+
+  // استدعاءات متوازية (أسرع)
+  const [responseItems, saleRecordsResponse] = await Promise.all([
+    getAllItemsApi(),
+    getAllSalesRecords(),
+  ]);
+
+  if (saleRecordsResponse.success) {
+    setSalesRecordData(saleRecordsResponse.data);
+  } else {
+    console.warn("Failed to fetch sales records after sale");
+  }
+
+  if (!responseItems.success) {
+    setErrorCardVisible(true);
+    setErrorCardMessage(responseItems.message);
+  } else {
+    setItemsInGroup(responseItems.items);
+    setIsSuccess(true);
+    setSuccessMessage("تم البيع بنجاح");
+  }
+
+  setSaleDataForm({
+    id: 0,
+    barcode: "",
+    name: "",
+    company: "",
+    form: "",
+    quantity: 1,
+    price: 0,
+  });
+
+} catch (error) {
+  setErrorCardVisible(true);
+  setErrorCardMessage(error.message || "حدث خطأ غير متوقع");
+} finally {
+  setIsLoading(false);
+}
+
   }
 
   function emptyHandle(

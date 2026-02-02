@@ -20,7 +20,7 @@ export async function addCustomerApi(customerData: CustomerData){
     if(!customerData.name || !customerData.location || !customerData.phone_number){
         return {
             success: false,
-            message: 'All fields are required',
+            message: 'جميع الحقول مطلوبة',
         }
     }
 

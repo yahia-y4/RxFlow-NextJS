@@ -13,7 +13,7 @@ import { addPurchaseInvoiceApi } from "@/APIs/addPurchaseInvoiceApi";
 
 import { StorageContext } from "./storageContext";
 import { ErrorContext } from "../globalsContext/errorContext";
-
+import { getAllItemsApi } from "@/APIs/getAllItemsApi";
 
 import {LoaderContext} from "@/app/globalsContext/loaderContext"
 import {SuccessContext} from "@/app/globalsContext/successContext"
@@ -44,6 +44,8 @@ export default function Invoice() {
     tempItemsInvoice,
     setTempItemsInvoice,
     setAddInvoiceVisible,
+    setStorageItems,
+
   } = storageContext;
 
   const { setErrorCardMessage, setErrorCardVisible } = errorContext;
@@ -137,25 +139,43 @@ export default function Invoice() {
       })),
     };
 
-    const response = await addPurchaseInvoiceApi(payload);
+  setIsLoading(true);
 
-    if (response.success) {
-      setInvoiceData({
-        warehouseId: "",
-        paid_amount: "",
-        note: "",
-        items: [],
-      });
-      setTempItemsInvoice([]);
-      setAddInvoiceVisible(false);
-      setIsLoading(false);
-      setSuccessMessage("تم حفظ الفاتورة بنجاح");
-      setIsSuccess(true);
-    } else {
-      setErrorCardVisible(true);
-      setErrorCardMessage(response.message);
-      setIsLoading(false);
-    }
+try {
+  const response = await addPurchaseInvoiceApi(payload);
+
+  if (!response.success) {
+    throw new Error(response.message);
+  }
+
+  const allItemsResponse = await getAllItemsApi();
+
+  if (!allItemsResponse.success) {
+    setErrorCardVisible(true);
+    setErrorCardMessage("تم حفظ الفاتورة ولكن حدث خطأ أثناء تحديث قائمة الأدوية");
+  } else {
+    setStorageItems(allItemsResponse.items);
+  }
+
+  setInvoiceData({
+    warehouseId: "",
+    paid_amount: "",
+    note: "",
+    items: [],
+  });
+
+  setTempItemsInvoice([]);
+  setAddInvoiceVisible(false);
+  setSuccessMessage("تم حفظ الفاتورة بنجاح");
+  setIsSuccess(true);
+
+} catch (error) {
+  setErrorCardVisible(true);
+  setErrorCardMessage(error.message || "حدث خطأ غير متوقع");
+} finally {
+  setIsLoading(false);
+}
+
   }
 
   /* ================== إلغاء الفاتورة ================== */
