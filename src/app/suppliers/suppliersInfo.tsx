@@ -17,7 +17,7 @@ import { deleteSupplierApi } from "@/APIs/deleteSupplierApi";
 import { getSuppliersApi } from "@/APIs/getSuppliersApi";
 import { sendPaymentSupplierApi } from "@/APIs/sendPaymentSupplierApi";
 import { formatDateTime } from "@/APIs/formatDateTime";
-
+import {truncateToTwoDecimals} from "@/APIs/truncateToTwoDecimals";
 import {LoaderContext} from "@/app/globalsContext/loaderContext"
 import {SuccessContext} from "@/app/globalsContext/successContext"
 
@@ -166,11 +166,11 @@ function emptyPaymentSupplier(){
         <p>تاريخ الاضافة : {formatDateTime(selectedSupplier.createdAt)}</p>
         {selectedSupplier.isUpdated &&  <p> معدل</p>}
         {selectedSupplier.isUpdated && <p>تاريخ اخر تعديل : {formatDateTime(selectedSupplier.updatedAt)}</p>}
-        <p>المستحقات : {selectedSupplier.payable_amount}</p>
+        <p>المستحقات : {truncateToTwoDecimals(selectedSupplier.payable_amount)} $</p>
       </div>
 
       <div className="Suppliers-info-inputs">
-        <MyInput  label_v={"المبلغ"} input_v={sendPaymentData.payable_amount_send} onChange={(e) => setSendPaymentData({...sendPaymentData, payable_amount_send: Number(e.target.value)})} />
+        <MyInput type_v="number" label_v={"المبلغ $"} input_v={sendPaymentData.payable_amount_send} onChange={(e) => setSendPaymentData({...sendPaymentData, payable_amount_send: Number(e.target.value)})} />
         <MyTextarea label_v={"ملاحظة"} data_v={sendPaymentData.note} onChange={(e) => setSendPaymentData({...sendPaymentData, note: e.target.value})} />
       </div>
       <div className="Suppliers-info-buts">

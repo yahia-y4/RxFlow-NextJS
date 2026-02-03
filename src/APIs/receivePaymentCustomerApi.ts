@@ -15,7 +15,7 @@ export async function receivePaymentCustomerApi(customerId: number, paymentData:
             message: 'قم بتسجيل الدخول أولاً',
         }
     }
-    if(!customerId || !paymentData.amount || paymentData.amount <= 0){
+    if(!customerId || !paymentData.amount || paymentData.amount <= 0 || !paymentData.note){
         return {
             success: false,
             message: 'خطأ في بيانات الدفع المدخلة',

@@ -4,6 +4,7 @@ import "./invoice.css"
 
 import { formatDateTime } from "@/APIs/formatDateTime";
 import MyTable from "@/components/myTable/myTable";
+import {truncateToTwoDecimals} from "@/APIs/truncateToTwoDecimals";
 export default function Invoice({dataInvoice}:{dataInvoice:object}) {
 
 const itemsData = dataInvoice.Items.map((item:object)=>({
@@ -13,7 +14,7 @@ const itemsData = dataInvoice.Items.map((item:object)=>({
     form:item.form,
     price: item.item_many_invoice.price,
     quantity: item.item_many_invoice.quantity,
-    total_price: item.item_many_invoice.price * item.item_many_invoice.quantity,
+    total_price:  truncateToTwoDecimals(item.item_many_invoice.price * item.item_many_invoice.quantity),
 }))
 
         const columns = [

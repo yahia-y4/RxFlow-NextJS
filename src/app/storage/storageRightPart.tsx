@@ -274,7 +274,7 @@ setFormItemData({
         <MyInput
         onChange={handlePriceBuy}
           input_v={formItemData.price}  
-          label_v={"سعر الشراء"}
+          label_v={"سعر الشراء $ "}
           type_v={"number"}
          
         ></MyInput>

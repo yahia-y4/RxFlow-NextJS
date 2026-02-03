@@ -24,7 +24,7 @@ import {deleteCustomerApi} from "@/APIs/deleteCustomerApi"
 import { getAllCustomerApi } from "@/APIs/getAllCustomerApi";
 
 
-
+import {truncateToTwoDecimals} from "@/APIs/truncateToTwoDecimals";
 import {LoaderContext} from "@/app/globalsContext/loaderContext"
 import {SuccessContext} from "@/app/globalsContext/successContext"
 
@@ -200,7 +200,7 @@ async function deleteCustomerHandler() {
                     {selectedCustomer.isUpdated && <p className="one-customer-info">{"معدل"}</p> }
 
                     { selectedCustomer.isUpdated && <p className="one-customer-info">تاريخ التحديث : {formatDateTime(selectedCustomer.updatedAt)}</p>}
-                     <p className="one-customer-info">مجموع الديون : {selectedCustomer?.debts}</p>
+                     <p className="one-customer-info">مجموع الديون : { truncateToTwoDecimals(selectedCustomer?.debts)} $</p>
             </div>
 
             <div className="debt-control-buts">
@@ -210,7 +210,7 @@ async function deleteCustomerHandler() {
 
             <div className="debt-inputs-div" >
                 <h3>{debtState === "Adding" ? "اضافة دين" : "استلام دفعة"}</h3>
-                <MyInput input_v={formData.amount} label_v="المبلغ" type_v="number" onChange={handleAmountChange} plaseholder_v="0.00" onClick={()=>{}}/>
+                <MyInput input_v={formData.amount} label_v="المبلغ $" type_v="number" onChange={handleAmountChange} plaseholder_v="0.00" onClick={()=>{}}/>
                 <MyTextarea data_v={formData.note} label_v="ملاحظة" onChange={handleNoteChange}/>    
                  <div className="buts-div">
                     <MyButton onClick={handleDebtFormSubmit}> {debtState === "Adding" ? "اضافة" : "استلام"}</MyButton>

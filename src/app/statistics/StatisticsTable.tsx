@@ -5,7 +5,7 @@ import MyTable from "@/components/myTable/myTable"
 import { useState,useEffect,useContext } from "react"
 import{TopSellingBySalesApi} from "@/APIs/TopSellingBySalesApi"
 import{LowSellingBySalesApi} from "@/APIs/lowSellingBySalesApi"
-import{LowQuantityItemsApi} from "@/APIs/lowQuantity_itemsApi"
+import { truncateToTwoDecimals } from "@/APIs/truncateToTwoDecimals"
 
 import {LoaderContext} from "@/app/globalsContext/loaderContext"
 import {SuccessContext} from "@/app/globalsContext/successContext"
@@ -43,9 +43,9 @@ useEffect(()=>{
                     form:item0.Item.form,
                     availableQuantity:item0.Item.quantity,
                     soldQuantity:item0.quantity,
-                    price:item0.Item.price,
-                    totalSales:item0.sales,
-                    totalProfit:item0.profit,
+                    price:truncateToTwoDecimals(item0.Item.price) + " $ ",
+                    totalSales:truncateToTwoDecimals(item0.sales) + " $ ",
+                    totalProfit:truncateToTwoDecimals(item0.profit) + " $ ",
                     
                 }))
                 setData(dataFormatted);
@@ -63,9 +63,9 @@ useEffect(()=>{
                     form:item0.Item.form,
                     availableQuantity:item0.Item.quantity,
                     soldQuantity:item0.quantity,
-                    price:item0.Item.price,
-                    totalSales:item0.sales,
-                    totalProfit:item0.profit,
+                    price: truncateToTwoDecimals(item0.Item.price) + " $ ",
+                    totalSales: truncateToTwoDecimals(item0.sales) + " $ ",
+                    totalProfit: truncateToTwoDecimals(item0.profit) + " $ ",
                 }))
                 setData(dataFormatted);
                 setIsLoading(false);

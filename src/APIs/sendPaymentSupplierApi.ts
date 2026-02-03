@@ -20,10 +20,10 @@ export async function sendPaymentSupplierApi(id:number,paymentData:PaymentSuppli
             message: 'error in id',
         }
     }
-    if(!paymentData.payable_amount_send){
+    if(!paymentData.payable_amount_send || paymentData.payable_amount_send <=0 || !paymentData.note){
         return{
             success:false,
-            message:"نقص في معلومات الدفع"
+            message:"الرجاء إدخال بيانات الدفع بشكل صحيح"
         }
 }
 

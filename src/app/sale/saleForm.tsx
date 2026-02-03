@@ -13,6 +13,7 @@ import { ErrorContext } from "../globalsContext/errorContext";
 import { getAllItemsApi } from "@/APIs/getAllItemsApi";
 import { sellOneItemApi } from "@/APIs/sellOneItemApi";
 import { getAllSalesRecords } from "@/APIs/getAllSalesRecords";
+import { truncateToTwoDecimals } from "@/APIs/truncateToTwoDecimals"
 
 
 import {LoaderContext} from "@/app/globalsContext/loaderContext"
@@ -275,7 +276,7 @@ try {
         />
 
         <MyInput
-          label_v="السعر"
+          label_v="السعر $"
           type_v="number"
           input_v={saleDataForm.price}
           onChange={handlePrice}
@@ -283,7 +284,7 @@ try {
 
         <h3>
           السعر الاجمالي :
-          {saleDataForm.quantity * saleDataForm.price}
+          { truncateToTwoDecimals(saleDataForm.quantity * saleDataForm.price) } $
         </h3>
 
         <div className="sale-form-buts">

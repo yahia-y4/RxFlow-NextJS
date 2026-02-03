@@ -5,7 +5,7 @@ import { useState, useEffect, useContext } from "react";
 import { GeneralStatistics_itemsApi } from "@/APIs/GeneralStatistics_itemsApi";
 import { GeneralStatistics_CustomersApi } from "@/APIs/GeneralStatistics_CustomersApi";
 import { GeneralStatistics_SuppliersApi } from "@/APIs/GeneralStatistics_SuppliersApi";
-
+import { truncateToTwoDecimals } from "@/APIs/truncateToTwoDecimals"
 import { LoaderContext } from "@/app/globalsContext/loaderContext";
 import { SuccessContext } from "@/app/globalsContext/successContext";
 export default function GeneralStatistics() {
@@ -50,27 +50,27 @@ export default function GeneralStatistics() {
         />
         <InfoCard
           description="رأس المال الكلي"
-          value={statisticsItems?.total_price_in_storage}
+          value={ truncateToTwoDecimals(statisticsItems?.total_price_in_storage) + " $"}
         />
         <InfoCard
           description="سعر البيع الكلي"
-          value={statisticsItems?.total_sell_price_in_storage}
+          value={ truncateToTwoDecimals(statisticsItems?.total_sell_price_in_storage) + " $"}
         />
         <InfoCard
           description="صافي الارباح في المخزن"
-          value={statisticsItems?.total_profit_in_storage}
+          value={ truncateToTwoDecimals(statisticsItems?.total_profit_in_storage) + " $"}
         />
         <InfoCard
           description="الارباح المحققة"
-          value={statisticsItems?.total_out_profit}
+          value={ truncateToTwoDecimals(statisticsItems?.total_out_profit) + " $"}
         />
         <InfoCard
           description="المبيعات المحققة"
-          value={statisticsItems?.total_out_sell_price}
+          value={ truncateToTwoDecimals(statisticsItems?.total_out_sell_price) + " $"}
         />
         <InfoCard
           description="صافي الربح المحقق"
-          value={statisticsItems?.total_out_profit}
+          value={ truncateToTwoDecimals(statisticsItems?.total_out_profit) + " $"}
         />
         <InfoCard
           description="عدد القطع المباعة"
@@ -90,7 +90,7 @@ export default function GeneralStatistics() {
         />
         <InfoCard
           description="صافي الديون الكلي"
-          value={statisticsCustomers?.total_debts}
+          value={ truncateToTwoDecimals(statisticsCustomers?.total_debts) + " $"}
         />
         <InfoCard
           description="عدد الموردين"
@@ -106,7 +106,7 @@ export default function GeneralStatistics() {
         />
         <InfoCard
           description="صافي المستحقات الكلي"
-          value={statisticsSuppliers?.total_payable_amount}
+          value={ truncateToTwoDecimals(statisticsSuppliers?.total_payable_amount) + " $"}
         />
       </div>
     </div>

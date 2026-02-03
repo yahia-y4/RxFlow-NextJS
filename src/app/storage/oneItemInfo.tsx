@@ -11,6 +11,7 @@ import { formatDateTime } from "@/APIs/formatDateTime";
 
 import {LoaderContext} from "@/app/globalsContext/loaderContext"
 import {SuccessContext} from "@/app/globalsContext/successContext"
+import { truncateToTwoDecimals } from "@/APIs/truncateToTwoDecimals";
 export default function OneItemInfo() {
 
     const {setIsLoading} =  useContext(LoaderContext);
@@ -58,8 +59,8 @@ export default function OneItemInfo() {
             <p  className="one-item-info">التركيز :{selectedItem.concent} {selectedItem.concent_unit}</p>
             <p className="one-item-info">العيار : {selectedItem.titer} {selectedItem.titer_unit}</p>
             <p className="one-item-info">العبوة : {selectedItem.package_type}</p>
-            <p className="one-item-info">سعر الشراء : {selectedItem.price} </p>
-            <p className="one-item-info">سعر البيع : {selectedItem.price + (selectedItem.price * selectedItem.profit)} </p>
+            <p className="one-item-info">سعر الشراء : {truncateToTwoDecimals(selectedItem.price)} $ </p>
+            <p className="one-item-info">سعر البيع :  {truncateToTwoDecimals(selectedItem.price + (selectedItem.price * selectedItem.profit))} $</p>
             <p className="one-item-info">نسبة الربح : {selectedItem.profit * 100} %</p>
             <p className="one-item-info"> تاريخ انتهاء الصلاحية : {formatDateTime(selectedItem.expiry_date)}</p>
             <p className="one-item-info">الكود : {selectedItem.code}</p>

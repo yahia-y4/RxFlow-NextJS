@@ -15,7 +15,7 @@ export async function addDebtCustomerApi(customerId: number, debtData: DebtCusto
             message: 'قم بتسجيل الدخول أولاً',
         }
     }
-    if(!customerId || !debtData.amount || debtData.amount <= 0){
+    if(!customerId || !debtData.amount || debtData.amount <= 0 || !debtData.note) {
         return {
             success: false,
             message: 'خطأ في بيانات الدين المدخلة',
