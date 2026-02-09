@@ -10,7 +10,6 @@ import {GeneralStatistics_CustomersApi} from "@/APIs/GeneralStatistics_Customers
 import {GeneralStatistics_SuppliersApi} from "@/APIs/GeneralStatistics_SuppliersApi";
 import{SelectedPageContext} from "@/app/globalsContext/selectedPageContext"
 
-
 import "./page.css";
 
 export default function Home() {

@@ -15,8 +15,8 @@ import { StorageContext } from "./storageContext";
 import { ErrorContext } from "../globalsContext/errorContext";
 import { getAllItemsApi } from "@/APIs/getAllItemsApi";
 
-import {LoaderContext} from "@/app/globalsContext/loaderContext"
-import {SuccessContext} from "@/app/globalsContext/successContext"
+import { LoaderContext } from "@/app/globalsContext/loaderContext";
+import { SuccessContext } from "@/app/globalsContext/successContext";
 
 /* ================== Types ================== */
 type InvoiceItem = {
@@ -31,8 +31,8 @@ type InvoiceItem = {
 export default function Invoice() {
   const storageContext = useContext(StorageContext);
   const errorContext = useContext(ErrorContext);
-  const {setIsLoading} =  useContext(LoaderContext);
-  const {setIsSuccess , setSuccessMessage} = useContext(SuccessContext);
+  const { setIsLoading } = useContext(LoaderContext);
+  const { setIsSuccess, setSuccessMessage } = useContext(SuccessContext);
 
   if (!storageContext || !errorContext) {
     throw new Error("Context not found");
@@ -45,7 +45,6 @@ export default function Invoice() {
     setTempItemsInvoice,
     setAddInvoiceVisible,
     setStorageItems,
-
   } = storageContext;
 
   const { setErrorCardMessage, setErrorCardVisible } = errorContext;
@@ -59,11 +58,12 @@ export default function Invoice() {
     async function fetchSuppliers() {
       const res = await getSuppliersApi();
       if (res?.success) {
+        // اعادة تشكيل البيانات لكي تتناسب مع العرض
         setSuppliers(
           res.suppliers.map((s: any) => ({
             value: s.id,
             label: s.name,
-          }))
+          })),
         );
       }
     }
@@ -75,9 +75,7 @@ export default function Invoice() {
     if (Number.isNaN(quantity) || quantity < 0) return;
 
     setTempItemsInvoice((prev) =>
-      prev.map((item) =>
-        item.id === id ? { ...item, quantity } : item
-      )
+      prev.map((item) => (item.id === id ? { ...item, quantity } : item)),
     );
   };
 
@@ -99,9 +97,7 @@ export default function Invoice() {
           type_v="number"
           input_v={row.quantity}
           onClick={(e) => e.stopPropagation()}
-          onChange={(e) =>
-            updateQuantity(row.id, Number(e.target.value))
-          }
+          onChange={(e) => updateQuantity(row.id, Number(e.target.value))}
         />
       ),
     },
@@ -115,7 +111,7 @@ export default function Invoice() {
   /* ================== إجمالي الفاتورة ================== */
   const invoiceTotal = tempItemsInvoice.reduce(
     (sum, item) => sum + item.price * item.quantity,
-    0
+    0,
   );
 
   /* ================== حفظ الفاتورة ================== */
@@ -127,7 +123,7 @@ export default function Invoice() {
       setIsLoading(false);
       return;
     }
-
+    // انشاء الشكل النهائي الذي سيرسل للسيرفر
     const payload = {
       warehouseId: Number(InvoiceData.warehouseId),
       paid_amount: Number(InvoiceData.paid_amount),
@@ -139,43 +135,43 @@ export default function Invoice() {
       })),
     };
 
-  setIsLoading(true);
+    setIsLoading(true);
 
-try {
-  const response = await addPurchaseInvoiceApi(payload);
+    try {
+      const response = await addPurchaseInvoiceApi(payload);
 
-  if (!response.success) {
-    throw new Error(response.message);
-  }
+      if (!response.success) {
+        throw new Error(response.message);
+      }
 
-  const allItemsResponse = await getAllItemsApi();
+      const allItemsResponse = await getAllItemsApi();
 
-  if (!allItemsResponse.success) {
-    setErrorCardVisible(true);
-    setErrorCardMessage("تم حفظ الفاتورة ولكن حدث خطأ أثناء تحديث قائمة الأدوية");
-  } else {
-    setStorageItems(allItemsResponse.items);
-  }
+      if (!allItemsResponse.success) {
+        setErrorCardVisible(true);
+        setErrorCardMessage(
+          "تم حفظ الفاتورة ولكن حدث خطأ أثناء تحديث قائمة الأدوية",
+        );
+      } else {
+        setStorageItems(allItemsResponse.items);
+      }
 
-  setInvoiceData({
-    warehouseId: "",
-    paid_amount: "",
-    note: "",
-    items: [],
-  });
+      setInvoiceData({
+        warehouseId: "",
+        paid_amount: "",
+        note: "",
+        items: [],
+      });
 
-  setTempItemsInvoice([]);
-  setAddInvoiceVisible(false);
-  setSuccessMessage("تم حفظ الفاتورة بنجاح");
-  setIsSuccess(true);
-
-} catch (error) {
-  setErrorCardVisible(true);
-  setErrorCardMessage(error.message || "حدث خطأ غير متوقع");
-} finally {
-  setIsLoading(false);
-}
-
+      setTempItemsInvoice([]);
+      setAddInvoiceVisible(false);
+      setSuccessMessage("تم حفظ الفاتورة بنجاح");
+      setIsSuccess(true);
+    } catch (error) {
+      setErrorCardVisible(true);
+      setErrorCardMessage(error.message || "حدث خطأ غير متوقع");
+    } finally {
+      setIsLoading(false);
+    }
   }
 
   /* ================== إلغاء الفاتورة ================== */
@@ -218,10 +214,7 @@ try {
           borderRadius: "5px",
         }}
       >
-        <MyTable<InvoiceItem>
-          columns={columns}
-          data={tempItemsInvoice}
-        />
+        <MyTable<InvoiceItem> columns={columns} data={tempItemsInvoice} />
       </div>
 
       <div className="invoiceTotalDiv">

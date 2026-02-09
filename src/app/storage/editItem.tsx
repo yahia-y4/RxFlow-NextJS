@@ -14,8 +14,8 @@ import { editItemApi } from "@/APIs/editItemApi";
 import { getAllItemsApi } from "@/APIs/getAllItemsApi";
 import { getOneItemApi } from "@/APIs/getOneItemApi";
 
-import {LoaderContext} from "@/app/globalsContext/loaderContext"
-import {SuccessContext} from "@/app/globalsContext/successContext"
+import { LoaderContext } from "@/app/globalsContext/loaderContext";
+import { SuccessContext } from "@/app/globalsContext/successContext";
 
 /* ================= TYPES ================= */
 
@@ -57,7 +57,6 @@ const UNIT_OPTIONS = [
   { value: "iu", label: "iu" },
 ];
 
-
 const PACKAGE_OPTIONS = [
   { value: "علبة", label: "علبة" },
   { value: "قنينة", label: "قنينة" },
@@ -67,22 +66,14 @@ const PACKAGE_OPTIONS = [
   { value: "كيس", label: "كيس" },
 ];
 
-
 export default function EditItem() {
-    const {setIsLoading} =  useContext(LoaderContext);
-      const {setIsSuccess , setSuccessMessage} = useContext(SuccessContext);
+  const { setIsLoading } = useContext(LoaderContext);
+  const { setIsSuccess, setSuccessMessage } = useContext(SuccessContext);
 
-  const {
-    setEditItemVisible,
-    setStorageItems,
-    selectedItem,
-    setSelectedItem,
-  
-  } = useContext(StorageContext);
-
-  const { setErrorCardVisible, setErrorCardMessage } =
-    useContext(ErrorContext);
+  const { setEditItemVisible, setStorageItems, selectedItem, setSelectedItem } = useContext(StorageContext);
    
+
+  const { setErrorCardVisible, setErrorCardMessage } = useContext(ErrorContext);
 
   /* ================ STATE ================= */
 
@@ -126,13 +117,12 @@ export default function EditItem() {
 
   /* ================ HANDLERS ================= */
 
-  const update =(key: keyof FormItemData) =>(e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) =>
-      setFormItemData(prev => ({
+  const update =(key: keyof FormItemData) =>
+    (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) =>
+      setFormItemData((prev) => ({
         ...prev,
         [key]:
-          e.target.type === "number"
-            ? Number(e.target.value)
-            : e.target.value,
+          e.target.type === "number" ? Number(e.target.value) : e.target.value,
       }));
 
   async function handleEdit(e: React.MouseEvent<HTMLButtonElement>) {
@@ -152,16 +142,16 @@ export default function EditItem() {
       formItemData.price,
       formItemData.profit,
       formItemData.code,
-      formItemData.expiry_date
+      formItemData.expiry_date,
     );
 
     if (resp.success) {
       setEditItemVisible(false);
       const items = await getAllItemsApi();
-      const oneItem = await getOneItemApi(selectedItem.id)
+      const oneItem = await getOneItemApi(selectedItem.id);
       if (items.success && oneItem.success) {
         setStorageItems(items.items);
-        setSelectedItem(oneItem.data)
+        setSelectedItem(oneItem.data);
         setIsLoading(false);
         setSuccessMessage("تم تعديل الدواء بنجاح");
         setIsSuccess(true);
@@ -172,7 +162,6 @@ export default function EditItem() {
       setIsLoading(false);
     }
   }
-
 
   return (
     <div className="edit-item-page">
@@ -266,7 +255,7 @@ export default function EditItem() {
         <div className="item-form-buts">
           <MyButton onClick={handleEdit}>تعديل</MyButton>
           <MyButton
-            onClick={e => {
+            onClick={(e) => {
               e.preventDefault();
               setEditItemVisible(false);
             }}

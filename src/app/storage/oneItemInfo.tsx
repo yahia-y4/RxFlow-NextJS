@@ -12,12 +12,17 @@ import { formatDateTime } from "@/APIs/formatDateTime";
 import {LoaderContext} from "@/app/globalsContext/loaderContext"
 import {SuccessContext} from "@/app/globalsContext/successContext"
 import { truncateToTwoDecimals } from "@/APIs/truncateToTwoDecimals";
+import { ErrorContext } from "../globalsContext/errorContext"; 
 export default function OneItemInfo() {
 
     const {setIsLoading} =  useContext(LoaderContext);
+    const {setErrorCardVisible,setErrorCardMessage} = useContext(ErrorContext)
     const {setIsSuccess , setSuccessMessage} = useContext(SuccessContext);
     const {setEditItemVisible,setItemInfoVisible,selectedItem,setStorageItems} = useContext(StorageContext);
     const {setWarningFunction,setWarningCardMessage,setWarningCardVisible} = useContext(WarningContext);
+
+
+
     async function deleteItem(id:number) {
         setIsLoading(true);
 
@@ -30,6 +35,12 @@ export default function OneItemInfo() {
                 setIsLoading(false);
                 setIsSuccess(true);
                 setSuccessMessage("تم حذف العنصر بنجاح");
+            }else{
+                setErrorCardVisible(true)
+                setErrorCardMessage(res.message)
+                setIsLoading(false)
+
+
             }
 
         }
