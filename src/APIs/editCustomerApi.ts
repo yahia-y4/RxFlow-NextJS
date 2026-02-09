@@ -46,7 +46,14 @@ if(response.ok){
         success: true,
         data: data,
     }
+}else{
+    return {
+        success: false,
+        message: data.error || 'حدث خطأ ما، يرجى المحاولة مرة أخرى',
+    }
 }
+
+
     }catch (error) {
         return {
             success: false,

@@ -30,6 +30,11 @@ export async function getReceivePaymentCustomerApi(customerId: number) {
                 success: true,
                 payments: data,
             }
+        }else{
+            return {
+                success: false,
+                message: data.error || 'حدث خطأ ما، يرجى المحاولة مرة أخرى',
+            }
         }
     } catch (error) {
         return {

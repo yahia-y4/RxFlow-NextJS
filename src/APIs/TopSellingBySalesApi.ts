@@ -26,6 +26,11 @@ export async function TopSellingBySalesApi(){
                 success: true,
                 statistics: data,
             }
+        }else{
+            return {
+                success: false,
+                message: data.error || 'حدث خطأ ما، يرجى المحاولة مرة أخرى',
+            }
         }
     }catch (error) {
         return {

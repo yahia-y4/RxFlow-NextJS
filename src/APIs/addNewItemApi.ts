@@ -66,6 +66,11 @@ try {
             message: 'Item added successfully',
             data,
         }
+    }else{
+        return {
+            success: false,
+            message: data.error || 'حدث خطأ ما، يرجى المحاولة مرة أخرى',
+        }
     }
 
  

@@ -39,7 +39,7 @@ useEffect(()=>{
 
   async function onRowClick(row:object){
     if(!addInvoiceVisible){
-      console.log("row clicked ",row);
+     
       const response = await getOneItemApi(row.id);
       if(response.success){
     

@@ -13,13 +13,13 @@ nav{
 nav .nav-link{
     color: rgb(255, 255, 255);
     border-bottom: 1px solid #fff;
+    transition: 0.1s;
  
 
 }
 
 nav .nav-link:hover{
-    color: #00b4d8;
-    border-bottom: 1px solid #00b4d8;   
+   transform: scale(1.2); 
 }
 
 nav .main-title{

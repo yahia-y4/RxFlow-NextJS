@@ -53,7 +53,7 @@ export async function editSupplierApi(id:number,Sdata:SupplierData){
             } else {
                 return {
                     success: false,
-                    message: data.message || "حدث خطأ ما"
+                    message: data.error || "حدث خطأ ما"
                 };
             }
 

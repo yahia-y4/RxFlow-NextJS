@@ -26,7 +26,6 @@ export async function editItemApi(
             message: 'قم بتسجيل الدخول أولاً',
         }
     }
-    console.log(token);
     if(!name || !company || !form || !concent || !concent_unit || !titer || !titer_unit || !package_type || !quantity || !price || !profit || !code || !expiry_date){
         return {
             success: false,
@@ -63,15 +62,15 @@ export async function editItemApi(
                 message: 'Item updated successfully',
                 data
             }
-        }
-        return {
+        }else{ return {
             success: false,
-            message: data.message,
-        }
+            message: data.error || "حدث خطأ ما",
+        }}
+       
     } catch (error) {
         return {
             success: false,
-            message: 'An error occurred',
+            message: error || 'An error occurred',
         }
     }
 }

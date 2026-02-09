@@ -35,7 +35,7 @@ const itemsData = dataInvoice.Items.map((item:object)=>({
     <p className="one-info">رقم الفاتورة : {dataInvoice.id}</p>
     <p className="one-info">عدد الأصناف : {dataInvoice.Items.length}</p>
     <p className="one-info"> عدد القطع : {dataInvoice.Items.reduce((acc, item) => acc + item.item_many_invoice.quantity, 0)}</p>
-    <p className="one-info">سعر الإجمالي : {dataInvoice.total_price}</p>
+    <p className="one-info">سعر الإجمالي : { truncateToTwoDecimals(dataInvoice.total_price)}</p>
     <p className="one-info">المبلغ المدفوع : {dataInvoice.paid_amount}</p>
     <p className="one-info">حالة التسديد وقت الشراء : {dataInvoice.payment_status}</p>
     <p className="one-info">تاريخ الفاتورة : {formatDateTime(dataInvoice.createdAt)}</p>

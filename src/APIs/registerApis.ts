@@ -28,7 +28,7 @@ export async function CreateNewUser(UserName:string,Email:string,Password:string
         } else {
           return {
             success: false,
-            message: data.message || 'User creation failed',
+            message: data.error || 'User creation failed',
           }
         }
     } catch (error) {

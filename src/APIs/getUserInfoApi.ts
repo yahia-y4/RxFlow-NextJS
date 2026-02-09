@@ -29,7 +29,7 @@ export async function getUserInfoApi() {
     } else {
       return {
         success: false,
-        message: data.message || "User info retrieval failed",
+        message: data.error || "User info retrieval failed",
       };
     }
   } catch (error) {

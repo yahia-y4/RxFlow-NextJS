@@ -60,7 +60,7 @@ export async function addPurchaseInvoiceApi(Pdata: PurchaseInvoiceData) {
     } else {
       return {
         success: false,
-        message: data.message || 'Purchase invoice creation failed',
+        message: data.error || 'Purchase invoice creation failed',
       };
     }
   } catch (error) {

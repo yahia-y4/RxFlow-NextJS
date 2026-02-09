@@ -35,7 +35,7 @@ if(response.ok){
 }else{
     return {
         success: false,
-        message: data.message || 'فشل في حذف الزبون',
+        message: data.error || 'فشل في حذف الزبون',
     }
 }
 

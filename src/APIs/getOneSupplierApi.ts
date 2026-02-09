@@ -37,7 +37,7 @@ export async function getOneSupplierApi(id:number){
         } else {
             return {
                 success: false,
-                message: data.message || 'Supplier retrieval failed',
+                message: data.error || 'Supplier retrieval failed',
             }
         }
 

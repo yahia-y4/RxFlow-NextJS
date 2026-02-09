@@ -12,6 +12,7 @@ import { ErrorContext } from "../globalsContext/errorContext";
 
 import { editItemApi } from "@/APIs/editItemApi";
 import { getAllItemsApi } from "@/APIs/getAllItemsApi";
+import { getOneItemApi } from "@/APIs/getOneItemApi";
 
 import {LoaderContext} from "@/app/globalsContext/loaderContext"
 import {SuccessContext} from "@/app/globalsContext/successContext"
@@ -75,11 +76,13 @@ export default function EditItem() {
     setEditItemVisible,
     setStorageItems,
     selectedItem,
-    setItemInfoVisible,
+    setSelectedItem,
+  
   } = useContext(StorageContext);
 
   const { setErrorCardVisible, setErrorCardMessage } =
     useContext(ErrorContext);
+   
 
   /* ================ STATE ================= */
 
@@ -154,10 +157,11 @@ export default function EditItem() {
 
     if (resp.success) {
       setEditItemVisible(false);
-      setItemInfoVisible(false);
       const items = await getAllItemsApi();
-      if (items.success) {
+      const oneItem = await getOneItemApi(selectedItem.id)
+      if (items.success && oneItem.success) {
         setStorageItems(items.items);
+        setSelectedItem(oneItem.data)
         setIsLoading(false);
         setSuccessMessage("تم تعديل الدواء بنجاح");
         setIsSuccess(true);

@@ -29,7 +29,7 @@ export async function getAllSalesRecords(){
         } else {
             return {
                 success: false,
-                message: data.message || "حدث خطأ ما"
+                message: data.error || "حدث خطأ ما"
             };
         }
     }catch(error){

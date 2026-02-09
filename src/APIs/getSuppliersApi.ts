@@ -28,7 +28,7 @@ export async function getSuppliersApi(){
         } else {
             return {
                 success: false,
-                message: data.message || 'Suppliers retrieval failed',
+                message: data.error || 'Suppliers retrieval failed',
             }
         }
     } catch (error) {

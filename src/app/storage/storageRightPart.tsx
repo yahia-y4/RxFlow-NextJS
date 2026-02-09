@@ -88,7 +88,7 @@ export default function StorageRightPart() {
 
     const {setIsLoading} =  useContext(LoaderContext);
     const {setIsSuccess , setSuccessMessage} = useContext(SuccessContext);
-    console.info("storage items in right part",storageItems);
+  
     
 
   
