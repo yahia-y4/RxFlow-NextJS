@@ -16,12 +16,13 @@ export default function SuppliersPaymentsList() {
 
     const {setIsLoading} =  useContext(LoaderContext);
     const {setIsSuccess , setSuccessMessage} = useContext(SuccessContext);
-
+// تحميل دفعات المورد
     useEffect(()=>{
         async function fetchPaymentsList(){
             setIsLoading(true);
             const response = await getPaymentSentHistorySupplier(selectedSupplier.id); 
             if(response.success){
+                // فلترة المعلومات لكي تتناسب مع الجدول وتصحيح التاريخ
                 const formattedData = response.data.map((payment:any) => ({
                     ...payment,
                     payment_date: formatDateTime(payment.payment_date)

@@ -5,7 +5,7 @@ export default function SaleLayout({
   children: React.ReactNode;
 }) {
   return (
-<SaleProvider> 
+     <SaleProvider> 
      {children}
      </SaleProvider>
     

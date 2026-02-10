@@ -17,6 +17,7 @@ export default function PurchaseInvoicePage() {
 
     return (
         <div className="Purchase-invoice-page">
+            
             <SupplierInvoices/>
             
         </div>

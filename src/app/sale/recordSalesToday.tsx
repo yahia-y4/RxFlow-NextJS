@@ -1,8 +1,9 @@
 "use client";
 import "./sale.css";
-import { useEffect,useState,useContext } from "react";
+import { useEffect, useState, useContext } from "react";
 import MyTable, { TableColumn } from "@/components/myTable/myTable";
-import {getAllSalesRecords} from "@/APIs/getAllSalesRecords";
+import { getAllSalesRecords } from "@/APIs/getAllSalesRecords";
+import { truncateToTwoDecimals } from "@/APIs/truncateToTwoDecimals";
 import { SaleContext } from "./saleContext";
 
 /* ================== Types ================== */
@@ -22,7 +23,7 @@ type SalesRecordItem = {
 
 export default function RecordSalesToday() {
   /* ===== بيانات تجريبية (كما تأتي من الباك اند) ===== */
-  const {SalesRecordData , setSalesRecordData} = useContext(SaleContext);
+  const { SalesRecordData, setSalesRecordData } = useContext(SaleContext);
 
   useEffect(() => {
     async function fetchSalesRecords() {
@@ -34,10 +35,10 @@ export default function RecordSalesToday() {
       }
     }
     fetchSalesRecords();
-  }, []); 
+  }, []);
 
   /* ===== تجهيز البيانات للجدول (Flatten) ===== */
-  
+
   const tableData: SalesRecordItem[] = SalesRecordData.flatMap((invoice) =>
     invoice.Items.map((item: any) => ({
       invoiceId: invoice.id,
@@ -46,14 +47,16 @@ export default function RecordSalesToday() {
       form: item.form,
       quantity: item.item_many_salesRecord.quantity,
       price: item.item_many_salesRecord.price,
-      total:
-        item.item_many_salesRecord.quantity *
-        item.item_many_salesRecord.price,
+      total: truncateToTwoDecimals(
+        item.item_many_salesRecord.quantity * item.item_many_salesRecord.price,
+      ),
       createdAt: invoice.createdAt,
-    }))
+    })),
   );
   // ترتيب البيانات حسب التاريخ (الأحدث أولاً)
-  tableData.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+  tableData.sort(
+    (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
+  );
 
   /* ===== الأعمدة ===== */
   const columns: TableColumn<SalesRecordItem>[] = [

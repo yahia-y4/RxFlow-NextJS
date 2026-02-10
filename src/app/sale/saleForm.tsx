@@ -89,7 +89,7 @@ export default function SaleForm() {
     fetchItems();
   }, []);
 
-  /* ================ HELPERS ================= */
+
 
   function findItemByBarcode(code: string): Item | undefined {
     return items.find(item => item.code === code);
@@ -150,8 +150,8 @@ export default function SaleForm() {
       price: Number(e.target.value) || 0,
     }));
   }
-
-  async function handleSale(e: React.MouseEvent<HTMLButtonElement>) {
+// حدث البيع 
+async function handleSale(e: React.MouseEvent<HTMLButtonElement>) {
 setIsLoading(true);
     e.preventDefault();
 
@@ -230,7 +230,7 @@ try {
     });
   }
 
-  /* ================ RENDER ================= */
+
 
   return (
     <div className="sale-form-container">
@@ -289,7 +289,7 @@ try {
 
         <div className="sale-form-buts">
           <MyButton onClick={handleSale}>
-            {saleGroupVisible ? "اضافة" : "بيع"}
+            {"بيع"}
           </MyButton>
           <MyButton onClick={emptyHandle}>محو</MyButton>
         </div>

@@ -12,7 +12,6 @@ export default function ListSuppliers() {
       setSuppliersInfoVisible,
       Suppliers,
       setSuppliers,
-      selectedSupplierID
     } = useContext(SuppliersContext);
 
 useEffect(()=>{
@@ -27,17 +26,20 @@ useEffect(()=>{
     }
     fetchSuppliers();
 },[])
-    async function handleRowClick(rowData:object){
-       await setSelectedSupplierID(rowData.id);
-        setSuppliersInfoVisible(true);
-    }
+
     const columns = [
         { key: "id", title: "ID" },
         { key: "name", title: "اسم المورد" },
         {key:"phone_number",title:"رقم الهاتف"} 
     ]
- 
 
+
+    // عند النقر على اسم المورد
+
+    async function handleRowClick(rowData:object){
+       await setSelectedSupplierID(rowData.id);
+        setSuppliersInfoVisible(true);
+    }
 
    //---------البحث -------------
    function onSearchf(value:string){
